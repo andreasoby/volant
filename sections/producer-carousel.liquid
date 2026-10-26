@@ -120,6 +120,7 @@
           <li
             class="producer-carousel__card{% if forloop.first %} is-active{% endif %}"
             data-card
+            data-logical="{{ forloop.index0 }}"
             data-title="{{ show_title | escape }}"
             {{ block.shopify_attributes }}
           >
@@ -158,9 +159,6 @@
               type="button"
               data-select
               aria-label="{{ show_label | escape }}"
-              {% if forloop.first %}
-                hidden
-              {% endif %}
             >
               {% if card_label != blank %}
                 <span class="producer-carousel__label">{{ card_label }}</span>
@@ -338,10 +336,13 @@
     background: transparent;
     color: inherit;
     cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.45s ease;
   }
 
-  .producer-carousel__select[hidden] {
-    display: none;
+  .producer-carousel__card.is-active .producer-carousel__select {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .producer-carousel__label {
@@ -366,7 +367,7 @@
     left: 24px;
     bottom: 24px;
     z-index: 1;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
@@ -377,10 +378,21 @@
     overflow: auto;
     background: #eadec6;
     color: #111;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
   }
 
   .producer-carousel__card.is-active .producer-carousel__panel {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  producer-carousel.is-settling .producer-carousel__panel,
+  producer-carousel.is-settling .producer-carousel__select {
+    transition: none;
   }
 
   .producer-carousel__eyebrow,
@@ -498,7 +510,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .producer-carousel__track {
+    .producer-carousel__track,
+    .producer-carousel__panel,
+    .producer-carousel__select {
       transition: none;
     }
   }
@@ -508,12 +522,12 @@
 class ProducerCarousel extends HTMLElement {
   connectedCallback() {
     this.track = this.querySelector('[data-track]');
-    this.index = Math.max(
-      0,
-      this.cards().findIndex((card) => card.classList.contains('is-active'))
-    );
+    this.count = this.cards().length;
+    this.cloneLoop();
+    this.index = this.count > 1 ? this.count : 0;
     this.drag = null;
     this.suppressClick = false;
+    this.pendingFocus = null;
 
     this.onClick = (event) => {
       if (this.suppressClick) {
@@ -539,7 +553,7 @@ class ProducerCarousel extends HTMLElement {
       if (!select) return;
       const card = select.closest('[data-card]');
       const index = this.cards().indexOf(card);
-      if (index < 0) return;
+      if (index < 0 || index === this.index) return;
       this.index = index;
       this.render(true);
       this.restoreFocus();
@@ -582,11 +596,17 @@ class ProducerCarousel extends HTMLElement {
 
     this.onBlockSelect = (event) => {
       const card = event.target?.closest?.('[data-card]');
-      if (!card || !this.contains(card)) return;
-      const index = this.cards().indexOf(card);
-      if (index < 0) return;
-      this.index = index;
+      if (!card || card.hasAttribute('data-clone') || !this.contains(card)) return;
+      const logical = Number(card.dataset.logical);
+      if (Number.isNaN(logical)) return;
+      this.index = this.count > 1 ? this.count + logical : logical;
       this.render(false);
+    };
+
+    this.onTransitionEnd = (event) => {
+      if (event.target !== this.track || event.propertyName !== 'transform') return;
+      this.animating = false;
+      this.settle();
     };
 
     this.addEventListener('click', this.onClick);
@@ -595,9 +615,14 @@ class ProducerCarousel extends HTMLElement {
     this.addEventListener('pointermove', this.onPointerMove);
     this.addEventListener('pointerup', this.onPointerUp);
     this.addEventListener('pointercancel', this.onPointerUp);
+    this.track?.addEventListener('transitionend', this.onTransitionEnd);
     document.addEventListener('shopify:block:select', this.onBlockSelect);
 
-    this.observer = new ResizeObserver(() => this.render(false));
+    this.animating = false;
+    this.observer = new ResizeObserver(() => {
+      if (this.animating) return;
+      this.render(false);
+    });
     this.observer.observe(this);
     this.render(false);
   }
@@ -609,6 +634,7 @@ class ProducerCarousel extends HTMLElement {
     this.removeEventListener('pointermove', this.onPointerMove);
     this.removeEventListener('pointerup', this.onPointerUp);
     this.removeEventListener('pointercancel', this.onPointerUp);
+    this.track?.removeEventListener('transitionend', this.onTransitionEnd);
     document.removeEventListener('shopify:block:select', this.onBlockSelect);
     this.observer?.disconnect();
   }
@@ -617,62 +643,131 @@ class ProducerCarousel extends HTMLElement {
     return [...this.querySelectorAll('[data-card]')];
   }
 
+  cloneLoop() {
+    if (!this.track || this.count < 2) return;
+    const originals = [...this.track.children];
+    const copy = (source) => {
+      const clone = source.cloneNode(true);
+      clone.setAttribute('data-clone', '');
+      clone.setAttribute('aria-hidden', 'true');
+      [...clone.attributes].forEach((attr) => {
+        if (attr.name.includes('shopify')) clone.removeAttribute(attr.name);
+      });
+      clone.querySelectorAll('button, a').forEach((element) => {
+        element.tabIndex = -1;
+      });
+      return clone;
+    };
+    this.track.prepend(...originals.map(copy));
+    this.track.append(...originals.map(copy));
+  }
+
+  logical() {
+    if (this.count < 1) return 0;
+    return ((this.index % this.count) + this.count) % this.count;
+  }
+
+  step() {
+    const card = this.cards()[0];
+    if (!card || !this.track) return 0;
+    const gap = Number.parseFloat(getComputedStyle(this.track).columnGap) || 0;
+    return card.offsetWidth + gap;
+  }
+
+  prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
   move(delta) {
-    const cards = this.cards();
-    if (cards.length < 2) return;
+    if (this.count < 2) return;
     this.pendingFocus = document.activeElement?.matches?.('[data-next]')
       ? 'next'
       : document.activeElement?.matches?.('[data-prev]')
         ? 'prev'
         : null;
-    this.index = (this.index + delta + cards.length) % cards.length;
+    this.settle();
+    this.index += delta;
     this.render(true);
     this.restoreFocus();
   }
 
-  restoreFocus() {
-    const active = this.cards()[this.index];
-    if (!active) return;
+  settle() {
+    if (this.count < 2) return;
+    const normalized = this.count + this.logical();
+    if (this.index === normalized) return;
     const focused = document.activeElement;
-    const focusLost = focused && this.contains(focused) && focused.offsetParent === null;
-    if (!focusLost && !this.pendingFocus) return;
+    const focusSelector = focused?.matches?.('[data-prev]')
+      ? '[data-prev]'
+      : focused?.matches?.('[data-next]')
+        ? '[data-next]'
+        : null;
+    this.index = normalized;
+    this.classList.add('is-settling');
+    this.track.classList.add('is-instant');
+    this.track.style.transform = `translate3d(${-this.index * this.step()}px, 0, 0)`;
+    this.syncState(false);
+    this.offsetWidth;
+    this.classList.remove('is-settling');
+    if (focusSelector && focused && this.contains(focused)) {
+      this.cards()[this.index]?.querySelector(focusSelector)?.focus();
+    }
+  }
+
+  restoreFocus() {
+    if (!this.pendingFocus) return;
     const selector = this.pendingFocus === 'prev' ? '[data-prev]' : '[data-next]';
     this.pendingFocus = null;
-    active.querySelector(selector)?.focus();
+    this.cards()[this.index]?.querySelector(selector)?.focus();
   }
 
   render(animate) {
     const cards = this.cards();
-    const count = cards.length;
-    if (!this.track || count === 0) return;
+    if (!this.track || this.count === 0) return;
 
-    this.index = (this.index + count) % count;
-    const styles = getComputedStyle(this.track);
-    const gap = Number.parseFloat(styles.columnGap) || 0;
-    const step = cards[0].offsetWidth + gap;
+    const motion = animate && !this.prefersReducedMotion();
+    this.animating = motion;
+    if (motion) {
+      this.track.classList.remove('is-instant');
+      this.offsetWidth;
+    } else {
+      this.classList.add('is-settling');
+      this.track.classList.add('is-instant');
+    }
 
-    this.track.classList.toggle('is-instant', !animate);
-    this.track.style.transform = `translate3d(${-this.index * step}px, 0, 0)`;
+    this.track.style.transform = `translate3d(${-this.index * this.step()}px, 0, 0)`;
+    this.syncState(motion);
+
+    if (!motion) {
+      this.offsetWidth;
+      this.classList.remove('is-settling');
+      this.settle();
+    }
+  }
+
+  syncState(announce) {
+    const cards = this.cards();
+    const logical = this.logical();
+    const template = this.dataset.position || '';
+    const label = template
+      .replace('__CURRENT__', String(logical + 1))
+      .replace('__TOTAL__', String(this.count));
 
     cards.forEach((card, index) => {
       const active = index === this.index;
       card.classList.toggle('is-active', active);
       const select = card.querySelector('[data-select]');
-      if (select) select.hidden = active;
+      if (!select || card.hasAttribute('data-clone')) return;
+      select.tabIndex = active ? -1 : 0;
+      select.setAttribute('aria-hidden', active ? 'true' : 'false');
     });
-
-    const template = this.dataset.position || '';
-    const label = template
-      .replace('__CURRENT__', String(this.index + 1))
-      .replace('__TOTAL__', String(count));
 
     this.querySelectorAll('[data-count]').forEach((node) => {
       node.textContent = label;
     });
 
-    if (!animate) return;
+    if (!announce) return;
     const status = this.querySelector('[data-status]');
-    const title = cards[this.index].dataset.title || '';
+    const title = cards[this.index]?.dataset.title || '';
     if (status) status.textContent = title ? `${label}. ${title}` : label;
   }
 }

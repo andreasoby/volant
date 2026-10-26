@@ -1,0 +1,53 @@
+{% doc %}
+  Prints one producer as a JSON object for the producer map.
+  Prints nothing when the entry has no coordinates.
+
+  Continent, country, and region may be metaobject references. A referenced
+  entry contributes its name, or its label when it has no name. Plain text
+  values are used as stored.
+
+  @param {object} producer - Producer metaobject entry
+{% enddoc %}
+
+{%- liquid
+  assign producer_name = producer.name.value
+  assign producer_address = producer.address.value
+  assign producer_lat = producer.latitude.value
+  assign producer_lng = producer.longitude.value
+  assign producer_maps = producer.maps_url.value
+
+  assign continent_entry = producer.continent.value
+  assign country_entry = producer.country.value
+  assign region_entry = producer.region.value
+
+  assign producer_continent = continent_entry.name.value | default: continent_entry.label.value
+  if producer_continent == blank
+    if continent_entry.system.type != blank
+      assign producer_continent = continent_entry.system.handle
+    else
+      assign producer_continent = continent_entry
+    endif
+  endif
+
+  assign producer_country = country_entry.name.value | default: country_entry.label.value
+  if producer_country == blank
+    if country_entry.system.type != blank
+      assign producer_country = country_entry.system.handle
+    else
+      assign producer_country = country_entry
+    endif
+  endif
+
+  assign producer_region = region_entry.name.value | default: region_entry.label.value
+  if producer_region == blank
+    if region_entry.system.type != blank
+      assign producer_region = region_entry.system.handle
+    else
+      assign producer_region = region_entry
+    endif
+  endif
+-%}
+
+{%- if producer_name != blank and producer_lat != blank and producer_lng != blank -%}
+  {"name":{{ producer_name | json }},"address":{{ producer_address | json }},"continent":{{ producer_continent | json }},"country":{{ producer_country | json }},"region":{{ producer_region | json }},"lat":{{ producer_lat | json }},"lng":{{ producer_lng | json }},"mapsUrl":{{ producer_maps | json }}}
+{%- endif -%}

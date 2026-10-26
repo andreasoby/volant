@@ -343,5 +343,20 @@
       "success_moderated": "Kommentaren blev indsendt og afventer moderering",
       "success": "Kommentaren blev indsendt"
     }
+  },
+  "map": {
+    "world": "Hele verden",
+    "close": "Luk",
+    "maps": "Maps",
+    "label": "Producentkort",
+    "hint_continent": "Klik på et område for at zoome ind",
+    "hint_country": "Klik på et land for at se regionerne",
+    "hint_region": "Klik på en region for at se producenterne",
+    "producers": {
+      "one": "{{ count }} producent",
+      "other": "{{ count }} producenter"
+    },
+    "empty": "Tilføj producenter i Shopify-metafelter for at vise dem på kortet.",
+    "error": "Kortet kunne ikke indlæses."
   }
 }

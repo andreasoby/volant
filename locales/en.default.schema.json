@@ -249,7 +249,8 @@
     "video_autoplay": "Videos will be muted by default",
     "video_external": "Use a YouTube or Vimeo URL",
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
-    "media_type_info": "Features are populated from your menu links"
+    "media_type_info": "Features are populated from your menu links",
+    "map_locations": "Locations come from a shop metafield that lists Producer metaobjects. Create a metaobject with type producer and fields name, address, latitude, longitude, and optional maps_url. Continent, country, and region are metaobject references. The map labels each pin with the referenced entry's name, or its label when it has no name. Give every definition storefront access, then create a shop metafield with the namespace and key below, type List of metaobjects. Zoom groups entries into continent, country, then region. If the metafield is empty, every active producer entry is used."
   },
   "names": {
     "column": "Column",
@@ -418,7 +419,8 @@
     "view_all_button": "View all",
     "disclosures": "Disclosures",
     "pills": "Pills",
-    "comparison_slider": "Comparison slider"
+    "comparison_slider": "Comparison slider",
+    "producer_map": "Producer map"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -1198,7 +1200,12 @@
     "top_row_background": "Top row background",
     "top_row_text": "Top row text",
     "bottom_row_background": "Bottom row background",
-    "bottom_row_text": "Bottom row text"
+    "bottom_row_text": "Bottom row text",
+    "map_namespace": "Metafield namespace",
+    "map_key": "Metafield key",
+    "map_metaobject_type": "Metaobject type",
+    "map_tiles_url": "OpenMapTiles URL",
+    "map_source": "Locations"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

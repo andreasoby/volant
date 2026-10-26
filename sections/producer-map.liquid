@@ -1,0 +1,531 @@
+{{ 'maplibre-gl.css' | asset_url | stylesheet_tag }}
+
+<style>
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-sans-ext-400.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-sans-400.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-sans-ext-500.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-sans-500.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-serif-ext-400.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-serif-400.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+</style>
+
+<script
+  src="{{ 'producer-map.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+{%- liquid
+  assign metafield_namespace = section.settings.metafield_namespace | default: 'custom'
+  assign metafield_key = section.settings.metafield_key | default: 'map_producers'
+  assign metaobject_type = section.settings.metaobject_type | default: 'producer'
+  assign producers = shop.metafields[metafield_namespace][metafield_key].value
+  if producers == blank
+    assign producers = shop.metaobjects[metaobject_type].values
+  elsif producers.size == 0
+    assign producers = shop.metaobjects[metaobject_type].values
+  endif
+
+  assign locations_json = ''
+  assign offsets = '0,50,100,150,200,250' | split: ','
+-%}
+
+{%- for offset in offsets -%}
+  {%- assign page_offset = offset | plus: 0 -%}
+  {%- for producer in producers limit: 50 offset: page_offset -%}
+    {%- capture location_item -%}
+      {%- render 'producer-map-location', producer: producer -%}
+    {%- endcapture -%}
+    {%- assign location_item = location_item | strip -%}
+    {%- if location_item != blank -%}
+      {%- if locations_json != blank -%}
+        {%- assign locations_json = locations_json | append: ',' -%}
+      {%- endif -%}
+      {%- assign locations_json = locations_json | append: location_item -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+
+<div class="section-background producer-map__backdrop"></div>
+
+<div
+  class="section section--{{ section.settings.section_width }} producer-map-section"
+  style="--producer-map-height: {{ section.settings.map_height }}px;"
+>
+  <producer-map
+    class="producer-map"
+    data-tiles-url="{{ section.settings.tiles_url | escape }}"
+    data-maplibre-src="{{ 'maplibre-gl.js' | asset_url }}"
+    data-pin="{{ 'map-pin.svg' | asset_url }}"
+    data-pin-selected="{{ 'map-pin-selected.svg' | asset_url }}"
+  >
+    <div class="producer-map__canvas" role="application" aria-label="{{ 'map.label' | t }}"></div>
+
+    <button class="producer-map__world" type="button" hidden>
+      <span aria-hidden="true">←</span>
+      <span>{{ 'map.world' | t }}</span>
+    </button>
+
+    <p class="producer-map__hint">{{ 'map.hint_region' | t }}</p>
+
+    <aside class="producer-map__panel" hidden>
+      <div class="producer-map__panel-top">
+        <p class="producer-map__country"></p>
+        <button class="producer-map__close" type="button">{{ 'map.close' | t }} ×</button>
+      </div>
+      <h2 class="producer-map__region"></h2>
+      <p class="producer-map__total"></p>
+      <div class="producer-map__list"></div>
+    </aside>
+
+    <p class="producer-map__attribution">
+      <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>
+      ·
+      <a href="https://openmaptiles.org/" target="_blank" rel="noopener noreferrer">OpenMapTiles</a>
+    </p>
+
+    <script type="application/json" data-locations>
+      [{{ locations_json }}]
+    </script>
+    <script type="application/json" data-i18n>
+      {
+        "maps": {{ 'map.maps' | t | json }},
+        "empty": {{ 'map.empty' | t | json }},
+        "error": {{ 'map.error' | t | json }},
+        "hints": {
+          "continent": {{ 'map.hint_continent' | t | json }},
+          "country": {{ 'map.hint_country' | t | json }},
+          "region": {{ 'map.hint_region' | t | json }}
+        },
+        "producersOne": {{ 'map.producers.one' | t: count: 1 | json }},
+        "producersOther": {{ 'map.producers.other' | t: count: 2 | json }}
+      }
+    </script>
+  </producer-map>
+</div>
+
+{% stylesheet %}
+  .producer-map-section.shopify-section .section-background,
+  .producer-map__backdrop {
+    background-color: #e3d5ba;
+  }
+
+  .producer-map {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: var(--producer-map-height, 760px);
+    overflow: hidden;
+    background: #e3d5ba;
+    color: #111;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+  }
+
+  .producer-map__canvas,
+  .producer-map__canvas .maplibregl-map {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .producer-map__canvas {
+    z-index: 0;
+  }
+
+  .producer-map__world,
+  .producer-map__hint,
+  .producer-map__attribution,
+  .producer-map__panel {
+    z-index: 1;
+  }
+
+  .producer-map__world {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 10px 18px 10px 16px;
+    border: 1px solid #111;
+    border-radius: 100px;
+    background: #eadec6;
+    color: #111;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: normal;
+    cursor: pointer;
+  }
+
+  .producer-map__world[hidden],
+  .producer-map__panel[hidden] {
+    display: none;
+  }
+
+  .producer-map__hint {
+    position: absolute;
+    left: 24px;
+    bottom: 22px;
+    max-width: min(420px, calc(100% - 180px));
+    margin: 0;
+    color: #6b6357;
+    font-size: 14px;
+    line-height: 18px;
+    pointer-events: none;
+  }
+
+  .producer-map__attribution {
+    position: absolute;
+    right: 24px;
+    bottom: 22px;
+    margin: 0;
+    color: #6b6357;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .producer-map__attribution a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .producer-map__panel {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 340px;
+    margin: 0;
+    padding: 24px 28px;
+    overflow: hidden;
+    border: 1px solid #111;
+    background: #eadec6;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .producer-map__panel-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .producer-map__country,
+  .producer-map__total,
+  .producer-map__producer-name,
+  .producer-map__producer-address {
+    margin: 0;
+  }
+
+  .producer-map__country {
+    color: #6b6357;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .producer-map__close {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #111;
+    font: inherit;
+    font-size: 14px;
+    line-height: normal;
+    cursor: pointer;
+  }
+
+  .producer-map__region {
+    margin: 0;
+    color: #111;
+    font-family: 'IBM Plex Serif', var(--font-heading--family), serif;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .producer-map__total {
+    color: #6b6357;
+    font-size: 14px;
+    line-height: normal;
+  }
+
+  .producer-map__list {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding-top: 8px;
+    overflow: auto;
+  }
+
+  .producer-map__producer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid #bfb29e;
+  }
+
+  .producer-map__producer-text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .producer-map__producer-name {
+    color: #111;
+    font-size: 15px;
+    line-height: normal;
+  }
+
+  .producer-map__producer-address {
+    color: #6b6357;
+    font-size: 12px;
+    line-height: normal;
+  }
+
+  .producer-map__maps {
+    flex: none;
+    color: #6b6357;
+    font-size: 12px;
+    line-height: normal;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+  }
+
+  .producer-map__pin {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .producer-map__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px 3px 8px;
+    border-radius: 100px;
+    background: rgba(234, 222, 198, 0.9);
+    line-height: normal;
+    white-space: nowrap;
+  }
+
+  .producer-map__pin-name {
+    color: #111;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .producer-map__pin-count {
+    color: #6b6357;
+    font-size: 11px;
+    font-weight: 400;
+  }
+
+  .producer-map__pin--selected .producer-map__label {
+    background: #111;
+  }
+
+  .producer-map__pin--selected .producer-map__pin-name,
+  .producer-map__pin--selected .producer-map__pin-count {
+    color: #eadec6;
+  }
+
+  .producer-map__dot {
+    display: block;
+    flex: none;
+  }
+
+  .producer-map__pin:focus-visible,
+  .producer-map__world:focus-visible,
+  .producer-map__close:focus-visible,
+  .producer-map__maps:focus-visible {
+    outline: 2px solid #111;
+    outline-offset: 2px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .producer-map {
+      height: min(var(--producer-map-height, 760px), 100svh);
+    }
+
+    .producer-map__world {
+      top: 16px;
+      left: 16px;
+    }
+
+    .producer-map__hint {
+      left: 16px;
+      bottom: 16px;
+    }
+
+    .producer-map__attribution {
+      right: 16px;
+      bottom: 16px;
+    }
+
+    .producer-map--open .producer-map__hint,
+    .producer-map--open .producer-map__attribution {
+      display: none;
+    }
+
+    .producer-map__panel {
+      top: auto;
+      right: 16px;
+      bottom: 16px;
+      left: 16px;
+      width: auto;
+      height: min(68%, 520px);
+      padding: 20px;
+    }
+
+    .producer-map__region {
+      font-size: 28px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.producer_map",
+  "tag": "section",
+  "class": "producer-map-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:info.map_locations"
+    },
+    {
+      "type": "header",
+      "content": "t:settings.map_source"
+    },
+    {
+      "type": "text",
+      "id": "metafield_namespace",
+      "label": "t:settings.map_namespace",
+      "default": "custom"
+    },
+    {
+      "type": "text",
+      "id": "metafield_key",
+      "label": "t:settings.map_key",
+      "default": "map_producers"
+    },
+    {
+      "type": "text",
+      "id": "metaobject_type",
+      "label": "t:settings.map_metaobject_type",
+      "default": "producer"
+    },
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "text",
+      "id": "tiles_url",
+      "label": "t:settings.map_tiles_url",
+      "default": "https://tiles.openfreemap.org/planet"
+    },
+    {
+      "type": "range",
+      "id": "map_height",
+      "label": "t:settings.height",
+      "min": 480,
+      "max": 960,
+      "step": 20,
+      "unit": "px",
+      "default": 760
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "full-width"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.producer_map",
+      "category": "t:categories.storytelling"
+    }
+  ]
+}
+{% endschema %}

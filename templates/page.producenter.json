@@ -67,7 +67,7 @@
         "metaobject_type": "producer",
         "tiles_url": "",
         "map_height": 760,
-        "section_width": "page-width"
+        "section_width": "full-width"
       }
     }
   },

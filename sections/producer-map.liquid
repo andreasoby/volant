@@ -106,14 +106,16 @@
     data-pin="{{ 'map-pin.svg' | asset_url }}"
     data-pin-selected="{{ 'map-pin-selected.svg' | asset_url }}"
   >
-    <div class="producer-map__canvas" role="application" aria-label="{{ 'map.label' | t }}"></div>
+    <div class="producer-map__stage">
+      <div class="producer-map__canvas" role="application" aria-label="{{ 'map.label' | t }}"></div>
 
-    <button class="producer-map__world" type="button" hidden>
-      <span aria-hidden="true">←</span>
-      <span>{{ 'map.world' | t }}</span>
-    </button>
+      <button class="producer-map__world" type="button" hidden>
+        <span aria-hidden="true">←</span>
+        <span>{{ 'map.world' | t }}</span>
+      </button>
 
-    <p class="producer-map__hint">{{ 'map.hint_region' | t }}</p>
+      <p class="producer-map__hint">{{ 'map.hint_region' | t }}</p>
+    </div>
 
     <aside class="producer-map__panel" hidden>
       <div class="producer-map__panel-top">
@@ -136,7 +138,8 @@
         "hints": {
           "continent": {{ 'map.hint_continent' | t | json }},
           "country": {{ 'map.hint_country' | t | json }},
-          "region": {{ 'map.hint_region' | t | json }}
+          "region": {{ 'map.hint_region' | t | json }},
+          "regionTouch": {{ 'map.hint_region_touch' | t | json }}
         },
         "producersOne": {{ 'map.producers.one' | t: count: 1 | json }},
         "producersOther": {{ 'map.producers.other' | t: count: 2 | json }}
@@ -160,6 +163,11 @@
     background: #e3d5ba;
     color: #111;
     font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+  }
+
+  .producer-map__stage {
+    position: absolute;
+    inset: 0;
   }
 
   .producer-map__canvas,
@@ -411,41 +419,74 @@
 
   @media screen and (max-width: 749px) {
     .producer-map {
-      height: min(var(--producer-map-height, 760px), 100svh);
+      height: auto;
+      overflow: visible;
+    }
+
+    .producer-map__stage {
+      position: relative;
+      height: 418px;
     }
 
     .producer-map__world {
-      top: 16px;
-      left: 16px;
+      top: 12px;
+      left: 12px;
+      padding: 7px 12px 7px 11px;
+      font-size: 13px;
     }
 
     .producer-map__hint {
-      left: 16px;
-      bottom: 16px;
-    }
-
-    .producer-map__attribution {
-      right: 16px;
-      bottom: 16px;
-    }
-
-    .producer-map--open .producer-map__hint,
-    .producer-map--open .producer-map__attribution {
-      display: none;
+      left: 12px;
+      bottom: 10px;
+      max-width: calc(100% - 24px);
+      font-size: 11px;
+      line-height: 14px;
     }
 
     .producer-map__panel {
+      position: relative;
       top: auto;
-      right: 16px;
-      bottom: 16px;
-      left: 16px;
-      width: auto;
-      height: min(68%, 520px);
-      padding: 20px;
+      right: auto;
+      bottom: auto;
+      width: 100%;
+      height: auto;
+      padding: 20px 16px 24px;
+      overflow: visible;
+      border: 0;
+      border-top: 1px solid #111;
+      box-shadow: none;
+    }
+
+    .producer-map__country {
+      font-size: 11px;
+      letter-spacing: 0.02em;
     }
 
     .producer-map__region {
       font-size: 28px;
+    }
+
+    .producer-map__total {
+      font-size: 13px;
+    }
+
+    .producer-map__list {
+      flex: none;
+      padding-top: 0;
+      overflow: visible;
+    }
+
+    .producer-map__producer {
+      padding: 10px 0;
+    }
+
+    .producer-map__dot {
+      width: 16px;
+      height: 16px;
+    }
+
+    .producer-map__pin--dot {
+      padding: 8px;
     }
   }
 {% endstylesheet %}

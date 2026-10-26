@@ -204,6 +204,7 @@ class ProducerMap extends HTMLElement {
   #onKeyDown = null;
   /** @type {(() => void) | null} */
   #onResize = null;
+  #compactPins = false;
 
   connectedCallback() {
     if (this.dataset.ready === 'true') return;
@@ -215,7 +216,15 @@ class ProducerMap extends HTMLElement {
         if (event.key === 'Escape') this.#closePanel();
       };
       document.addEventListener('keydown', this.#onKeyDown);
-      this.#onResize = () => this.#map?.resize();
+      this.#compactPins = this.#compact;
+      this.#onResize = () => {
+        this.#map?.resize();
+        const compact = this.#compact;
+        if (compact === this.#compactPins) return;
+        this.#compactPins = compact;
+        this.#sync();
+        this.#renderMarkers();
+      };
       window.addEventListener('resize', this.#onResize);
       this.#worldButton?.addEventListener('click', () => this.#showWorld());
       this.#closeButton?.addEventListener('click', () => this.#closePanel());
@@ -269,7 +278,7 @@ class ProducerMap extends HTMLElement {
     const bounds = new maplibregl.LngLatBounds();
     for (const location of this.#locations) bounds.extend([location.lng, location.lat]);
     this.#map.fitBounds(bounds, {
-      padding: 88,
+      padding: this.#compact ? { top: 56, right: 28, bottom: 36, left: 28 } : 88,
       maxZoom: LEVEL_ZOOMS.region,
       duration: 0,
     });
@@ -282,7 +291,8 @@ class ProducerMap extends HTMLElement {
     if (this.#worldButton) this.#worldButton.hidden = zoom < COUNTRY_ZOOM;
     if (this.#hint) {
       const hints = this.#i18n.hints || {};
-      this.#hint.textContent = this.#locations.length ? hints[level] || '' : this.#i18n.empty || '';
+      const hint = level === 'region' && this.#compact && hints.regionTouch ? hints.regionTouch : hints[level];
+      this.#hint.textContent = this.#locations.length ? hint || '' : this.#i18n.empty || '';
     }
     if (level !== 'region' && this.#selectedId) this.#closePanel(false);
     if (level !== this.#level) {
@@ -297,33 +307,40 @@ class ProducerMap extends HTMLElement {
     const maplibregl = window.maplibregl;
     const groups = groupLocations(this.#locations, this.#level);
 
+    const compact = this.#compact;
+    const dotSize = compact ? 16 : 14;
+
     for (const group of groups) {
       const selected = group.id === this.#selectedId;
+      const dotOnly = compact && this.#level === 'region' && !selected;
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = `producer-map__pin${selected ? ' producer-map__pin--selected' : ''}`;
+      button.className = `producer-map__pin${selected ? ' producer-map__pin--selected' : ''}${dotOnly ? ' producer-map__pin--dot' : ''}`;
       button.setAttribute('aria-pressed', selected ? 'true' : 'false');
       button.setAttribute('aria-label', `${group.name}, ${group.locations.length}`);
 
       const dot = document.createElement('img');
       dot.className = 'producer-map__dot';
       dot.alt = '';
-      dot.width = 14;
-      dot.height = 14;
+      dot.width = dotSize;
+      dot.height = dotSize;
       dot.src = selected ? this.dataset.pinSelected || '' : this.dataset.pin || '';
 
-      const label = document.createElement('span');
-      label.className = 'producer-map__label';
-      const name = document.createElement('span');
-      name.className = 'producer-map__pin-name';
-      name.textContent = group.name;
-      const count = document.createElement('span');
-      count.className = 'producer-map__pin-count';
-      count.textContent = String(group.locations.length);
-      label.append(name, count);
-
-      if (selected) button.append(label, dot);
-      else button.append(dot, label);
+      if (dotOnly) {
+        button.append(dot);
+      } else {
+        const label = document.createElement('span');
+        label.className = 'producer-map__label';
+        const name = document.createElement('span');
+        name.className = 'producer-map__pin-name';
+        name.textContent = group.name;
+        const count = document.createElement('span');
+        count.className = 'producer-map__pin-count';
+        count.textContent = String(group.locations.length);
+        label.append(name, count);
+        if (selected) button.append(label, dot);
+        else button.append(dot, label);
+      }
 
       button.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -332,8 +349,8 @@ class ProducerMap extends HTMLElement {
 
       const marker = new maplibregl.Marker({
         element: button,
-        anchor: selected ? 'right' : 'left',
-        offset: selected ? [7, 0] : [-7, 0],
+        anchor: selected ? 'right' : dotOnly ? 'center' : 'left',
+        offset: selected ? [dotSize / 2, 0] : dotOnly ? [0, 0] : [-dotSize / 2, 0],
       })
         .setLngLat(group.center)
         .addTo(this.#map);
@@ -447,7 +464,7 @@ class ProducerMap extends HTMLElement {
    * @param {[number, number]} lngLat
    */
   #reveal(lngLat) {
-    if (!this.#map || !this.#panel || !this.#canvas) return;
+    if (!this.#map || !this.#panel || !this.#canvas || this.#compact) return;
     const point = this.#map.project(lngLat);
     const panel = this.#panel.getBoundingClientRect();
     const mapRect = this.#canvas.getBoundingClientRect();
@@ -472,6 +489,10 @@ class ProducerMap extends HTMLElement {
 
   #showError() {
     if (this.#hint && this.#i18n.error) this.#hint.textContent = this.#i18n.error;
+  }
+
+  get #compact() {
+    return window.matchMedia('(max-width: 749px)').matches;
   }
 
   #motionDuration() {

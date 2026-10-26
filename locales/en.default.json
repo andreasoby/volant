@@ -380,6 +380,7 @@
     "hint_continent": "Click an area to zoom in",
     "hint_country": "Click a country to see its regions",
     "hint_region": "Click a region to see the producers",
+    "hint_region_touch": "Tap a dot to see the producers",
     "producers": {
       "one": "{{ count }} producer",
       "other": "{{ count }} producers"

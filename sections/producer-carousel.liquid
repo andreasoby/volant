@@ -1,0 +1,833 @@
+<style>
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-sans-ext-400.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-sans-400.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-sans-ext-500.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-sans-500.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-serif-ext-400.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  @font-face {
+    font-family: 'IBM Plex Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'ibm-plex-serif-400.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+</style>
+
+{%- liquid
+  assign position_template = 'producer_carousel.position' | t: current: '__CURRENT__', total: '__TOTAL__'
+  assign fallback_images = 'producer-carousel-1.png,producer-carousel-2.png,producer-carousel-3.png,producer-carousel-4.png' | split: ','
+-%}
+
+<div class="section-background producer-carousel__backdrop"></div>
+
+<div
+  class="section section--{{ section.settings.section_width }} producer-carousel"
+  {% if section.settings.heading != blank %}
+    aria-labelledby="ProducerCarousel-{{ section.id }}"
+  {% else %}
+    aria-label="{{ 'producer_carousel.label' | t }}"
+  {% endif %}
+>
+  {% if section.settings.heading != blank or section.settings.link_label != blank %}
+    <div class="producer-carousel__header">
+      {% if section.settings.heading != blank %}
+        <h2 id="ProducerCarousel-{{ section.id }}" class="producer-carousel__heading">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.link_label != blank %}
+        {% if section.settings.link != blank %}
+          <a class="producer-carousel__header-link" href="{{ section.settings.link }}">
+            {{ section.settings.link_label }}
+          </a>
+        {% else %}
+          <span class="producer-carousel__header-link">{{ section.settings.link_label }}</span>
+        {% endif %}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if section.blocks.size > 0 %}
+    <producer-carousel
+      class="producer-carousel__viewport"
+      data-position="{{ position_template | escape }}"
+    >
+      <ul class="producer-carousel__track is-instant" data-track>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign card_label = block.settings.label | default: block.settings.title
+            assign show_title = block.settings.title | default: card_label
+            assign show_label = 'producer_carousel.show' | t: title: show_title
+            assign fallback_index = forloop.index0 | modulo: 4
+            assign fallback_image = fallback_images[fallback_index]
+            assign image_width = 736
+            assign image_height = 920
+
+            case fallback_image
+              when 'producer-carousel-2.png'
+                assign image_width = 360
+                assign image_height = 640
+              when 'producer-carousel-3.png'
+                assign image_width = 1094
+                assign image_height = 1024
+              when 'producer-carousel-4.png'
+                assign image_width = 896
+                assign image_height = 1200
+            endcase
+          -%}
+          <li
+            class="producer-carousel__card{% if forloop.first %} is-active{% endif %}"
+            data-card
+            data-title="{{ show_title | escape }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="producer-carousel__media">
+              {% if block.settings.image != blank %}
+                {{
+                  block.settings.image
+                  | image_url: width: 1600
+                  | image_tag:
+                    widths: '400, 600, 800, 1200, 1600',
+                    sizes: '(min-width: 750px) 528px, 85vw',
+                    alt: show_title,
+                    class: 'producer-carousel__image',
+                    loading: 'lazy'
+                }}
+              {% else %}
+                <img
+                  class="producer-carousel__image{% if fallback_image == 'producer-carousel-3.png' %} producer-carousel__image--limar{% endif %}"
+                  src="{{ fallback_image | asset_url }}"
+                  alt="{{ show_title | escape }}"
+                  width="{{ image_width }}"
+                  height="{{ image_height }}"
+                  {% if forloop.first %}
+                    loading="eager"
+                    fetchpriority="high"
+                  {% else %}
+                    loading="lazy"
+                  {% endif %}
+                  draggable="false"
+                >
+              {% endif %}
+            </div>
+
+            <button
+              class="producer-carousel__select"
+              type="button"
+              data-select
+              aria-label="{{ show_label | escape }}"
+              {% if forloop.first %}
+                hidden
+              {% endif %}
+            >
+              {% if card_label != blank %}
+                <span class="producer-carousel__label">{{ card_label }}</span>
+              {% endif %}
+            </button>
+
+            <div class="producer-carousel__panel">
+              {% if block.settings.eyebrow != blank %}
+                <p class="producer-carousel__eyebrow">{{ block.settings.eyebrow }}</p>
+              {% endif %}
+              {% if block.settings.title != blank %}
+                <p class="producer-carousel__title">{{ block.settings.title }}</p>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <p class="producer-carousel__text">{{ block.settings.text }}</p>
+              {% endif %}
+
+              <div class="producer-carousel__controls">
+                {% if section.blocks.size > 1 %}
+                  <button
+                    class="producer-carousel__nav"
+                    type="button"
+                    data-prev
+                    aria-label="{{ 'producer_carousel.previous' | t }}"
+                  >
+                    <span aria-hidden="true">←</span>
+                  </button>
+                  <p class="producer-carousel__count" data-count>
+                    {{ 'producer_carousel.position' | t: current: 1, total: section.blocks.size }}
+                  </p>
+                  <button
+                    class="producer-carousel__nav"
+                    type="button"
+                    data-next
+                    aria-label="{{ 'producer_carousel.next' | t }}"
+                  >
+                    <span aria-hidden="true">→</span>
+                  </button>
+                {% endif %}
+
+                {% if block.settings.link_label != blank %}
+                  {% if block.settings.link != blank %}
+                    <a class="producer-carousel__link" href="{{ block.settings.link }}">
+                      {{ block.settings.link_label }}
+                    </a>
+                  {% else %}
+                    <span class="producer-carousel__link">{{ block.settings.link_label }}</span>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <p class="visually-hidden" data-status aria-live="polite"></p>
+    </producer-carousel>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .producer-carousel-section.shopify-section .section-background,
+  .producer-carousel__backdrop {
+    background-color: #eadec6;
+  }
+
+  .producer-carousel.section {
+    row-gap: 32px;
+    padding-top: 96px;
+    padding-bottom: 96px;
+    color: #111;
+  }
+
+  .producer-carousel__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .producer-carousel__heading {
+    margin: 0;
+    color: #111;
+    font-family: 'IBM Plex Serif', var(--font-heading--family), serif;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .producer-carousel__header-link,
+  .producer-carousel__link {
+    color: #111;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+  }
+
+  .producer-carousel__header-link {
+    flex: none;
+    font-size: 15px;
+  }
+
+  a.producer-carousel__header-link:hover,
+  a.producer-carousel__link:hover {
+    color: #6b6357;
+  }
+
+  producer-carousel {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+  .producer-carousel__track {
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .producer-carousel__track.is-instant {
+    transition: none;
+  }
+
+  .producer-carousel__card {
+    position: relative;
+    flex: 0 0 auto;
+    width: min(528px, calc(100cqw - 40px));
+    aspect-ratio: 528 / 660;
+    overflow: hidden;
+    background: #d7cbb4;
+  }
+
+  .producer-carousel__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .producer-carousel__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+  }
+
+  .producer-carousel__image--limar {
+    inset: auto;
+    top: -3.83%;
+    left: -36.69%;
+    width: 460.49%;
+    height: 204.92%;
+    max-width: none;
+    object-fit: fill;
+  }
+
+  .producer-carousel__select {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .producer-carousel__select[hidden] {
+    display: none;
+  }
+
+  .producer-carousel__label {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    max-width: calc(100% - 48px);
+    margin: 0;
+    padding: 12px 18px;
+    background: #eadec6;
+    color: #111;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.72px;
+    text-align: left;
+  }
+
+  .producer-carousel__panel {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    z-index: 1;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: min(440px, calc(100% - 48px));
+    max-height: calc(100% - 48px);
+    margin: 0;
+    padding: 24px 28px;
+    overflow: auto;
+    background: #eadec6;
+    color: #111;
+  }
+
+  .producer-carousel__card.is-active .producer-carousel__panel {
+    display: flex;
+  }
+
+  .producer-carousel__eyebrow,
+  .producer-carousel__title,
+  .producer-carousel__text,
+  .producer-carousel__count {
+    margin: 0;
+  }
+
+  .producer-carousel__eyebrow,
+  .producer-carousel__count {
+    color: #6b6357;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.72px;
+    text-transform: uppercase;
+  }
+
+  .producer-carousel__count {
+    color: #111;
+    white-space: nowrap;
+  }
+
+  .producer-carousel__title {
+    color: #111;
+    font-family: 'IBM Plex Serif', var(--font-heading--family), serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .producer-carousel__text {
+    color: #111;
+    font-family: 'IBM Plex Serif', var(--font-heading--family), serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .producer-carousel__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding-top: 6px;
+  }
+
+  .producer-carousel__nav {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #111;
+    border-radius: 100px;
+    background: transparent;
+    color: #111;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .producer-carousel__nav:hover {
+    background: #111;
+    color: #eadec6;
+  }
+
+  .producer-carousel__link {
+    margin-inline-start: auto;
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .producer-carousel.section {
+      row-gap: 24px;
+      padding-top: 48px;
+      padding-bottom: 48px;
+    }
+
+    .producer-carousel__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .producer-carousel__heading {
+      font-size: 28px;
+    }
+
+    .producer-carousel__panel {
+      padding: 18px 20px;
+    }
+
+    .producer-carousel__title {
+      font-size: 26px;
+    }
+
+    .producer-carousel__text {
+      font-size: 15px;
+    }
+
+    .producer-carousel__controls {
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .producer-carousel__track {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+class ProducerCarousel extends HTMLElement {
+  connectedCallback() {
+    this.track = this.querySelector('[data-track]');
+    this.index = Math.max(
+      0,
+      this.cards().findIndex((card) => card.classList.contains('is-active'))
+    );
+    this.drag = null;
+    this.suppressClick = false;
+
+    this.onClick = (event) => {
+      if (this.suppressClick) {
+        this.suppressClick = false;
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+
+      if (event.target.closest('[data-next]')) {
+        event.preventDefault();
+        this.move(1);
+        return;
+      }
+
+      if (event.target.closest('[data-prev]')) {
+        event.preventDefault();
+        this.move(-1);
+        return;
+      }
+
+      const select = event.target.closest('[data-select]');
+      if (!select) return;
+      const card = select.closest('[data-card]');
+      const index = this.cards().indexOf(card);
+      if (index < 0) return;
+      this.index = index;
+      this.render(true);
+      this.restoreFocus();
+    };
+
+    this.onKeydown = (event) => {
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        this.move(1);
+      } else if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        this.move(-1);
+      }
+    };
+
+    this.onPointerDown = (event) => {
+      if (event.button !== 0) return;
+      if (event.target.closest('[data-next], [data-prev], a')) return;
+      this.drag = {
+        x: event.clientX,
+        pointerId: event.pointerId,
+        dragged: false,
+      };
+    };
+
+    this.onPointerMove = (event) => {
+      if (!this.drag || event.pointerId !== this.drag.pointerId) return;
+      if (Math.abs(event.clientX - this.drag.x) > 8) this.drag.dragged = true;
+    };
+
+    this.onPointerUp = (event) => {
+      if (!this.drag || event.pointerId !== this.drag.pointerId) return;
+      const distance = event.clientX - this.drag.x;
+      const dragged = this.drag.dragged && Math.abs(distance) > 48;
+      this.drag = null;
+      if (!dragged) return;
+      this.suppressClick = true;
+      this.move(distance < 0 ? 1 : -1);
+    };
+
+    this.onBlockSelect = (event) => {
+      const card = event.target?.closest?.('[data-card]');
+      if (!card || !this.contains(card)) return;
+      const index = this.cards().indexOf(card);
+      if (index < 0) return;
+      this.index = index;
+      this.render(false);
+    };
+
+    this.addEventListener('click', this.onClick);
+    this.addEventListener('keydown', this.onKeydown);
+    this.addEventListener('pointerdown', this.onPointerDown);
+    this.addEventListener('pointermove', this.onPointerMove);
+    this.addEventListener('pointerup', this.onPointerUp);
+    this.addEventListener('pointercancel', this.onPointerUp);
+    document.addEventListener('shopify:block:select', this.onBlockSelect);
+
+    this.observer = new ResizeObserver(() => this.render(false));
+    this.observer.observe(this);
+    this.render(false);
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener('click', this.onClick);
+    this.removeEventListener('keydown', this.onKeydown);
+    this.removeEventListener('pointerdown', this.onPointerDown);
+    this.removeEventListener('pointermove', this.onPointerMove);
+    this.removeEventListener('pointerup', this.onPointerUp);
+    this.removeEventListener('pointercancel', this.onPointerUp);
+    document.removeEventListener('shopify:block:select', this.onBlockSelect);
+    this.observer?.disconnect();
+  }
+
+  cards() {
+    return [...this.querySelectorAll('[data-card]')];
+  }
+
+  move(delta) {
+    const cards = this.cards();
+    if (cards.length < 2) return;
+    this.pendingFocus = document.activeElement?.matches?.('[data-next]')
+      ? 'next'
+      : document.activeElement?.matches?.('[data-prev]')
+        ? 'prev'
+        : null;
+    this.index = (this.index + delta + cards.length) % cards.length;
+    this.render(true);
+    this.restoreFocus();
+  }
+
+  restoreFocus() {
+    const active = this.cards()[this.index];
+    if (!active) return;
+    const focused = document.activeElement;
+    const focusLost = focused && this.contains(focused) && focused.offsetParent === null;
+    if (!focusLost && !this.pendingFocus) return;
+    const selector = this.pendingFocus === 'prev' ? '[data-prev]' : '[data-next]';
+    this.pendingFocus = null;
+    active.querySelector(selector)?.focus();
+  }
+
+  render(animate) {
+    const cards = this.cards();
+    const count = cards.length;
+    if (!this.track || count === 0) return;
+
+    this.index = (this.index + count) % count;
+    const styles = getComputedStyle(this.track);
+    const gap = Number.parseFloat(styles.columnGap) || 0;
+    const step = cards[0].offsetWidth + gap;
+
+    this.track.classList.toggle('is-instant', !animate);
+    this.track.style.transform = `translate3d(${-this.index * step}px, 0, 0)`;
+
+    cards.forEach((card, index) => {
+      const active = index === this.index;
+      card.classList.toggle('is-active', active);
+      const select = card.querySelector('[data-select]');
+      if (select) select.hidden = active;
+    });
+
+    const template = this.dataset.position || '';
+    const label = template
+      .replace('__CURRENT__', String(this.index + 1))
+      .replace('__TOTAL__', String(count));
+
+    this.querySelectorAll('[data-count]').forEach((node) => {
+      node.textContent = label;
+    });
+
+    if (!animate) return;
+    const status = this.querySelector('[data-status]');
+    const title = cards[this.index].dataset.title || '';
+    if (status) status.textContent = title ? `${label}. ${title}` : label;
+  }
+}
+
+if (!customElements.get('producer-carousel')) {
+  customElements.define('producer-carousel', ProducerCarousel);
+}
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:names.producer_carousel",
+  "tag": "section",
+  "class": "producer-carousel-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:info.producer_carousel"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Mød producenterne"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "t:settings.producer_link_label",
+      "default": "Se alle producenter →"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:settings.link"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "page-width"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "producer",
+      "name": "t:names.producer_slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:settings.image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "t:settings.producer_place",
+          "default": "Bourgogne · Frankrig"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:settings.heading",
+          "default": "Producent"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:settings.producer_text"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:settings.producer_card_label",
+          "info": "t:settings.producer_card_label_info"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "t:settings.producer_link_label",
+          "default": "Mød producenten →"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:settings.link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.producer_carousel",
+      "category": "t:categories.storytelling",
+      "settings": {
+        "heading": "Mød producenterne",
+        "link_label": "Se alle producenter →"
+      },
+      "blocks": [
+        {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Paul Gayot",
+            "text": "Mikro-négoce i hjertet af Bourgogne. 600 nummererede flasker pr. cuvée – hver vin lagres mindst ti måneder på fad.",
+            "label": "BOURGOGNE",
+            "link_label": "Mød producenten →"
+          }
+        },
+        {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Rioja · Spanien",
+            "title": "Victor Ausejo",
+            "text": "Gamle stokke, små parceller og et nyt blik på Rioja – vin lavet med tid og tålmodighed.",
+            "label": "RIOJA",
+            "link_label": "Mød producenten →"
+          }
+        },
+        {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Champagne · Frankrig",
+            "title": "Domaine A. Limar",
+            "text": "Et lille plot i Vallée de la Marne, plantet i 1981. Brut Nature uden dosage – seks år på bærmen.",
+            "label": "Domaine A. Limar",
+            "link_label": "Mød producenten →"
+          }
+        },
+        {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Ô Ma",
+            "text": "Saftig, citrusfrisk Aligoté fra Santenay – en hverdagsvin med karakter.",
+            "label": "BOURGOGNE",
+            "link_label": "Mød producenten →"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,452 @@
+{%- doc -%}
+  Renders a desktop mega menu panel for one top-level item.
+
+  Column panels (every child has its own links) show an eyebrow, a short rule, and large links.
+  Directory panels (a mix of labels and groups) show the labels, then country-style groups.
+
+  A captioned image is read from the metaobject `mega_menu_feature` whose handle matches
+  this menu item. Fields: `image` (file), `caption` (multi-line text), `link` (URL).
+
+  @param {object} parent_link - The top-level menu link.
+
+  @example
+  {% render 'mega-menu-panel', parent_link: link %}
+{%- enddoc -%}
+
+{%- liquid
+  assign group_count = 0
+  assign leaf_count = 0
+  assign wide_limit = 10
+  assign chunk_size = 9
+  assign slot_budget = 10
+
+  for child in parent_link.links
+    if child.links != blank
+      assign group_count = group_count | plus: 1
+    else
+      assign leaf_count = leaf_count | plus: 1
+    endif
+  endfor
+
+  assign layout = 'links'
+  if group_count > 0 and leaf_count > 0
+    assign layout = 'directory'
+  elsif group_count > 0
+    assign layout = 'columns'
+  endif
+
+  assign feature = metaobjects.mega_menu_feature[parent_link.handle]
+  assign feature_image = nil
+  assign feature_caption = blank
+  assign feature_url = blank
+  if feature != blank and feature.image.value != blank
+    assign feature_image = feature.image.value
+    if feature_image.preview_image != blank
+      assign feature_image = feature_image.preview_image
+    endif
+    assign feature_caption = feature.caption.value
+    assign feature_url = feature.link.value
+  endif
+-%}
+
+{%- capture feature_markup -%}
+  {%- if feature_image != blank -%}
+    {%- if feature_url != blank -%}
+      <a class="mega-menu__feature" href="{{ feature_url }}">
+    {%- else -%}
+      <div class="mega-menu__feature">
+    {%- endif -%}
+    {{
+      feature_image
+      | image_url: width: 640
+      | image_tag:
+        class: 'mega-menu__feature-image',
+        widths: '256, 512, 640',
+        sizes: '256px',
+        alt: '',
+        loading: 'lazy'
+    }}
+    {%- if feature_caption != blank -%}
+      <p class="mega-menu__feature-caption">{{ feature_caption | escape | newline_to_br }}</p>
+    {%- endif -%}
+    {%- if feature_url != blank -%}
+      </a>
+    {%- else -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+<div class="mega-menu__panel mega-menu__panel--{{ layout }} mega-menu__list">
+  {%- if layout == 'directory' -%}
+    <div class="mega-menu__intro">
+      {%- for child in parent_link.links -%}
+        {%- if child.links != blank -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- assign child_url = child.url | strip -%}
+        {%- if child_url == blank or child_url == '#' or child_url == '/#' -%}
+          <p class="mega-menu__eyebrow" id="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}">
+            {{ child.title | escape }}
+          </p>
+          <span class="mega-menu__mark" aria-hidden="true"></span>
+        {%- else -%}
+          <a class="mega-menu__map-link" href="{{ child.url }}">{{ child.title | escape }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- liquid
+      assign skip_until = -1
+      assign rendered_region = false
+    -%}
+    <div class="mega-menu__directory">
+      {%- for child in parent_link.links -%}
+        {%- liquid
+          assign link_index = forloop.index0
+          assign render_region = false
+          if child.links != blank and link_index > skip_until
+            assign render_region = true
+          endif
+        -%}
+        {%- if render_region -%}
+          {%- if rendered_region -%}
+            <span class="mega-menu__rule" aria-hidden="true"></span>
+          {%- endif -%}
+
+          {%- if child.links.size > wide_limit -%}
+            {%- liquid
+              assign column_count = child.links.size | divided_by: chunk_size
+              assign remainder = child.links.size | modulo: chunk_size
+              if remainder > 0
+                assign column_count = column_count | plus: 1
+              endif
+              assign skip_until = link_index
+              assign rendered_region = true
+            -%}
+            {%- for column_index in (1..column_count) -%}
+              {%- assign link_offset = column_index | minus: 1 | times: chunk_size -%}
+              <div class="mega-menu__dir-column">
+                <p
+                  class="mega-menu__group-title{% unless column_index == 1 %} mega-menu__group-title--spacer{% endunless %}"
+                  {% if column_index == 1 %}
+                    id="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}"
+                  {% else %}
+                    aria-hidden="true"
+                  {% endif %}
+                >
+                  {{ child.title | escape }}
+                </p>
+                <ul
+                  class="mega-menu__links list-unstyled"
+                  role="list"
+                  {% if column_index == 1 %}
+                    aria-labelledby="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}"
+                  {% endif %}
+                >
+                  {%- for item in child.links offset: link_offset limit: chunk_size -%}
+                    <li>
+                      <a class="mega-menu__item" href="{{ item.url }}">{{ item.title | escape }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- liquid
+              assign column_slots = child.links.size | plus: 1
+              assign packed_groups = 1
+              assign consume_through = link_index
+              for candidate in parent_link.links
+                if forloop.index0 <= link_index
+                  continue
+                endif
+                if candidate.links == blank
+                  continue
+                endif
+                if candidate.links.size > wide_limit or packed_groups >= 2
+                  break
+                endif
+                assign group_slots = candidate.links.size | plus: 1
+                assign projected = column_slots | plus: group_slots
+                if projected > slot_budget
+                  break
+                endif
+                assign column_slots = projected
+                assign packed_groups = packed_groups | plus: 1
+                assign consume_through = forloop.index0
+              endfor
+              assign skip_until = consume_through
+              assign rendered_region = true
+            -%}
+            <div class="mega-menu__stack">
+              {%- for grouped in parent_link.links -%}
+                {%- if grouped.links == blank or forloop.index0 < link_index or forloop.index0 > consume_through -%}
+                  {%- continue -%}
+                {%- endif -%}
+                {%- assign grouped_url = grouped.url | strip -%}
+                <div class="mega-menu__group">
+                  {%- if grouped_url == blank or grouped_url == '#' or grouped_url == '/#' -%}
+                    <p class="mega-menu__group-title" id="MegaLabel-{{ parent_link.handle }}-{{ grouped.handle }}">
+                      {{ grouped.title | escape }}
+                    </p>
+                  {%- else -%}
+                    <a
+                      class="mega-menu__group-title"
+                      id="MegaLabel-{{ parent_link.handle }}-{{ grouped.handle }}"
+                      href="{{ grouped.url }}"
+                    >
+                      {{ grouped.title | escape }}
+                    </a>
+                  {%- endif -%}
+                  <ul
+                    class="mega-menu__links list-unstyled"
+                    role="list"
+                    aria-labelledby="MegaLabel-{{ parent_link.handle }}-{{ grouped.handle }}"
+                  >
+                    {%- for item in grouped.links -%}
+                      <li>
+                        <a class="mega-menu__item" href="{{ item.url }}">{{ item.title | escape }}</a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ feature_markup }}
+    </div>
+  {%- elsif layout == 'columns' -%}
+    {%- for child in parent_link.links -%}
+      {%- unless forloop.first -%}
+        <span class="mega-menu__rule" aria-hidden="true"></span>
+      {%- endunless -%}
+      <div class="mega-menu__column{% if forloop.first %} mega-menu__column--lead{% endif %}">
+        <p class="mega-menu__eyebrow" id="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}">
+          {{ child.title | escape }}
+        </p>
+        <span class="mega-menu__mark" aria-hidden="true"></span>
+        {%- if child.links != blank -%}
+          <ul
+            class="mega-menu__links mega-menu__links--large list-unstyled"
+            role="list"
+            aria-labelledby="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}"
+          >
+            {%- for item in child.links -%}
+              <li>
+                <a class="mega-menu__item mega-menu__item--large" href="{{ item.url }}">{{ item.title | escape }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+    {{ feature_markup }}
+  {%- else -%}
+    <ul class="mega-menu__links mega-menu__links--large list-unstyled" role="list">
+      {%- for child in parent_link.links -%}
+        <li>
+          <a class="mega-menu__item mega-menu__item--large" href="{{ child.url }}">{{ child.title | escape }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .mega-menu__panel {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 36px var(--page-margin) 48px;
+    background: #dbcfb2;
+  }
+
+  .mega-menu__panel--directory {
+    flex-direction: column;
+  }
+
+  .mega-menu__eyebrow {
+    margin: 0;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: rgb(26 26 26 / 0.75);
+  }
+
+  .mega-menu__mark {
+    display: block;
+    width: 32px;
+    height: 1px;
+    margin-top: 12px;
+    background: rgb(26 26 26 / 0.5);
+  }
+
+  .mega-menu__column,
+  .mega-menu__dir-column,
+  .mega-menu__stack {
+    flex: 0 0 auto;
+    min-width: 220px;
+  }
+
+  .mega-menu__column.mega-menu__column--lead {
+    flex: 1 1 280px;
+    max-width: 540px;
+    min-width: 220px;
+  }
+
+  .mega-menu__rule {
+    flex: 0 0 1px;
+    align-self: stretch;
+    width: 1px;
+    margin-inline: 40px;
+    background: rgb(26 26 26 / 0.25);
+  }
+
+  .mega-menu__links {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 0;
+  }
+
+  .mega-menu__links--large {
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  .mega-menu__item {
+    font-family: 'IBM Plex Serif', var(--font-heading--family), serif;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    color: #1a1a1a;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .mega-menu__item--large {
+    font-size: 20px;
+  }
+
+  .mega-menu__eyebrow,
+  p.mega-menu__group-title {
+    cursor: default;
+  }
+
+  .mega-menu__item:hover,
+  .mega-menu__item:focus-visible,
+  a.mega-menu__group-title:hover,
+  a.mega-menu__group-title:focus-visible {
+    font-style: italic;
+    color: #7a2124;
+  }
+
+  .mega-menu__map-link {
+    display: inline-flex;
+    margin-top: 18px;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: normal;
+    color: #1a1a1a;
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+  }
+
+  .mega-menu__map-link::after {
+    content: '\00a0→';
+  }
+
+  .mega-menu__map-link:hover,
+  .mega-menu__map-link:focus-visible {
+    color: #7a2124;
+  }
+
+  .mega-menu__directory {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 24px;
+    row-gap: 28px;
+  }
+
+  .mega-menu__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .mega-menu__group-title {
+    display: block;
+    margin: 0 0 22px;
+    font-family: 'IBM Plex Serif', var(--font-heading--family), serif;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    color: #1a1a1a;
+    text-decoration: none;
+  }
+
+  .mega-menu__group-title--spacer {
+    visibility: hidden;
+  }
+
+  .mega-menu__feature {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 256px;
+    flex: 0 0 auto;
+    margin-left: auto;
+    padding-left: 40px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .mega-menu__feature-image {
+    display: block;
+    width: 256px;
+    height: 320px;
+    object-fit: cover;
+  }
+
+  .mega-menu__feature-caption {
+    margin: 0;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: rgb(26 26 26 / 0.85);
+  }
+
+  @media screen and (max-width: 1200px) {
+    .mega-menu__rule {
+      margin-inline: 24px;
+    }
+
+    .mega-menu__panel--columns {
+      flex-wrap: wrap;
+      row-gap: 28px;
+    }
+
+    .mega-menu__feature {
+      margin-left: 0;
+      padding-left: 0;
+    }
+  }
+{% endstylesheet %}

@@ -1109,7 +1109,8 @@
     "page_text_color_default_info": "Standard for temaafsnit",
     "actions_display_style": "Ikoner bruges altid på mobil",
     "edit_input_field_in_theme_settings": "Rediger indtastningsfelt i [temaindstillinger](/editor?context=theme&category=input%20fields)",
-    "edit_variants_in_theme_settings": "Rediger styling af varianter i [temaindstillinger](/editor?context=theme&category=variant%20pickers)"
+    "edit_variants_in_theme_settings": "Rediger styling af varianter i [temaindstillinger](/editor?context=theme&category=variant%20pickers)",
+    "mega_menu_feature": "Menuer kan ikke gemme et billede på et punkt. Til billedet med billedtekst skal du oprette en metaobjektdefinition med typen mega_menu_feature og slå adgang til butiksfronten til. Tilføj felterne image (fil), caption (flerlinjet tekst) og link (webadresse). Postens handle skal matche menupunktet, for eksempel vine."
   },
   "categories": {
     "basic": "Grundlæggende",

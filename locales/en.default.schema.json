@@ -250,7 +250,9 @@
     "video_external": "Use a YouTube or Vimeo URL",
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
     "media_type_info": "Features are populated from your menu links",
-    "map_locations": "Locations come from a shop metafield that lists Producer metaobjects. Create a metaobject with type producer and fields name, address, latitude, longitude, and optional maps_url. Continent, country, and region are metaobject references. The map labels each pin with the referenced entry's name, or its label when it has no name. Give every definition storefront access, then create a shop metafield with the namespace and key below, type List of metaobjects. Zoom groups entries into continent, country, then region. If the metafield is empty, every active producer entry is used."
+    "map_locations": "Locations come from a shop metafield that lists Producer metaobjects. Create a metaobject with type producer and fields name, address, latitude, longitude, and optional maps_url. Continent, country, and region are metaobject references. The map labels each pin with the referenced entry's name, or its label when it has no name. Give every definition storefront access, then create a shop metafield with the namespace and key below, type List of metaobjects. Zoom groups entries into continent, country, then region. If the metafield is empty, every active producer entry is used.",
+    "producer_carousel": "The front card shows the text panel. The other cards show their label.",
+    "mega_menu_feature": "Menus cannot store an image on an item. For the captioned image, create a metaobject definition with type mega_menu_feature and turn on storefront access. Add fields image (file), caption (multi-line text), and link (URL). The entry handle must match the menu item, for example vine."
   },
   "names": {
     "column": "Column",
@@ -420,7 +422,9 @@
     "disclosures": "Disclosures",
     "pills": "Pills",
     "comparison_slider": "Comparison slider",
-    "producer_map": "Producer map"
+    "producer_map": "Producer map",
+    "producer_carousel": "Producer carousel",
+    "producer_slide": "Producer"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -1205,7 +1209,12 @@
     "map_key": "Metafield key",
     "map_metaobject_type": "Metaobject type",
     "map_tiles_url": "OpenMapTiles URL",
-    "map_source": "Locations"
+    "map_source": "Locations",
+    "producer_place": "Place",
+    "producer_text": "Text",
+    "producer_card_label": "Card label",
+    "producer_card_label_info": "Shown on the photo when another producer is in front.",
+    "producer_link_label": "Link label"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

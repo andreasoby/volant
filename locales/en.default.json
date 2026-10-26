@@ -386,5 +386,12 @@
     },
     "empty": "Add producers in Shopify metafields to show them on the map.",
     "error": "The map could not be loaded."
+  },
+  "producer_carousel": {
+    "label": "Producer carousel",
+    "position": "{{ current }} of {{ total }}",
+    "previous": "Previous producer",
+    "next": "Next producer",
+    "show": "Show {{ title }}"
   }
 }

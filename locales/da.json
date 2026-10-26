@@ -358,5 +358,12 @@
     },
     "empty": "Tilføj producenter i Shopify-metafelter for at vise dem på kortet.",
     "error": "Kortet kunne ikke indlæses."
+  },
+  "producer_carousel": {
+    "label": "Producentkarrusel",
+    "position": "{{ current }} af {{ total }}",
+    "previous": "Forrige producent",
+    "next": "Næste producent",
+    "show": "Vis {{ title }}"
   }
 }

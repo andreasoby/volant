@@ -428,10 +428,73 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "producer_carousel_mgnfTQ": {
+      "type": "producer-carousel",
+      "blocks": {
+        "producer_XHanhM": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Paul Gayot",
+            "text": "Mikro-négoce i hjertet af Bourgogne. 600 nummererede flasker pr. cuvée – hver vin lagres mindst ti måneder på fad.",
+            "label": "BOURGOGNE",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        },
+        "producer_NnaEAU": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Rioja · Spanien",
+            "title": "Victor Ausejo",
+            "text": "Gamle stokke, små parceller og et nyt blik på Rioja – vin lavet med tid og tålmodighed.",
+            "label": "RIOJA",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        },
+        "producer_KKBdxa": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Champagne · Frankrig",
+            "title": "Domaine A. Limar",
+            "text": "Et lille plot i Vallée de la Marne, plantet i 1981. Brut Nature uden dosage – seks år på bærmen.",
+            "label": "Domaine A. Limar",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        },
+        "producer_Q9KNb7": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Ô Ma",
+            "text": "Saftig, citrusfrisk Aligoté fra Santenay – en hverdagsvin med karakter.",
+            "label": "BOURGOGNE",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "producer_XHanhM",
+        "producer_NnaEAU",
+        "producer_KKBdxa",
+        "producer_Q9KNb7"
+      ],
+      "name": "t:names.producer_carousel",
+      "settings": {
+        "heading": "Mød producenterne",
+        "link_label": "Se alle producenter →",
+        "link": "",
+        "section_width": "page-width"
+      }
     }
   },
   "order": [
     "section_fheRQe",
-    "product_list_fa6P9H"
+    "product_list_fa6P9H",
+    "producer_carousel_mgnfTQ"
   ]
 }

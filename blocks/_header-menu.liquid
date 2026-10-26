@@ -132,7 +132,7 @@
             <div class="menu-list__submenu{{ background_color_classes }}" ref="submenu[]" data-skip-node-update inert>
               <div
                 id="submenu-{{ forloop.index }}"
-                class="menu-list__submenu-inner menu-list__submenu-inner--volant"
+                class="menu-list__submenu-inner menu-list__submenu-inner--volant{% if block_settings.mega_menu_width == 'page' %} menu-list__submenu-inner--page-width{% endif %}"
               >
                 {% render 'mega-menu-panel', parent_link: link %}
               </div>
@@ -818,7 +818,17 @@
     border-block: 1px solid rgb(26 26 26 / 0.15);
   }
 
+  #header-component:has(.menu-list__submenu-inner--volant) .header__underlay-open::after {
+    box-shadow: none;
+  }
+
   .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu:has(.menu-list__submenu-inner--volant) {
+    padding-inline: 0;
+  }
+
+  .menu-list__submenu-inner--page-width .mega-menu__panel {
+    width: min(var(--page-content-width, 100%), calc(100% - (var(--page-margin) * 2)));
+    margin-inline: auto;
     padding-inline: 0;
   }
 {% endstylesheet %}
@@ -837,6 +847,22 @@
     {
       "type": "paragraph",
       "content": "t:info.mega_menu_feature"
+    },
+    {
+      "type": "select",
+      "id": "mega_menu_width",
+      "label": "t:settings.content_width",
+      "options": [
+        {
+          "value": "page",
+          "label": "t:settings.page_width"
+        },
+        {
+          "value": "full",
+          "label": "t:options.full_width"
+        }
+      ],
+      "default": "page"
     },
     {
       "type": "header",

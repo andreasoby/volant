@@ -537,6 +537,7 @@
     "forward": "Forward",
     // Width setting: full viewport width vs page width
     "full": "Full",
+    "full_width": "Full width",
     "full_and_page": "Full background, page-width content",
     "full_and_page_offset_left": "Full background, page-width content, offset left",
     "full_and_page_offset_right": "Full background, page-width content, offset right",

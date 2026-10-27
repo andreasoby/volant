@@ -431,6 +431,68 @@
         "show_on_desktop": false
       }
     },
+    "producer_carousel_iW66JT": {
+      "type": "producer-carousel",
+      "blocks": {
+        "producer_LwRDLy": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Paul Gayot",
+            "text": "Mikro-négoce i hjertet af Bourgogne. 600 nummererede flasker pr. cuvée – hver vin lagres mindst ti måneder på fad.",
+            "label": "BOURGOGNE",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        },
+        "producer_JPKUxe": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Rioja · Spanien",
+            "title": "Victor Ausejo",
+            "text": "Gamle stokke, små parceller og et nyt blik på Rioja – vin lavet med tid og tålmodighed.",
+            "label": "RIOJA",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        },
+        "producer_YTKzb7": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Champagne · Frankrig",
+            "title": "Domaine A. Limar",
+            "text": "Et lille plot i Vallée de la Marne, plantet i 1981. Brut Nature uden dosage – seks år på bærmen.",
+            "label": "Domaine A. Limar",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        },
+        "producer_iiMMG6": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Ô Ma",
+            "text": "Saftig, citrusfrisk Aligoté fra Santenay – en hverdagsvin med karakter.",
+            "label": "BOURGOGNE",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "producer_LwRDLy",
+        "producer_JPKUxe",
+        "producer_YTKzb7",
+        "producer_iiMMG6"
+      ],
+      "name": "t:names.producer_carousel",
+      "settings": {
+        "heading": "Mød producenten",
+        "link_label": "Mød {{ product.metafields.custom.vindb_nder | metafield_text }} →",
+        "link": "{{ product.url }}",
+        "section_width": "page-width"
+      }
+    },
     "product_recommendations_qggXJq": {
       "type": "product-recommendations",
       "blocks": {
@@ -578,6 +640,7 @@
     "main",
     "product_facts",
     "product_specs",
+    "producer_carousel_iW66JT",
     "product_recommendations_qggXJq"
   ]
 }

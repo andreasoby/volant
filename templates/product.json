@@ -262,16 +262,12 @@
                 "group_YnzgXG"
               ]
             },
-            "divider_VJhene": {
-              "type": "_divider",
-              "name": "t:names.divider",
+            "product_facts_BfAXRn": {
+              "type": "product-facts",
+              "name": "t:names.product_facts",
               "settings": {
-                "thickness": 1,
-                "corner_radius": "square",
-                "divider_color": "{{ settings.color_palette.color3 }}",
-                "width_percent": 100,
-                "padding-block-start": 0,
-                "padding-block-end": 0
+                "show_on_mobile": true,
+                "show_on_desktop": true
               },
               "blocks": {}
             },
@@ -382,14 +378,24 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "product_specs_L9jgNj": {
+              "type": "product-specs",
+              "name": "t:names.product_specs",
+              "settings": {
+                "show_on_mobile": true,
+                "show_on_desktop": true
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "group_icgrde",
-            "divider_VJhene",
+            "product_facts_BfAXRn",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
-            "text_aEtTtq"
+            "text_aEtTtq",
+            "product_specs_L9jgNj"
           ]
         }
       },

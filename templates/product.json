@@ -86,14 +86,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "custom_liquid_pT878w": {
-              "type": "custom-liquid",
-              "name": "t:names.custom_liquid",
-              "settings": {
-                "custom_liquid": "{% assign producent_link = product.metafields.custom.producentlink.value %}\n{% assign producent_title = product.metafields.custom.custom.producenttekst %}\n\n{% if producent_link != blank %}\n  <a href=\"{{ producent_link | escape }}\">\n    {{producent_title}}\n  </a>\n{% endif %}"
-              },
-              "blocks": {}
-            },
             "group_icgrde": {
               "type": "group",
               "name": "t:names.header",
@@ -134,6 +126,14 @@
                 "padding-inline-end": 0
               },
               "blocks": {
+                "custom_liquid_zMpNKg": {
+                  "type": "custom-liquid",
+                  "name": "t:names.custom_liquid",
+                  "settings": {
+                    "custom_liquid": "{% assign producent_link = product.metafields.custom.producentlink.value %}\n\n{% if producent_link != blank %}\n  {% assign collection_handle = producent_link | split: '/collections/' | last | split: '/' | first | split: '?' | first | split: '#' | first %}\n  {% assign producent_collection = collections[collection_handle] %}\n\n  {% if producent_collection != blank %}\n    <a href=\"{{ producent_link | escape }}\">\n      {{ producent_collection.title | escape }}\n    </a>\n  {% endif %}\n{% endif %}"
+                  },
+                  "blocks": {}
+                },
                 "text_xpVMaM": {
                   "type": "text",
                   "name": "t:names.title",
@@ -184,6 +184,7 @@
                 }
               },
               "block_order": [
+                "custom_liquid_zMpNKg",
                 "text_xpVMaM",
                 "price_tVjtKg"
               ]
@@ -311,7 +312,6 @@
             }
           },
           "block_order": [
-            "custom_liquid_pT878w",
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_R3rGDr",

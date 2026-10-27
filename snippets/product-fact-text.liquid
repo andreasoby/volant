@@ -1,6 +1,6 @@
 {% doc %}
   Prints a product fact as plain text.
-  Lists are joined with a comma. Metaobjects use name, then label, then title.
+  Lists are joined with a comma. Collections and pages use their title. Metaobjects use name, then label, then title.
 
   @param {object} metafield - Product metafield
 {% enddoc %}
@@ -13,6 +13,10 @@
 
     if fact_type == 'rich_text_field'
       assign fact_text = metafield | metafield_text
+    elsif fact_type == 'collection_reference' or fact_type == 'product_reference' or fact_type == 'page_reference' or fact_type == 'article_reference'
+      assign fact_text = metafield.value.title
+    elsif fact_type == 'link'
+      assign fact_text = metafield.value.text | default: metafield.value.url
     elsif fact_type contains 'list.'
       assign fact_parts = ''
       for fact_item in metafield.value
@@ -25,6 +29,8 @@
           if fact_piece == blank
             assign fact_piece = fact_item.title.value
           endif
+        elsif fact_item.title != blank
+          assign fact_piece = fact_item.title
         else
           assign fact_piece = fact_item
         endif
@@ -47,8 +53,6 @@
       if fact_text == blank
         assign fact_text = fact_entry.title.value
       endif
-    elsif fact_type == 'page_reference'
-      assign fact_text = metafield.value.title
     else
       assign fact_text = metafield.value
     endif

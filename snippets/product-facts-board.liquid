@@ -73,11 +73,11 @@
 </style>
 
 {%- liquid
-  assign producer_field = fact_product.metafields.custom.producer
-  assign grape_field = fact_product.metafields.custom.grape
-  assign vintage_field = fact_product.metafields.custom.vintage
-  assign country_field = fact_product.metafields.custom.country
-  assign region_field = fact_product.metafields.custom.region
+  assign producer_field = fact_product.metafields.custom.producentlink
+  assign grape_field = fact_product.metafields.custom.druer2
+  assign vintage_field = fact_product.metafields.custom.argang
+  assign country_field = fact_product.metafields.custom.land
+  assign region_field = fact_product.metafields.custom.omr_de
   assign type_field = fact_product.metafields.custom.type
   assign note_field = fact_product.metafields.custom.vintage_note
   assign note_title_field = fact_product.metafields.custom.vintage_note_title
@@ -122,9 +122,12 @@
       endif
     endif
 
-    assign producer_url = fact_product.metafields.custom.producer_url.value
-    if producer_url == blank and producer_field.type == 'page_reference'
+    if producer_field.type == 'collection_reference' or producer_field.type == 'page_reference' or producer_field.type == 'product_reference'
       assign producer_url = producer_field.value.url
+    elsif producer_field.type == 'link'
+      assign producer_url = producer_field.value.url
+    elsif producer_field.type == 'url'
+      assign producer_url = producer_field.value
     endif
     if producer_url == blank and producer_field.type == 'metaobject_reference'
       assign producer_entry = producer_field.value

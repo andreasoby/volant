@@ -4,9 +4,14 @@
   @param {string} label - Field name
   @param {string} value - Field value
   @param {string} field_id - Unique id suffix for the note
+  @param {string} [board_id] - Unique id for this board. Falls back to the section id
   @param {string} [note] - Tooltip body. The info mark is decorative when this is blank.
   @param {string} [note_title] - Tooltip heading
 {% enddoc %}
+
+{%- liquid
+  assign spec_note_id = board_id | default: section.id
+-%}
 
 <div class="product-specs__item">
   <div class="product-specs__label">
@@ -17,12 +22,12 @@
           type="button"
           class="product-specs__info-button"
           aria-expanded="false"
-          aria-describedby="ProductSpecNote-{{ section.id }}-{{ field_id }}"
+          aria-describedby="ProductSpecNote-{{ spec_note_id }}-{{ field_id }}"
         >
           <span aria-hidden="true">i</span>
           <span class="visually-hidden">{{ 'product_specs.info' | t: label: label }}</span>
         </button>
-        <div class="product-specs__tooltip" id="ProductSpecNote-{{ section.id }}-{{ field_id }}" role="tooltip">
+        <div class="product-specs__tooltip" id="ProductSpecNote-{{ spec_note_id }}-{{ field_id }}" role="tooltip">
           {%- if note_title != blank -%}
             <p class="product-specs__tooltip-title">{{ note_title }}</p>
           {%- endif -%}

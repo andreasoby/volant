@@ -1,0 +1,53 @@
+{%- liquid
+  assign specs_visibility = ''
+  if block.settings.show_on_mobile == false
+    assign specs_visibility = specs_visibility | append: ' product-specs--hide-mobile'
+  endif
+  if block.settings.show_on_desktop == false
+    assign specs_visibility = specs_visibility | append: ' product-specs--hide-desktop'
+  endif
+-%}
+
+<div class="product-specs-block{{ specs_visibility }}" {{ block.shopify_attributes }}>
+  {% render 'product-specs-board',
+    product_resource: closest.product,
+    board_id: block.id,
+    show_on_mobile: block.settings.show_on_mobile,
+    show_on_desktop: block.settings.show_on_desktop
+  %}
+</div>
+
+{% schema %}
+{
+  "name": "t:names.product_specs",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:info.product_specs"
+    },
+    {
+      "type": "header",
+      "content": "t:content.visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_mobile",
+      "label": "t:settings.show_on_mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_desktop",
+      "label": "t:settings.show_on_desktop",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.product_specs",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

@@ -90,7 +90,7 @@
               "type": "custom-liquid",
               "name": "t:names.custom_liquid",
               "settings": {
-                "custom_liquid": "En tekst <a href=\"/collections/{{metaobjects.custom.producent_handle}}>{{metaobjects.custom.producent_text}}aaa</a>\nEfter"
+                "custom_liquid": "En tekst <a href=\"/collections/{{metaobjects.custom.producent_handle}}\">{{metaobjects.custom.producent_text}}aaa</a>\nEfter"
               },
               "blocks": {}
             },

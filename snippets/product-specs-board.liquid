@@ -97,32 +97,38 @@
   assign size_text = size_text | strip
   assign lagring_note = ''
   assign added_so2_note = ''
+  assign spec_empty = '–'
 
-  assign has_specs = false
-  if lagring_text != blank or added_so2_text != blank or bottle_count_text != blank or alcohol_text != blank or farming_text != blank or size_text != blank
-    assign has_specs = true
+  if lagring_text == blank
+    assign lagring_text = spec_empty
+  endif
+  if added_so2_text == blank
+    assign added_so2_text = spec_empty
+  endif
+  if bottle_count_text == blank
+    assign bottle_count_text = spec_empty
+  endif
+  if alcohol_text == blank
+    assign alcohol_text = spec_empty
+  endif
+  if farming_text == blank
+    assign farming_text = spec_empty
+  endif
+  if size_text == blank
+    assign size_text = spec_empty
   endif
 
-  if has_specs
-    assign lagring_note_field = spec_product.metafields.custom.lagring_note
-    assign added_so2_note_field = spec_product.metafields.custom.added_so2_note
-    if lagring_note_field.type == 'rich_text_field'
-      assign lagring_note = lagring_note_field | metafield_text | strip
-    else
-      assign lagring_note = lagring_note_field.value | strip
-    endif
-    if added_so2_note_field.type == 'rich_text_field'
-      assign added_so2_note = added_so2_note_field | metafield_text | strip
-    else
-      assign added_so2_note = added_so2_note_field.value | strip
-    endif
+  assign lagring_note_field = spec_product.metafields.custom.lagring_note
+  assign added_so2_note_field = spec_product.metafields.custom.added_so2_note
+  if lagring_note_field.type == 'rich_text_field'
+    assign lagring_note = lagring_note_field | metafield_text | strip
   else
-    assign lagring_text = 'product_specs.sample.lagring' | t
-    assign added_so2_text = 'product_specs.sample.added_so2' | t
-    assign bottle_count_text = 'product_specs.sample.bottle_count' | t
-    assign alcohol_text = 'product_specs.sample.alcohol' | t
-    assign farming_text = 'product_specs.sample.farming' | t
-    assign size_text = 'product_specs.sample.size' | t
+    assign lagring_note = lagring_note_field.value | strip
+  endif
+  if added_so2_note_field.type == 'rich_text_field'
+    assign added_so2_note = added_so2_note_field | metafield_text | strip
+  else
+    assign added_so2_note = added_so2_note_field.value | strip
   endif
 
   assign lagring_label = 'product_specs.lagring' | t
@@ -294,11 +300,18 @@
     width: 100%;
     margin: 0;
     border-top: 1px solid #111;
-    border-left: 1px solid #111;
   }
 
   .product-specs__item {
     display: contents;
+  }
+
+  .product-specs__item:nth-child(2n+1) .product-specs__label {
+    padding-left: 0;
+  }
+
+  .product-specs__item:nth-child(2n+2) .product-specs__label {
+    border-left: 1px solid #111; 
   }
 
   .product-specs__label,
@@ -309,8 +322,7 @@
     min-width: 0;
     min-height: 43px;
     margin: 0;
-    padding: 12px;
-    border-right: 1px solid #111;
+    padding: 12px;    
     border-bottom: 1px solid #111;
     color: #111;
     font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
@@ -327,6 +339,11 @@
 
   .product-specs__value {
     font-weight: 400;
+  }
+
+
+  .product-specs__label:not(:first-child) {
+    border-left: 1px solid #111; 
   }
 
   .product-specs__info {

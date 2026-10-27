@@ -100,28 +100,24 @@
   assign producer_url = ''
   assign note_text = ''
   assign note_title = ''
+  assign fact_empty = '–'
 
-  assign has_facts = false
-  if producer_text != blank or grape_text != blank or vintage_text != blank or country_text != blank or region_text != blank or type_text != blank or note_field != blank
-    assign has_facts = true
+  if note_field.type == 'rich_text_field'
+    assign note_text = note_field | metafield_text | strip
+  else
+    assign note_text = note_field.value | strip
   endif
 
-  if has_facts
-    if note_field.type == 'rich_text_field'
-      assign note_text = note_field | metafield_text | strip
+  assign note_title = note_title_field.value | strip
+  if note_title == blank and note_text != blank
+    if vintage_text != blank
+      assign note_title = 'product_facts.vintage_title' | t: year: vintage_text
     else
-      assign note_text = note_field.value | strip
+      assign note_title = 'product_facts.vintage' | t
     endif
+  endif
 
-    assign note_title = note_title_field.value | strip
-    if note_title == blank and note_text != blank
-      if vintage_text != blank
-        assign note_title = 'product_facts.vintage_title' | t: year: vintage_text
-      else
-        assign note_title = 'product_facts.vintage' | t
-      endif
-    endif
-
+  if producer_text != blank
     if producer_field.type == 'collection_reference' or producer_field.type == 'page_reference' or producer_field.type == 'product_reference'
       assign producer_url = producer_field.value.url
     elsif producer_field.type == 'link'
@@ -139,15 +135,25 @@
         assign producer_url = producer_entry.link.value
       endif
     endif
-  else
-    assign producer_text = 'product_facts.sample.producer' | t
-    assign grape_text = 'product_facts.sample.grape' | t
-    assign vintage_text = 'product_facts.sample.vintage' | t
-    assign country_text = 'product_facts.sample.country' | t
-    assign region_text = 'product_facts.sample.region' | t
-    assign type_text = 'product_facts.sample.type' | t
-    assign note_text = 'product_facts.sample.note' | t
-    assign note_title = 'product_facts.sample.note_title' | t
+  endif
+
+  if producer_text == blank
+    assign producer_text = fact_empty
+  endif
+  if grape_text == blank
+    assign grape_text = fact_empty
+  endif
+  if vintage_text == blank
+    assign vintage_text = fact_empty
+  endif
+  if country_text == blank
+    assign country_text = fact_empty
+  endif
+  if region_text == blank
+    assign region_text = fact_empty
+  endif
+  if type_text == blank
+    assign type_text = fact_empty
   endif
 -%}
 

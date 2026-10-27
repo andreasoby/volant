@@ -90,7 +90,7 @@
               "type": "custom-liquid",
               "name": "t:names.custom_liquid",
               "settings": {
-                "custom_liquid": "{% assign producent_link = product.metafields.custom.producentlink.value %}\n{% assign producent_title = product.metafields.custom.producenttext.value %}\n\n{% if producent_link != blank %}\n  <a href=\"{{ producent_link | escape }}\">\n    {{producent_title}}\n  </a>\n{% endif %}"
+                "custom_liquid": "{% assign producent_link = product.metafields.custom.producentlink.value %}\n{% assign producent_title = product.metafields.custom.custom.producenttekst %}\n\n{% if producent_link != blank %}\n  <a href=\"{{ producent_link | escape }}\">\n    {{producent_title}}\n  </a>\n{% endif %}"
               },
               "blocks": {}
             },

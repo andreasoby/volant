@@ -272,6 +272,12 @@
         "padding-block-end": 0
       }
     },
+    "product_facts": {
+      "type": "product-facts",
+      "settings": {
+        "section_width": "page-width"
+      }
+    },
     "product_recommendations_qggXJq": {
       "type": "product-recommendations",
       "blocks": {
@@ -410,6 +416,7 @@
   },
   "order": [
     "main",
+    "product_facts",
     "product_recommendations_qggXJq"
   ]
 }

@@ -168,7 +168,8 @@
     "product_sku": "SKU",
     "layered_slideshow": "Diasshow i lag",
     "cart_drawer": "Indkøbskurvskuffe",
-    "disclosures": "Oplysninger"
+    "disclosures": "Oplysninger",
+    "product_facts": "Produktinfo"
   },
   "settings": {
     "alignment": "Justering",
@@ -1120,7 +1121,8 @@
     "actions_display_style": "Ikoner bruges altid på mobil",
     "edit_input_field_in_theme_settings": "Rediger indtastningsfelt i [temaindstillinger](/editor?context=theme&category=input%20fields)",
     "edit_variants_in_theme_settings": "Rediger styling af varianter i [temaindstillinger](/editor?context=theme&category=variant%20pickers)",
-    "mega_menu_feature": "Menuer kan ikke gemme et billede på et punkt. Til billedet med billedtekst skal du oprette en metaobjektdefinition med typen mega_menu_feature og slå adgang til butiksfronten til. Tilføj felterne image (fil), caption (flerlinjet tekst) og link (webadresse). Postens handle skal matche menupunktet, for eksempel vine."
+    "mega_menu_feature": "Menuer kan ikke gemme et billede på et punkt. Til billedet med billedtekst skal du oprette en metaobjektdefinition med typen mega_menu_feature og slå adgang til butiksfronten til. Tilføj felterne image (fil), caption (flerlinjet tekst) og link (webadresse). Postens handle skal matche menupunktet, for eksempel vine.",
+    "product_facts": "Udfyldes fra produktets metafelter i namespacet custom: producer (tekst, side eller producent-metaobjekt), producer_url, grape, vintage, vintage_note, vintage_note_title, country, region og type. Lister og metaobjekter bruger deres navn. Indtil et produkt har et af felterne, viser tavlen eksemplet fra designet."
   },
   "categories": {
     "basic": "Grundlæggende",

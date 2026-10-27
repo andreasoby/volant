@@ -394,5 +394,26 @@
     "previous": "Previous producer",
     "next": "Next producer",
     "show": "Show {{ title }}"
+  },
+  "product_facts": {
+    "label": "Product facts",
+    "producer": "Producer",
+    "grape": "Grape",
+    "vintage": "Vintage",
+    "country": "Country",
+    "region": "Region",
+    "type": "Type",
+    "vintage_title": "Vintage {{ year }}",
+    "vintage_info": "About the {{ year }} vintage",
+    "sample": {
+      "producer": "Domaine A. Limar",
+      "grape": "Chardonnay, Pinot Noir, Pinot Meunier",
+      "vintage": "2019",
+      "note_title": "Vintage 2019",
+      "note": "A warm, dry year in Champagne, with heatwaves through the summer and a small yield. The grapes ripened and concentrated, but kept a fresh acidity — a very good vintage with body and fruit.",
+      "country": "France",
+      "region": "Vallée de la Marne, Champagne",
+      "type": "Sparkling"
+    }
   }
 }

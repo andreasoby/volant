@@ -375,5 +375,26 @@
     "previous": "Forrige producent",
     "next": "Næste producent",
     "show": "Vis {{ title }}"
+  },
+  "product_facts": {
+    "label": "Produktinfo",
+    "producer": "Producent",
+    "grape": "Drue",
+    "vintage": "Årgang",
+    "country": "Land",
+    "region": "Område",
+    "type": "Type",
+    "vintage_title": "Årgang {{ year }}",
+    "vintage_info": "Om årgang {{ year }}",
+    "sample": {
+      "producer": "Domaine A. Limar",
+      "grape": "Chardonnay, Pinot Noir, Pinot Meunier",
+      "vintage": "2019",
+      "note_title": "Årgang 2019",
+      "note": "Et varmt og tørt år i Champagne med hedebølger hen over sommeren og et lille udbytte. Druerne blev modne og koncentrerede, men holdt på en frisk syre – en rigtig god årgang med fylde og frugt.",
+      "country": "Frankrig",
+      "region": "Vallée de la Marne, Champagne",
+      "type": "Mousserende"
+    }
   }
 }

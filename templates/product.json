@@ -130,7 +130,7 @@
                   "type": "custom-liquid",
                   "name": "t:names.custom_liquid",
                   "settings": {
-                    "custom_liquid": "{% assign producent_link = product.metafields.custom.producentlink.value %}\n\n{% if producent_link != blank %}\n  {% assign collection_handle = producent_link | split: '/collections/' | last | split: '/' | first | split: '?' | first | split: '#' | first %}\n  {% assign producent_collection = collections[collection_handle] %}\n\n  {% if producent_collection != blank %}\n    <a href=\"{{ producent_link | escape }}\">\n      {{ producent_collection.title | escape }}\n    </a>\n  {% endif %}\n{% endif %}"
+                    "custom_liquid": "{% assign producent_collection = product.metafields.custom.producentlink.value %}\n\n{% if producent_collection != blank %}\n  <a href=\"{{ producent_collection.url | escape }}\">\n    {{ producent_collection.title | escape }}\n  </a>\n{% endif %}"
                   },
                   "blocks": {}
                 },

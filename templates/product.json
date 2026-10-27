@@ -266,7 +266,7 @@
               "type": "product-facts",
               "name": "t:names.product_facts",
               "settings": {
-                "show_on_mobile": true,
+                "show_on_mobile": false,
                 "show_on_desktop": true
               },
               "blocks": {}
@@ -383,7 +383,7 @@
               "type": "product-specs",
               "name": "t:names.product_specs",
               "settings": {
-                "show_on_mobile": true,
+                "show_on_mobile": false,
                 "show_on_desktop": true
               },
               "blocks": {}

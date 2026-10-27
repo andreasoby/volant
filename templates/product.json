@@ -437,11 +437,11 @@
         "producer_LwRDLy": {
           "type": "producer",
           "settings": {
-            "eyebrow": "Bourgogne · Frankrig",
-            "title": "Paul Gayot",
+            "eyebrow": "{{ product.metafields.custom.omr_de.value }}· {{ product.metafields.custom.land.value }}",
+            "title": "{{ product.metafields.custom.vindb_nder | metafield_text }}",
             "text": "Mikro-négoce i hjertet af Bourgogne. 600 nummererede flasker pr. cuvée – hver vin lagres mindst ti måneder på fad.",
             "label": "BOURGOGNE",
-            "link_label": "Mød producenten →",
+            "link_label": "",
             "link": ""
           }
         },

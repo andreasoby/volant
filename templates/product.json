@@ -278,6 +278,12 @@
         "section_width": "page-width"
       }
     },
+    "product_specs": {
+      "type": "product-specs",
+      "settings": {
+        "section_width": "page-width"
+      }
+    },
     "product_recommendations_qggXJq": {
       "type": "product-recommendations",
       "blocks": {
@@ -417,6 +423,7 @@
   "order": [
     "main",
     "product_facts",
+    "product_specs",
     "product_recommendations_qggXJq"
   ]
 }

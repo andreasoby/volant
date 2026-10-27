@@ -396,5 +396,23 @@
       "region": "Vallée de la Marne, Champagne",
       "type": "Mousserende"
     }
+  },
+  "product_specs": {
+    "label": "Specifikationer",
+    "lagring": "Lagring",
+    "added_so2": "Tilføjet SO2",
+    "bottle_count": "Antal flasker",
+    "alcohol": "Alkohol %",
+    "farming": "Landbrug",
+    "size": "Størrelse",
+    "info": "Mere om {{ label }}",
+    "sample": {
+      "lagring": "6 år på bærmen",
+      "added_so2": "Ja",
+      "bottle_count": "[udfyldes]",
+      "alcohol": "10.5%",
+      "farming": "X",
+      "size": "0,75 L"
+    }
   }
 }

@@ -415,5 +415,23 @@
       "region": "Vallée de la Marne, Champagne",
       "type": "Sparkling"
     }
+  },
+  "product_specs": {
+    "label": "Specifications",
+    "lagring": "Ageing",
+    "added_so2": "Added SO2",
+    "bottle_count": "Number of bottles",
+    "alcohol": "Alcohol %",
+    "farming": "Farming",
+    "size": "Size",
+    "info": "About {{ label }}",
+    "sample": {
+      "lagring": "6 years on the lees",
+      "added_so2": "Yes",
+      "bottle_count": "[to be filled]",
+      "alcohol": "10.5%",
+      "farming": "X",
+      "size": "0.75 L"
+    }
   }
 }

@@ -253,6 +253,7 @@
     "map_locations": "Locations come from a shop metafield that lists Producer metaobjects. Create a metaobject with type producer and fields name, address, latitude, longitude, and optional maps_url. Continent, country, and region are metaobject references. The map labels each pin with the referenced entry's name, or its label when it has no name. Give every definition storefront access, then create a shop metafield with the namespace and key below, type List of metaobjects. Zoom groups entries into continent, country, then region. If the metafield is empty, every active producer entry is used.",
     "producer_carousel": "The front card shows the text panel. The other cards show their label.",
     "product_facts": "Filled from product metafields in the custom namespace: producer (text, page, or Producer metaobject), producer_url, grape, vintage, vintage_note, vintage_note_title, country, region, and type. Lists and metaobjects use their name. Until a product has one of these, the board shows the sample from the design.",
+    "product_specs": "Filled from product metafields in the custom namespace: lagring, lagring_note, added_so2, added_so2_note, bottle_count, alcohol, farming, and bottle_size. Ageing and added SO2 show the info mark. Until a product has one of these, the table shows the sample from the design.",
     "mega_menu_feature": "Menus cannot store an image on an item. For the captioned image, create a metaobject definition with type mega_menu_feature and turn on storefront access. Add fields image (file), caption (multi-line text), and link (URL). The entry handle must match the menu item, for example vine."
   },
   "names": {
@@ -426,7 +427,8 @@
     "producer_map": "Producer map",
     "producer_carousel": "Producer carousel",
     "producer_slide": "Producer",
-    "product_facts": "Product facts"
+    "product_facts": "Product facts",
+    "product_specs": "Specifications"
   },
   "options": {
     "above_carousel": "Above carousel",

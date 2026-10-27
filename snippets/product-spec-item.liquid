@@ -1,0 +1,40 @@
+{% doc %}
+  One specification: a label and a value, with an optional note on the label.
+
+  @param {string} label - Field name
+  @param {string} value - Field value
+  @param {string} field_id - Unique id suffix for the note
+  @param {string} [note] - Tooltip body. The info mark is decorative when this is blank.
+  @param {string} [note_title] - Tooltip heading
+{% enddoc %}
+
+<div class="product-specs__item">
+  <div class="product-specs__label">
+    {%- if note != blank -%}
+      <product-fact-info class="product-specs__info">
+        <span>{{ label }}</span>
+        <button
+          type="button"
+          class="product-specs__info-button"
+          aria-expanded="false"
+          aria-describedby="ProductSpecNote-{{ section.id }}-{{ field_id }}"
+        >
+          <span aria-hidden="true">i</span>
+          <span class="visually-hidden">{{ 'product_specs.info' | t: label: label }}</span>
+        </button>
+        <div class="product-specs__tooltip" id="ProductSpecNote-{{ section.id }}-{{ field_id }}" role="tooltip">
+          {%- if note_title != blank -%}
+            <p class="product-specs__tooltip-title">{{ note_title }}</p>
+          {%- endif -%}
+          <p class="product-specs__tooltip-body">{{ note }}</p>
+        </div>
+      </product-fact-info>
+    {%- else -%}
+      <span>{{ label }}</span>
+      {%- if field_id == 'lagring' or field_id == 'added_so2' -%}
+        <span class="product-specs__info-button" aria-hidden="true">i</span>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+  <div class="product-specs__value">{{ value }}</div>
+</div>

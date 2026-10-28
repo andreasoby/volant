@@ -59,10 +59,20 @@
   assign use_gallery = false
   assign gallery_cards = blank
   assign card_count = section.blocks.size
+  assign producer_entry = product.metafields.custom.producer_object.value
+  assign header_link = section.settings.link
+
+  if header_link == blank and request.page_type == 'product'
+    assign producer_collection = producer_entry.collection_page.value
+    if producer_collection.url != blank
+      assign header_link = producer_collection.url
+    elsif producer_collection.first.url != blank
+      assign header_link = producer_collection.first.url
+    endif
+  endif
 
   if section.settings.cards_source == 'producer_gallery'
     assign use_gallery = true
-    assign producer_entry = product.metafields.custom.producer_object.value
     assign gallery_cards = producer_entry.gallery.value
     assign card_count = 0
 
@@ -107,8 +117,8 @@
       {% endif %}
 
       {% if section.settings.link_label != blank %}
-        {% if section.settings.link != blank %}
-          <a class="producer-carousel__header-link" href="{{ section.settings.link }}">
+        {% if header_link != blank %}
+          <a class="producer-carousel__header-link" href="{{ header_link }}">
             {{ section.settings.link_label }}
           </a>
         {% else %}
@@ -833,7 +843,8 @@ if (!customElements.get('producer-carousel')) {
     {
       "type": "url",
       "id": "link",
-      "label": "t:settings.link"
+      "label": "t:settings.link",
+      "info": "t:info.producer_header_link"
     },
     {
       "type": "select",

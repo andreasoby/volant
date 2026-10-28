@@ -494,7 +494,7 @@
         "cards_source": "producer_gallery",
         "heading": "Mød producenten",
         "link_label": "Mød {{ product.metafields.custom.vindb_nder | metafield_text }} →",
-        "link": "shopify://collections/domaine-a-limar",
+        "link": "",
         "section_width": "page-width"
       }
     },

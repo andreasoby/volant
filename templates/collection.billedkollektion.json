@@ -15,7 +15,8 @@
         "producer_description_header": {
           "type": "producer-description",
           "name": "t:names.producer_description",
-          "settings": {}
+          "settings": {},
+          "blocks": {}
         }
       },
       "block_order": [
@@ -308,11 +309,79 @@
         "padding-block-start": 0,
         "padding-block-end": 32
       }
+    },
+    "producer_carousel_aDjFtP": {
+      "type": "producer-carousel",
+      "blocks": {
+        "producer_p9q4Mg": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Paul Gayot",
+            "text": "Mikro-négoce i hjertet af Bourgogne. 600 nummererede flasker pr. cuvée – hver vin lagres mindst ti måneder på fad.",
+            "label": "BOURGOGNE",
+            "link_label": "Mød producenten →",
+            "link_source": "url",
+            "link": ""
+          }
+        },
+        "producer_C7pAmn": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Rioja · Spanien",
+            "title": "Victor Ausejo",
+            "text": "Gamle stokke, små parceller og et nyt blik på Rioja – vin lavet med tid og tålmodighed.",
+            "label": "RIOJA",
+            "link_label": "Mød producenten →",
+            "link_source": "url",
+            "link": ""
+          }
+        },
+        "producer_GCtxBV": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Champagne · Frankrig",
+            "title": "Domaine A. Limar",
+            "text": "Et lille plot i Vallée de la Marne, plantet i 1981. Brut Nature uden dosage – seks år på bærmen.",
+            "label": "Domaine A. Limar",
+            "link_label": "Mød producenten →",
+            "link_source": "url",
+            "link": ""
+          }
+        },
+        "producer_Jp8eHY": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Ô Ma",
+            "text": "Saftig, citrusfrisk Aligoté fra Santenay – en hverdagsvin med karakter.",
+            "label": "BOURGOGNE",
+            "link_label": "Mød producenten →",
+            "link_source": "url",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "producer_p9q4Mg",
+        "producer_C7pAmn",
+        "producer_GCtxBV",
+        "producer_Jp8eHY"
+      ],
+      "name": "t:names.producer_carousel",
+      "settings": {
+        "cards_source": "producer_gallery",
+        "heading": "Mød producenterne",
+        "link_label": "Se alle producenter →",
+        "link": "",
+        "section_width": "page-width"
+      }
     }
   },
   "order": [
     "section_pV8Agf",
     "section_DHRxFA",
-    "main"
+    "main",
+    "producer_carousel_aDjFtP"
   ]
 }

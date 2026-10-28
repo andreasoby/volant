@@ -372,7 +372,7 @@
       "settings": {
         "cards_source": "producer_gallery",
         "heading": "Om producenten",
-        "link_label": "Se alle producenter →",
+        "link_label": "",
         "link": "",
         "section_width": "page-width"
       }

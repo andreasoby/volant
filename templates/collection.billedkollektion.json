@@ -371,7 +371,7 @@
       "name": "t:names.producer_carousel",
       "settings": {
         "cards_source": "producer_gallery",
-        "heading": "Mød producenterne",
+        "heading": "Om producenten",
         "link_label": "Se alle producenter →",
         "link": "",
         "section_width": "page-width"

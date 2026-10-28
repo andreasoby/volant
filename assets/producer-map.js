@@ -257,6 +257,7 @@ class ProducerMap extends HTMLElement {
         attributionControl: false,
         dragRotate: false,
         pitchWithRotate: false,
+        scrollZoom: false,
         cooperativeGestures: false,
       });
       this.#map.touchZoomRotate.disableRotation();
@@ -338,8 +339,7 @@ class ProducerMap extends HTMLElement {
         count.className = 'producer-map__pin-count';
         count.textContent = String(group.locations.length);
         label.append(name, count);
-        if (selected) button.append(label, dot);
-        else button.append(dot, label);
+        button.append(dot, label);
       }
 
       button.addEventListener('click', (event) => {
@@ -349,8 +349,8 @@ class ProducerMap extends HTMLElement {
 
       const marker = new maplibregl.Marker({
         element: button,
-        anchor: selected ? 'right' : dotOnly ? 'center' : 'left',
-        offset: selected ? [dotSize / 2, 0] : dotOnly ? [0, 0] : [-dotSize / 2, 0],
+        anchor: dotOnly ? 'center' : 'left',
+        offset: dotOnly ? [0, 0] : [-dotSize / 2, 0],
       })
         .setLngLat(group.center)
         .addTo(this.#map);

@@ -14,6 +14,21 @@
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
       "blocks": {
+        "announcement_countdown_Pmc97x": {
+          "type": "_announcement-countdown",
+          "name": "t:names.countdown",
+          "settings": {
+            "ends_at": "2026-11-01 10:00",
+            "link": "",
+            "font": "var(--font-accent--family)",
+            "font_size": "0.75rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "uppercase",
+            "text_color": ""
+          },
+          "blocks": {}
+        },
         "announcement_3zhahH": {
           "type": "_announcement",
           "name": "t:names.announcement",
@@ -45,6 +60,7 @@
         }
       },
       "block_order": [
+        "announcement_countdown_Pmc97x",
         "announcement_3zhahH",
         "announcement_BxgCk9"
       ],

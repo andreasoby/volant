@@ -88,10 +88,101 @@
         "map_height": 760,
         "section_width": "full-width"
       }
+    },
+    "section_cHcBFJ": {
+      "type": "section",
+      "blocks": {
+        "text_VA9Pyp": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Vi importerer kun vin fra mennesker, vi har mødt. Hver producent i vores sortiment er fundet på rejser i marken og i kældrene – og efter mange glas ved køkkenbordet.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1.25rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_eUb97P": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>Det er ikke de største navne, vi leder efter. Det er de vinbønder, der passer deres jord med omhu, arbejder i små mængder og laver vin med personlighed. Når vi først har fundet dem, bliver vi ved – år efter år, årgang efter årgang.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_VA9Pyp",
+        "text_eUb97P"
+      ],
+      "name": "t:names.rich_text_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 25,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
     "main",
-    "producer_map_NVcUcn"
+    "producer_map_NVcUcn",
+    "section_cHcBFJ"
   ]
 }

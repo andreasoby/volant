@@ -14,12 +14,27 @@
     "header_announcements_9jGBFp": {
       "type": "header-announcements",
       "blocks": {
+        "announcement_3zhahH": {
+          "type": "_announcement",
+          "name": "t:names.announcement",
+          "settings": {
+            "text": "DÉGUSTATION",
+            "link": "",
+            "font": "var(--font-accent--family)",
+            "font_size": "0.75rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "uppercase",
+            "text_color": ""
+          },
+          "blocks": {}
+        },
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "NÆSTE UDGIVELSE 1. NOVEMBER",
             "link": "",
-            "font": "var(--font-subheading--family)",
+            "font": "var(--font-accent--family)",
             "font_size": "0.75rem",
             "weight": "",
             "letter_spacing": "normal",
@@ -30,14 +45,15 @@
         }
       },
       "block_order": [
+        "announcement_3zhahH",
         "announcement_BxgCk9"
       ],
       "name": "t:names.announcement_bar",
       "settings": {
         "speed": 5,
-        "section_width": "page-width",
-        "background_color": "",
-        "divider_width": 1,
+        "section_width": "full-width",
+        "background_color": "#111111",
+        "divider_width": 0,
         "divider_color": "{{ settings.color_palette.color3 }}",
         "padding-block-start": 15,
         "padding-block-end": 15

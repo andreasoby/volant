@@ -302,7 +302,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>[udfyldes]</p>",
+                    "text": "<p><a href=\"mailto:mail@volant-vin.dk\" title=\"mailto:mail@volant-vin.dk\">mail@volant-vin.dk</a></p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -313,7 +313,7 @@
                     "letter_spacing": "normal",
                     "case": "none",
                     "wrap": "pretty",
-                    "text_color": "#6B6357",
+                    "text_color": "{{ settings.color_palette.foreground }}",
                     "background": false,
                     "background_color": "#00000026",
                     "corner_radius": 0,

@@ -151,7 +151,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Vi laver ting, der fungerer bedre og holder længere. Vores produkter løser reelle problemer med et rent design og ærlige materialer.</p>{{ closest.page.content }}",
+                "text": "{{ closest.page.content }}",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",

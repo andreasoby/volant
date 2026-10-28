@@ -60,6 +60,9 @@
   assign gallery_cards = blank
   assign card_count = section.blocks.size
   assign producer_entry = product.metafields.custom.producer_object.value
+  if request.page_type == 'collection'
+    assign producer_entry = collection.metafields.custom.producer_object.value
+  endif
   assign header_link = section.settings.link
 
   if header_link == blank and request.page_type == 'product'

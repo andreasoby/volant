@@ -74,11 +74,11 @@
 
 {%- liquid
   assign lagring_field = spec_product.metafields.custom.lagring
-  assign added_so2_field = spec_product.metafields.custom.added_so2
-  assign bottle_count_field = spec_product.metafields.custom.bottle_count
-  assign alcohol_field = spec_product.metafields.custom.alcohol
-  assign farming_field = spec_product.metafields.custom.farming
-  assign size_field = spec_product.metafields.custom.bottle_size
+  assign added_so2_field = spec_product.metafields.custom.tilfojet_s02
+  assign bottle_count_field = spec_product.metafields.custom.antal_flasker
+  assign alcohol_field = spec_product.metafields.custom.alkohol
+  assign farming_field = spec_product.metafields.custom.landbrug
+  assign size_field = spec_product.metafields.custom.storrelse
 -%}
 
 {%- capture lagring_text -%}{%- render 'product-fact-text', metafield: lagring_field -%}{%- endcapture -%}

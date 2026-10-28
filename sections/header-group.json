@@ -50,7 +50,9 @@
       ],
       "name": "t:names.announcement_bar",
       "settings": {
+        "display": "marquee",
         "speed": 5,
+        "marquee_speed": 5,
         "section_width": "full-width",
         "background_color": "#111111",
         "divider_width": 0,

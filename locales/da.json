@@ -130,6 +130,10 @@
     "back_to_main_menu": "Tilbage til hovedmenu"
   },
   "content": {
+    "countdown_days": "dage",
+    "countdown_hours": "t",
+    "countdown_minutes": "min",
+    "countdown_placeholder": "Tilføj dato og tid",
     "reviews": "anmeldelser",
     "language": "Sprog",
     "localization_region_and_language": "Område og sprog",

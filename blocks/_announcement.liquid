@@ -5,28 +5,7 @@
 {%- assign block_index = section.blocks | find_index: 'id', block.id -%}
 
 {%- unless plain_text == '' -%}
-  <slideshow-slide
-    ref="slides[]"
-    class="
-      announcement-bar__slide
-      text-block
-      text-block--{{ block.id }}
-      text-block--align-center
-      text-block--full-width
-      custom-typography
-      {% if block_settings.font_size != "" %}custom-font-size{% endif %}
-      {% if block_settings.weight != "" %}custom-font-weight{% endif %}
-    "
-    style="
-      {% render 'typography-style', settings: block_settings, preset: 'custom' %}
-      {% if block_settings.text_color != blank %}--color: {{ block_settings.text_color }}; --color-rgb: {{ block_settings.text_color.rgb }};{% endif %}
-      --width: 100%;
-      --text-align: center;
-      --line-height: 1;
-    "
-    {{ block.shopify_attributes }}
-    aria-hidden="{% if block_index == 0 %}false{% else %}true{% endif %}"
-  >
+  {%- capture announcement_content -%}
     <p class="announcement-bar__text">
       {{ block.settings.text }}
     </p>
@@ -41,7 +20,58 @@
         </span>
       </a>
     {% endif %}
-  </slideshow-slide>
+  {%- endcapture -%}
+
+  {%- capture announcement_style -%}
+    {% render 'typography-style', settings: block_settings, preset: 'custom' %}
+    {% if block_settings.text_color != blank %}--color: {{ block_settings.text_color }}; --color-rgb: {{ block_settings.text_color.rgb }};{% endif %}
+    --line-height: 1;
+  {%- endcapture -%}
+
+  {%- if section.settings.display == 'marquee' -%}
+    <div
+      class="
+        announcement-bar__marquee-item
+        text-block
+        text-block--{{ block.id }}
+        custom-typography
+        {% if block_settings.font_size != "" %}custom-font-size{% endif %}
+        {% if block_settings.weight != "" %}custom-font-weight{% endif %}
+      "
+      style="
+        {{ announcement_style }}
+        --width: fit-content;
+        --text-align: center;
+        --text-wrap: nowrap;
+      "
+      {{ block.shopify_attributes }}
+    >
+      {{ announcement_content }}
+    </div>
+  {%- else -%}
+    <slideshow-slide
+      ref="slides[]"
+      class="
+        announcement-bar__slide
+        text-block
+        text-block--{{ block.id }}
+        text-block--align-center
+        text-block--full-width
+        custom-typography
+        {% if block_settings.font_size != "" %}custom-font-size{% endif %}
+        {% if block_settings.weight != "" %}custom-font-weight{% endif %}
+      "
+      style="
+        {{ announcement_style }}
+        --width: 100%;
+        --text-align: center;
+      "
+      {{ block.shopify_attributes }}
+      aria-hidden="{% if block_index == 0 %}false{% else %}true{% endif %}"
+    >
+      {{ announcement_content }}
+    </slideshow-slide>
+  {%- endif -%}
 {%- endunless -%}
 
 {% schema %}

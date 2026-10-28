@@ -1,4 +1,21 @@
-{% if section.blocks.size > 1 %}
+{% liquid
+  assign announcement_display = section.settings.display | default: 'rotate'
+  assign is_marquee = false
+  if announcement_display == 'marquee'
+    assign is_marquee = true
+  endif
+
+  assign marquee_speed = section.settings.marquee_speed | default: 5
+  assign marquee_speed_factor = 11 | minus: marquee_speed | times: 5
+%}
+
+{% if is_marquee %}
+  <script
+    src="{{ 'marquee.js' | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+{% elsif section.blocks.size > 1 %}
   <script
     src="{{ 'announcement-bar.js' | asset_url }}"
     type="module"
@@ -13,29 +30,56 @@
   class="announcement-bar spacing-style section section--{{ section.settings.section_width }} color-custom-{{ section.id }}"
   style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;{% if section.settings.divider_color != blank %} --color-border: {{ section.settings.divider_color }};{% endif %}"
 >
-  {% liquid
-    assign autoplay = false
-    assign show_arrows = false
-    if section.blocks.size > 1
-      assign autoplay = true
-      assign show_arrows = true
-    endif
-  %}
+  {% if is_marquee %}
+    <marquee-component
+      class="announcement-bar__marquee force-full-width"
+      style="--marquee-direction: normal; --marquee-gap: 1.5rem;"
+      data-speed-factor="{{ marquee_speed_factor }}"
+    >
+      <div
+        class="marquee__wrapper"
+        ref="wrapper"
+      >
+        <div
+          class="marquee__content"
+          ref="content"
+        >
+          <div
+            class="marquee__repeated-items"
+            ref="marqueeItems[]"
+          >
+  {% else %}
+    {% liquid
+      assign autoplay = false
+      assign show_arrows = false
+      if section.blocks.size > 1
+        assign autoplay = true
+        assign show_arrows = true
+      endif
+    %}
 
-  <announcement-bar-component
-    class="announcement-bar__slider"
-    {% if autoplay == true %}
-      autoplay="{{ section.settings.speed }}" aria-live="polite"
-    {% endif %}
-  >
-    {% if show_arrows %}
-      {% render 'slideshow-arrows', icon_style: 'chevron' %}
-    {% endif %}
+    <announcement-bar-component
+      class="announcement-bar__slider"
+      {% if autoplay == true %}
+        autoplay="{{ section.settings.speed }}" aria-live="polite"
+      {% endif %}
+    >
+      {% if show_arrows %}
+        {% render 'slideshow-arrows', icon_style: 'chevron' %}
+      {% endif %}
 
-    <div class="announcement-bar__slides">
-      {% content_for 'blocks' %}
-    </div>
-  </announcement-bar-component>
+      <div class="announcement-bar__slides">
+  {% endif %}
+    {% content_for 'blocks' %}
+  {% if is_marquee %}
+          </div>
+        </div>
+      </div>
+    </marquee-component>
+  {% else %}
+      </div>
+    </announcement-bar-component>
+  {% endif %}
 </aside>
 
 {% stylesheet %}
@@ -66,7 +110,7 @@
     grid-area: stack;
   }
 
-  .announcement-bar__slide {
+  .announcement-bar__slider .announcement-bar__slide {
     transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
     content-visibility: visible;
 
@@ -117,9 +161,77 @@
     margin: 0;
   }
 
+  announcement-countdown {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .announcement-countdown__time {
+    font-variant-numeric: tabular-nums;
+  }
+
   .announcement-bar__link {
     position: absolute;
     inset: 0;
+  }
+
+  .announcement-bar__marquee {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .announcement-bar__marquee .marquee__wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--marquee-gap);
+    width: fit-content;
+    white-space: nowrap;
+  }
+
+  .announcement-bar__marquee .marquee__content,
+  .announcement-bar__marquee .marquee__repeated-items {
+    display: flex;
+    align-items: center;
+    gap: var(--marquee-gap);
+    min-width: max-content;
+  }
+
+  .announcement-bar__marquee-item.text-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--marquee-gap);
+    flex-shrink: 0;
+    max-width: none;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .announcement-bar__marquee-item::after {
+    content: '';
+    width: 0.25rem;
+    height: 0.25rem;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .announcement-bar__marquee-item .announcement-bar__link:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 0.25rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .announcement-bar__marquee:not([data-disabled]) .marquee__wrapper {
+      animation: announcement-marquee-motion var(--marquee-speed) linear infinite var(--marquee-direction);
+    }
+  }
+
+  @keyframes announcement-marquee-motion {
+    to {
+      transform: translate3d(calc(-50% - (var(--marquee-gap) / 2)), 0, 0);
+    }
   }
 {% endstylesheet %}
 
@@ -129,6 +241,9 @@
   "blocks": [
     {
       "type": "_announcement"
+    },
+    {
+      "type": "_announcement-countdown"
     }
   ],
   "enabled_on": {
@@ -136,13 +251,40 @@
   },
   "settings": [
     {
+      "type": "select",
+      "id": "display",
+      "label": "t:settings.animation",
+      "options": [
+        {
+          "value": "rotate",
+          "label": "t:options.one_by_one"
+        },
+        {
+          "value": "marquee",
+          "label": "t:names.marquee"
+        }
+      ],
+      "default": "rotate"
+    },
+    {
       "type": "range",
       "id": "speed",
       "label": "t:settings.scroll_speed",
       "min": 2,
       "max": 10,
       "default": 5,
-      "unit": "sec"
+      "unit": "sec",
+      "visible_if": "{{ section.settings.display == 'rotate' }}"
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "label": "t:settings.speed",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "visible_if": "{{ section.settings.display == 'marquee' }}"
     },
     {
       "type": "header",

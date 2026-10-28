@@ -1,0 +1,354 @@
+{% render 'text-block-styles' %}
+
+{%- liquid
+  assign block_settings = block.settings
+  assign block_index = section.blocks | find_index: 'id', block.id
+  assign ends_at = block_settings.ends_at | strip | replace: 'T', ' '
+  assign valid_date = false
+
+  if ends_at != blank and ends_at.size >= 16
+    assign year_separator = ends_at | slice: 4, 1
+    assign month_separator = ends_at | slice: 7, 1
+    assign day_separator = ends_at | slice: 10, 1
+    assign time_separator = ends_at | slice: 13, 1
+    if year_separator == '-' and month_separator == '-' and day_separator == ' ' and time_separator == ':'
+      assign valid_date = true
+    endif
+  endif
+-%}
+
+{%- if valid_date or request.design_mode -%}
+  {%- liquid
+    assign days_label = 'content.countdown_days' | t
+    assign hours_label = 'content.countdown_hours' | t
+    assign minutes_label = 'content.countdown_minutes' | t
+
+    if valid_date
+      assign now_timestamp = 'now' | date: '%s' | plus: 0
+      assign end_timestamp = ends_at | date: '%s' | plus: 0
+      assign remaining_seconds = end_timestamp | minus: now_timestamp
+      if remaining_seconds < 0
+        assign remaining_seconds = 0
+      endif
+      assign total_minutes = remaining_seconds | divided_by: 60
+      assign days = total_minutes | divided_by: 1440
+      assign minutes_after_days = total_minutes | modulo: 1440
+      assign hours = minutes_after_days | divided_by: 60
+      assign minutes = minutes_after_days | modulo: 60
+      assign hours_text = hours
+      assign minutes_text = minutes
+      if hours < 10
+        assign hours_text = hours | prepend: '0'
+      endif
+      if minutes < 10
+        assign minutes_text = minutes | prepend: '0'
+      endif
+      assign countdown_text = days | append: ' ' | append: days_label | append: '  ' | append: hours_text | append: ' ' | append: hours_label | append: '  ' | append: minutes_text | append: ' ' | append: minutes_label
+      assign end_iso = ends_at | date: '%Y-%m-%dT%H:%M:%S%z'
+    else
+      assign countdown_text = 'content.countdown_placeholder' | t
+    endif
+  -%}
+
+  {%- if valid_date -%}
+    <script
+      src="{{ 'announcement-countdown.js' | asset_url }}"
+      type="module"
+      fetchpriority="low"
+    ></script>
+  {%- endif -%}
+
+  {%- capture announcement_content -%}
+    {%- if valid_date -%}
+      <announcement-countdown
+        class="announcement-countdown"
+        data-end="{{ end_timestamp }}"
+        data-label-days="{{ days_label | escape }}"
+        data-label-hours="{{ hours_label | escape }}"
+        data-label-minutes="{{ minutes_label | escape }}"
+      >
+        <p class="announcement-bar__text">
+          <time
+            class="announcement-countdown__time"
+            datetime="{{ end_iso }}"
+            data-countdown-value
+          >{{ countdown_text }}</time>
+        </p>
+      </announcement-countdown>
+    {%- else -%}
+      <p class="announcement-bar__text">{{ countdown_text }}</p>
+    {%- endif -%}
+
+    {% if block_settings.link != blank %}
+      <a
+        class="announcement-bar__link"
+        href="{{ block_settings.link }}"
+      >
+        <span class="visually-hidden">
+          {{ countdown_text }}
+        </span>
+      </a>
+    {% endif %}
+  {%- endcapture -%}
+
+  {%- capture announcement_style -%}
+    {% render 'typography-style', settings: block_settings, preset: 'custom' %}
+    {% if block_settings.text_color != blank %}--color: {{ block_settings.text_color }}; --color-rgb: {{ block_settings.text_color.rgb }};{% endif %}
+    --line-height: 1;
+  {%- endcapture -%}
+
+  {%- if section.settings.display == 'marquee' -%}
+    <div
+      class="
+        announcement-bar__marquee-item
+        text-block
+        text-block--{{ block.id }}
+        custom-typography
+        {% if block_settings.font_size != "" %}custom-font-size{% endif %}
+        {% if block_settings.weight != "" %}custom-font-weight{% endif %}
+      "
+      style="
+        {{ announcement_style }}
+        --width: fit-content;
+        --text-align: center;
+        --text-wrap: nowrap;
+      "
+      {{ block.shopify_attributes }}
+    >
+      {{ announcement_content }}
+    </div>
+  {%- else -%}
+    <slideshow-slide
+      ref="slides[]"
+      class="
+        announcement-bar__slide
+        text-block
+        text-block--{{ block.id }}
+        text-block--align-center
+        text-block--full-width
+        custom-typography
+        {% if block_settings.font_size != "" %}custom-font-size{% endif %}
+        {% if block_settings.weight != "" %}custom-font-weight{% endif %}
+      "
+      style="
+        {{ announcement_style }}
+        --width: 100%;
+        --text-align: center;
+      "
+      {{ block.shopify_attributes }}
+      aria-hidden="{% if block_index == 0 %}false{% else %}true{% endif %}"
+    >
+      {{ announcement_content }}
+    </slideshow-slide>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:names.countdown",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "ends_at",
+      "label": "t:settings.date_time",
+      "info": "t:info.countdown_date_time"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:settings.link"
+    },
+    {
+      "type": "header",
+      "content": "t:content.typography"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "t:settings.font",
+      "options": [
+        {
+          "value": "var(--font-body--family)",
+          "label": "t:options.body"
+        },
+        {
+          "value": "var(--font-subheading--family)",
+          "label": "t:options.subheading"
+        },
+        {
+          "value": "var(--font-heading--family)",
+          "label": "t:options.heading"
+        },
+        {
+          "value": "var(--font-accent--family)",
+          "label": "t:options.accent"
+        }
+      ],
+      "default": "var(--font-accent--family)"
+    },
+    {
+      "type": "select",
+      "id": "font_size",
+      "label": "t:settings.size",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "0.625rem",
+          "label": "10px"
+        },
+        {
+          "value": "0.75rem",
+          "label": "12px"
+        },
+        {
+          "value": "0.875rem",
+          "label": "14px"
+        },
+        {
+          "value": "1rem",
+          "label": "16px"
+        },
+        {
+          "value": "1.125rem",
+          "label": "18px"
+        },
+        {
+          "value": "1.25rem",
+          "label": "20px"
+        },
+        {
+          "value": "1.5rem",
+          "label": "24px"
+        },
+        {
+          "value": "2rem",
+          "label": "32px"
+        },
+        {
+          "value": "2.5rem",
+          "label": "40px"
+        },
+        {
+          "value": "3rem",
+          "label": "48px"
+        },
+        {
+          "value": "3.5rem",
+          "label": "56px"
+        },
+        {
+          "value": "4.5rem",
+          "label": "72px"
+        },
+        {
+          "value": "5.5rem",
+          "label": "88px"
+        },
+        {
+          "value": "7.5rem",
+          "label": "120px"
+        },
+        {
+          "value": "9.5rem",
+          "label": "152px"
+        },
+        {
+          "value": "11.5rem",
+          "label": "184px"
+        }
+      ],
+      "default": "0.75rem"
+    },
+    {
+      "type": "select",
+      "id": "weight",
+      "label": "t:settings.weight",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "100",
+          "label": "t:options.thin"
+        },
+        {
+          "value": "300",
+          "label": "t:options.light"
+        },
+        {
+          "value": "400",
+          "label": "t:options.regular"
+        },
+        {
+          "value": "500",
+          "label": "t:options.medium"
+        },
+        {
+          "value": "600",
+          "label": "t:options.semibold"
+        },
+        {
+          "value": "700",
+          "label": "t:options.bold"
+        },
+        {
+          "value": "900",
+          "label": "t:options.black"
+        }
+      ],
+      "default": ""
+    },
+    {
+      "type": "select",
+      "id": "letter_spacing",
+      "label": "t:settings.letter_spacing",
+      "options": [
+        {
+          "value": "tight",
+          "label": "t:options.tight"
+        },
+        {
+          "value": "normal",
+          "label": "t:options.normal"
+        },
+        {
+          "value": "loose",
+          "label": "t:options.loose"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "case",
+      "label": "t:settings.case",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.default"
+        },
+        {
+          "value": "uppercase",
+          "label": "t:options.uppercase"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:settings.text_color",
+      "placeholder": "t:settings.default"
+    }
+  ]
+}
+{% endschema %}

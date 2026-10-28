@@ -35,14 +35,18 @@ class MarqueeComponent extends Component {
 
     window.addEventListener('resize', this.#handleResize);
     this.addEventListener('pointerenter', this.#slowDown);
-    this.addEventListener('pointerleave', this.#speedUp);
+    this.addEventListener('pointerleave', this.#resume);
+    this.addEventListener('focusin', this.#slowDown);
+    this.addEventListener('focusout', this.#resume);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener('resize', this.#handleResize);
     this.removeEventListener('pointerenter', this.#slowDown);
-    this.removeEventListener('pointerleave', this.#speedUp);
+    this.removeEventListener('pointerleave', this.#resume);
+    this.removeEventListener('focusin', this.#slowDown);
+    this.removeEventListener('focusout', this.#resume);
   }
 
   /**
@@ -72,6 +76,18 @@ class MarqueeComponent extends Component {
       },
     });
   }, ANIMATION_OPTIONS.duration);
+
+  /**
+   * Restarts the marquee after a hover or focus pause, unless the pointer or keyboard focus is still inside.
+   * @param {PointerEvent | FocusEvent} event
+   */
+  #resume = (event) => {
+    const next = event.relatedTarget;
+    if (this.matches(':hover')) return;
+    if (next instanceof Node && this.contains(next)) return;
+
+    this.#speedUp();
+  };
 
   #speedUp() {
     this.#slowDown.cancel();
@@ -190,8 +206,20 @@ class MarqueeComponent extends Component {
 
     clone.setAttribute('aria-hidden', 'true');
     clone.removeAttribute('ref');
+    this.#disableDuplicateInteractions(clone);
 
     this.refs.wrapper.appendChild(clone);
+  }
+
+  /**
+   * Keeps cloned copies clickable, but out of the keyboard tab order.
+   * @param {HTMLElement} root
+   */
+  #disableDuplicateInteractions(root) {
+    const interactive = root.querySelectorAll('a, button, input, select, textarea, [tabindex]');
+    for (const element of interactive) {
+      element.setAttribute('tabindex', '-1');
+    }
   }
 
   /**
@@ -203,7 +231,9 @@ class MarqueeComponent extends Component {
     if (!marqueeItems[0]) return;
 
     for (let i = 0; i < numberOfCopies - 1; i++) {
-      const clone = marqueeItems[0].cloneNode(true);
+      const clone = /** @type {HTMLElement} */ (marqueeItems[0].cloneNode(true));
+      clone.setAttribute('aria-hidden', 'true');
+      this.#disableDuplicateInteractions(clone);
       content.appendChild(clone);
     }
   }

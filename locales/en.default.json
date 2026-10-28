@@ -163,6 +163,10 @@
     }
   },
   "content": {
+    "countdown_days": "days",
+    "countdown_hours": "h",
+    "countdown_minutes": "min",
+    "countdown_placeholder": "Add a date and time",
     "cancel": "Cancel",
     "discount": "Discount",
     "account_title": "Account",

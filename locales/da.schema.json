@@ -42,6 +42,7 @@
     "animations": "Animationer",
     "announcement": "Meddelelse",
     "announcement_bar": "Meddelelseslinje",
+    "countdown": "Nedtælling",
     "badges": "Badges",
     "button": "Knap",
     "cart": "Indkøbskurv",
@@ -191,6 +192,7 @@
     "cover_image": "Forsidebillede",
     "custom_minimum_height": "Tilpasset minimumshøjde",
     "custom_width": "Tilpasset bredde",
+    "date_time": "Dato og tid",
     "enable_video_looping": "Videoafspilning i løkke",
     "favicon": "Favoritikon",
     "font_family": "Skrifttypefamilie",
@@ -792,6 +794,7 @@
     "off_media": "Uden for medie",
     "on_media": "På medie",
     "on_scroll_up": "Ved scroll op",
+    "one_by_one": "En ad gangen",
     "one_half": "1/2",
     "one_number": "1",
     "one_third": "1/3",
@@ -1104,6 +1107,7 @@
     "disclosures": "Oplysninger"
   },
   "info": {
+    "countdown_date_time": "Butikkens tidszone. Format: ÅÅÅÅ-MM-DD TT:MM. Eksempel: 2026-11-16 18:00",
     "carousel_layout_on_mobile": "Karrusellen bruges altid på mobil",
     "video_alt_text": "Beskriv videoen for brugere af hjælpeteknologi",
     "video_autoplay": "Videoer vil som standard være uden lyd",

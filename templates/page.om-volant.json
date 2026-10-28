@@ -121,37 +121,11 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_CmyWEK": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "<h2>{{ closest.page.title }}</h2>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
             "text_LX8hnj": {
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Vi laver ting, der fungerer bedre og holder længere. Vores produkter løser reelle problemer med et rent design og ærlige materialer.</p>{{ closest.page.content }}",
+                "text": "{{ closest.page.content }}",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -175,7 +149,6 @@
             }
           },
           "block_order": [
-            "text_CmyWEK",
             "text_LX8hnj"
           ]
         },
@@ -757,7 +730,7 @@
                     "letter_spacing": "normal",
                     "case": "none",
                     "wrap": "pretty",
-                    "text_color": "#6B6357",
+                    "text_color": "#6b6357",
                     "background": false,
                     "background_color": "#00000026",
                     "corner_radius": 0,
@@ -979,7 +952,7 @@
                     "letter_spacing": "normal",
                     "case": "none",
                     "wrap": "pretty",
-                    "text_color": "#6B6357",
+                    "text_color": "#6b6357",
                     "background": false,
                     "background_color": "#00000026",
                     "corner_radius": 0,

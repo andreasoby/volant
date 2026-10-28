@@ -487,6 +487,7 @@
       ],
       "name": "t:names.producer_carousel",
       "settings": {
+        "cards_source": "producer_gallery",
         "heading": "Mød producenten",
         "link_label": "Mød {{ product.metafields.custom.vindb_nder | metafield_text }} →",
         "link": "{{ product.url }}",

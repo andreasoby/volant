@@ -589,7 +589,8 @@
     "open_by_default": "Åben som standard",
     "title_preset": "Forudindstilling for titel",
     "customer_account_menu": "Kundekontomenu",
-    "producer_link_source": "Link"
+    "producer_link_source": "Link",
+    "producer_cards_source": "Kort"
   },
   "options": {
     "apple": "Apple",
@@ -599,6 +600,8 @@
     "bottle": "Flaske",
     "producer_link_custom": "Eget link",
     "producer_link_metafield": "Produktets metafelt (custom.producentlink)",
+    "producer_cards_manual": "Manuelle",
+    "producer_cards_gallery": "Producentgalleri",
     "box": "Boks",
     "buttons": "Knapper",
     "carrot": "Gulerod",
@@ -1130,7 +1133,8 @@
     "mega_menu_feature": "Menuer kan ikke gemme et billede på et punkt. Til billedet med billedtekst skal du oprette en metaobjektdefinition med typen mega_menu_feature og slå adgang til butiksfronten til. Tilføj felterne image (fil), caption (flerlinjet tekst) og link (webadresse). Postens handle skal matche menupunktet, for eksempel vine.",
     "product_facts": "Udfyldes fra produktets metafelter i namespacet custom: producentlink (Producent, link til kollektion), druer2 (Drue), argang (Årgang), land (Land), omr_de (Område) og type. Et valgfrit vintage_note tilføjer info om årgangen. Lister, kollektioner og metaobjekter bruger deres titel eller navn. Et tomt metafelt vises som en tankestreg.",
     "product_specs": "Udfyldes fra produktets metafelter i namespacet custom: lagring, lagring_note, added_so2, added_so2_note, bottle_count, alcohol, farming og bottle_size. Lagring og tilføjet SO2 viser info-mærket. Et tomt metafelt vises som en tankestreg.",
-    "producer_link_metafield": "Bruger metafeldet custom.producentlink på det aktuelle produkt. På en produktside er det linket til producentens kollektion."
+    "producer_link_metafield": "Bruger metafeldet custom.producentlink på det aktuelle produkt. På en produktside er det linket til producentens kollektion.",
+    "producer_cards_gallery": "Kortene kommer fra det aktuelle produkts metafelt custom.producer_object, feltet gallery. Hvert gallerikort bruger image, kicker, title og text. Manuelle blokke vises ikke."
   },
   "categories": {
     "basic": "Grundlæggende",

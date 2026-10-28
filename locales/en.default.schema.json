@@ -252,6 +252,7 @@
     "media_type_info": "Features are populated from your menu links",
     "map_locations": "Locations come from a shop metafield that lists Producer metaobjects. Create a metaobject with type producer and fields name, address, latitude, longitude, and optional maps_url. Continent, country, and region are metaobject references. The map labels each pin with the referenced entry's name, or its label when it has no name. Give every definition storefront access, then create a shop metafield with the namespace and key below, type List of metaobjects. Zoom groups entries into continent, country, then region. If the metafield is empty, every active producer entry is used.",
     "producer_carousel": "The front card shows the text panel. The other cards show their label.",
+    "producer_cards_gallery": "Cards come from the current product's custom.producer_object metafield, field gallery. Each gallery card uses image, kicker, title, and text. Manual blocks are not shown.",
     "producer_link_metafield": "Uses the current product's custom.producentlink metafield. On a product page this is the link to the producer's collection.",
     "product_facts": "Filled from product metafields in the custom namespace: producentlink (Producer, collection link), druer2 (Grape), argang (Vintage), land (Country), omr_de (Region), and type. An optional vintage_note adds the vintage tooltip. Lists, collections, and metaobjects use their title or name. An empty metafield shows an en dash.",
     "product_specs": "Filled from product metafields in the custom namespace: lagring, lagring_note, added_so2, added_so2_note, bottle_count, alcohol, farming, and bottle_size. Ageing and added SO2 show the info mark. An empty metafield shows an en dash.",
@@ -457,6 +458,8 @@
     "bottle": "Bottle",
     "producer_link_custom": "Custom link",
     "producer_link_metafield": "Product metafield (custom.producentlink)",
+    "producer_cards_manual": "Manual",
+    "producer_cards_gallery": "Producer gallery",
     "bottom": "Bottom",
     "bottom_left": "Bottom left",
     "bottom_right": "Bottom right",
@@ -1225,7 +1228,8 @@
     "producer_card_label": "Card label",
     "producer_card_label_info": "Shown on the photo when another producer is in front.",
     "producer_link_label": "Link label",
-    "producer_link_source": "Link source"
+    "producer_link_source": "Link source",
+    "producer_cards_source": "Cards"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

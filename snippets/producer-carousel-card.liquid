@@ -1,0 +1,126 @@
+{% doc %}
+  One slide in the producer carousel.
+
+  @param {number} index - Zero-based position among the rendered slides
+  @param {number} total - Number of rendered slides
+  @param {boolean} is_first - The first slide is the active card
+  @param {object} [image] - Slide image
+  @param {string} [eyebrow] - Small line above the title
+  @param {string} [title] - Slide title
+  @param {string} [text] - Slide text
+  @param {string} [label] - Label on the photo when another slide is in front
+  @param {string} [link] - Optional slide link
+  @param {string} [link_label] - Label for the slide link
+{% enddoc %}
+
+{%- liquid
+  assign card_label = label | default: title
+  assign show_title = title | default: card_label
+  assign show_label = 'producer_carousel.show' | t: title: show_title
+  assign fallback_images = 'producer-carousel-1.png,producer-carousel-2.png,producer-carousel-3.png,producer-carousel-4.png' | split: ','
+  assign fallback_index = index | modulo: 4
+  assign fallback_image = fallback_images[fallback_index]
+  assign image_width = 736
+  assign image_height = 920
+
+  case fallback_image
+    when 'producer-carousel-2.png'
+      assign image_width = 360
+      assign image_height = 640
+    when 'producer-carousel-3.png'
+      assign image_width = 1094
+      assign image_height = 1024
+    when 'producer-carousel-4.png'
+      assign image_width = 896
+      assign image_height = 1200
+  endcase
+-%}
+
+<div class="producer-carousel__media">
+  {% if image != blank %}
+    {{
+      image
+      | image_url: width: 1600
+      | image_tag:
+        widths: '400, 600, 800, 1200, 1600',
+        sizes: '(min-width: 750px) 528px, 85vw',
+        alt: show_title,
+        class: 'producer-carousel__image',
+        loading: 'lazy'
+    }}
+  {% else %}
+    <img
+      class="producer-carousel__image{% if fallback_image == 'producer-carousel-3.png' %} producer-carousel__image--limar{% endif %}"
+      src="{{ fallback_image | asset_url }}"
+      alt="{{ show_title | escape }}"
+      width="{{ image_width }}"
+      height="{{ image_height }}"
+      {% if is_first %}
+        loading="eager"
+        fetchpriority="high"
+      {% else %}
+        loading="lazy"
+      {% endif %}
+      draggable="false"
+    >
+  {% endif %}
+</div>
+
+<button
+  class="producer-carousel__select"
+  type="button"
+  data-select
+  aria-label="{{ show_label | escape }}"
+>
+  {% if card_label != blank %}
+    <span class="producer-carousel__label">{{ card_label }}</span>
+  {% endif %}
+</button>
+
+<div class="producer-carousel__panel">
+  {% if eyebrow != blank %}
+    <p class="producer-carousel__eyebrow">{{ eyebrow }}</p>
+  {% endif %}
+  {% if title != blank %}
+    <p class="producer-carousel__title">{{ title }}</p>
+  {% endif %}
+  {% if text != blank %}
+    <p class="producer-carousel__text">{{ text | newline_to_br }}</p>
+  {% endif %}
+
+  {% if total > 1 or link_label != blank %}
+    <div class="producer-carousel__controls">
+      {% if total > 1 %}
+        <button
+          class="producer-carousel__nav"
+          type="button"
+          data-prev
+          aria-label="{{ 'producer_carousel.previous' | t }}"
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+        <p class="producer-carousel__count" data-count>
+          {{ 'producer_carousel.position' | t: current: 1, total: total }}
+        </p>
+        <button
+          class="producer-carousel__nav"
+          type="button"
+          data-next
+          aria-label="{{ 'producer_carousel.next' | t }}"
+        >
+          <span aria-hidden="true">→</span>
+        </button>
+      {% endif %}
+
+      {% if link_label != blank %}
+        {% if link != blank %}
+          <a class="producer-carousel__link" href="{{ link }}">
+            {{ link_label }}
+          </a>
+        {% else %}
+          <span class="producer-carousel__link">{{ link_label }}</span>
+        {% endif %}
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

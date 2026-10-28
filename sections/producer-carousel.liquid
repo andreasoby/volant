@@ -56,7 +56,36 @@
 
 {%- liquid
   assign position_template = 'producer_carousel.position' | t: current: '__CURRENT__', total: '__TOTAL__'
-  assign fallback_images = 'producer-carousel-1.png,producer-carousel-2.png,producer-carousel-3.png,producer-carousel-4.png' | split: ','
+  assign use_gallery = false
+  assign gallery_cards = blank
+  assign card_count = section.blocks.size
+
+  if section.settings.cards_source == 'producer_gallery'
+    assign use_gallery = true
+    assign producer_entry = product.metafields.custom.producer_object.value
+    assign gallery_cards = producer_entry.gallery.value
+    assign card_count = 0
+
+    for gallery_card in gallery_cards
+      assign gallery_image = gallery_card.image.value
+      assign gallery_kicker = gallery_card.kicker | metafield_text | strip
+      if gallery_kicker == blank
+        assign gallery_kicker = gallery_card.kicker.value | strip
+      endif
+      assign gallery_title = gallery_card.title | metafield_text | strip
+      if gallery_title == blank
+        assign gallery_title = gallery_card.title.value | strip
+      endif
+      assign gallery_text = gallery_card.text | metafield_text | strip
+      if gallery_text == blank
+        assign gallery_text = gallery_card.text.value | strip
+      endif
+
+      if gallery_image != blank or gallery_kicker != blank or gallery_title != blank or gallery_text != blank
+        assign card_count = card_count | plus: 1
+      endif
+    endfor
+  endif
 -%}
 
 <div class="section-background producer-carousel__backdrop"></div>
@@ -89,147 +118,106 @@
     </div>
   {% endif %}
 
-  {% if section.blocks.size > 0 %}
+  {% if card_count > 0 %}
     <producer-carousel
       class="producer-carousel__viewport"
       data-position="{{ position_template | escape }}"
     >
       <ul class="producer-carousel__track is-instant" data-track>
-        {%- for block in section.blocks -%}
-          {%- liquid
-            assign card_label = block.settings.label | default: block.settings.title
-            assign show_title = block.settings.title | default: card_label
-            assign show_label = 'producer_carousel.show' | t: title: show_title
-            assign fallback_index = forloop.index0 | modulo: 4
-            assign fallback_image = fallback_images[fallback_index]
-            assign image_width = 736
-            assign image_height = 920
-            assign card_link = block.settings.link
+        {% if use_gallery %}
+          {%- assign shown_index = 0 -%}
+          {%- for gallery_card in gallery_cards -%}
+            {%- liquid
+              assign card_image = gallery_card.image.value
+              if card_image.preview_image != blank
+                assign card_image = card_image.preview_image
+              endif
+              assign card_eyebrow = gallery_card.kicker | metafield_text | strip
+              if card_eyebrow == blank
+                assign card_eyebrow = gallery_card.kicker.value | strip
+              endif
+              assign card_title = gallery_card.title | metafield_text | strip
+              if card_title == blank
+                assign card_title = gallery_card.title.value | strip
+              endif
+              assign card_text = gallery_card.text | metafield_text | strip
+              if card_text == blank
+                assign card_text = gallery_card.text.value | strip
+              endif
+              assign card_label = card_title | default: card_eyebrow
+              assign show_title = card_title | default: card_label
+              assign card_is_first = false
+              if shown_index == 0
+                assign card_is_first = true
+              endif
+            -%}
+            {%- if card_image != blank or card_eyebrow != blank or card_title != blank or card_text != blank -%}
+              <li
+                class="producer-carousel__card{% if card_is_first %} is-active{% endif %}"
+                data-card
+                data-logical="{{ shown_index }}"
+                data-title="{{ show_title | escape }}"
+              >
+                {% render 'producer-carousel-card',
+                  index: shown_index,
+                  total: card_count,
+                  is_first: card_is_first,
+                  image: card_image,
+                  eyebrow: card_eyebrow,
+                  title: card_title,
+                  text: card_text,
+                  label: card_label
+                %}
+              </li>
+              {%- assign shown_index = shown_index | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {% else %}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign card_label = block.settings.label | default: block.settings.title
+              assign show_title = block.settings.title | default: card_label
+              assign card_link = block.settings.link
 
-            if block.settings.link_source == 'producentlink'
-              assign producer_field = product.metafields.custom.producentlink
-              assign card_link = ''
+              if block.settings.link_source == 'producentlink'
+                assign producer_field = product.metafields.custom.producentlink
+                assign card_link = ''
 
-              if producer_field != blank
-                if producer_field.type == 'collection_reference' or producer_field.type == 'page_reference' or producer_field.type == 'product_reference' or producer_field.type == 'link'
-                  assign card_link = producer_field.value.url
-                elsif producer_field.type == 'url'
-                  assign card_link = producer_field.value
-                elsif producer_field.type == 'list.collection_reference'
-                  assign card_link = producer_field.value.first.url
-                elsif producer_field.value.url != blank
-                  assign card_link = producer_field.value.url
+                if producer_field != blank
+                  if producer_field.type == 'collection_reference' or producer_field.type == 'page_reference' or producer_field.type == 'product_reference' or producer_field.type == 'link'
+                    assign card_link = producer_field.value.url
+                  elsif producer_field.type == 'url'
+                    assign card_link = producer_field.value
+                  elsif producer_field.type == 'list.collection_reference'
+                    assign card_link = producer_field.value.first.url
+                  elsif producer_field.value.url != blank
+                    assign card_link = producer_field.value.url
+                  endif
                 endif
               endif
-            endif
-
-            case fallback_image
-              when 'producer-carousel-2.png'
-                assign image_width = 360
-                assign image_height = 640
-              when 'producer-carousel-3.png'
-                assign image_width = 1094
-                assign image_height = 1024
-              when 'producer-carousel-4.png'
-                assign image_width = 896
-                assign image_height = 1200
-            endcase
-          -%}
-          <li
-            class="producer-carousel__card{% if forloop.first %} is-active{% endif %}"
-            data-card
-            data-logical="{{ forloop.index0 }}"
-            data-title="{{ show_title | escape }}"
-            {{ block.shopify_attributes }}
-          >
-            <div class="producer-carousel__media">
-              {% if block.settings.image != blank %}
-                {{
-                  block.settings.image
-                  | image_url: width: 1600
-                  | image_tag:
-                    widths: '400, 600, 800, 1200, 1600',
-                    sizes: '(min-width: 750px) 528px, 85vw',
-                    alt: show_title,
-                    class: 'producer-carousel__image',
-                    loading: 'lazy'
-                }}
-              {% else %}
-                <img
-                  class="producer-carousel__image{% if fallback_image == 'producer-carousel-3.png' %} producer-carousel__image--limar{% endif %}"
-                  src="{{ fallback_image | asset_url }}"
-                  alt="{{ show_title | escape }}"
-                  width="{{ image_width }}"
-                  height="{{ image_height }}"
-                  {% if forloop.first %}
-                    loading="eager"
-                    fetchpriority="high"
-                  {% else %}
-                    loading="lazy"
-                  {% endif %}
-                  draggable="false"
-                >
-              {% endif %}
-            </div>
-
-            <button
-              class="producer-carousel__select"
-              type="button"
-              data-select
-              aria-label="{{ show_label | escape }}"
+            -%}
+            <li
+              class="producer-carousel__card{% if forloop.first %} is-active{% endif %}"
+              data-card
+              data-logical="{{ forloop.index0 }}"
+              data-title="{{ show_title | escape }}"
+              {{ block.shopify_attributes }}
             >
-              {% if card_label != blank %}
-                <span class="producer-carousel__label">{{ card_label }}</span>
-              {% endif %}
-            </button>
-
-            <div class="producer-carousel__panel">
-              {% if block.settings.eyebrow != blank %}
-                <p class="producer-carousel__eyebrow">{{ block.settings.eyebrow }}</p>
-              {% endif %}
-              {% if block.settings.title != blank %}
-                <p class="producer-carousel__title">{{ block.settings.title }}</p>
-              {% endif %}
-              {% if block.settings.text != blank %}
-                <p class="producer-carousel__text">{{ block.settings.text }}</p>
-              {% endif %}
-
-              <div class="producer-carousel__controls">
-                {% if section.blocks.size > 1 %}
-                  <button
-                    class="producer-carousel__nav"
-                    type="button"
-                    data-prev
-                    aria-label="{{ 'producer_carousel.previous' | t }}"
-                  >
-                    <span aria-hidden="true">←</span>
-                  </button>
-                  <p class="producer-carousel__count" data-count>
-                    {{ 'producer_carousel.position' | t: current: 1, total: section.blocks.size }}
-                  </p>
-                  <button
-                    class="producer-carousel__nav"
-                    type="button"
-                    data-next
-                    aria-label="{{ 'producer_carousel.next' | t }}"
-                  >
-                    <span aria-hidden="true">→</span>
-                  </button>
-                {% endif %}
-
-                {% if block.settings.link_label != blank %}
-                  {% if card_link != blank %}
-                    <a class="producer-carousel__link" href="{{ card_link }}">
-                      {{ block.settings.link_label }}
-                    </a>
-                  {% else %}
-                    <span class="producer-carousel__link">{{ block.settings.link_label }}</span>
-                  {% endif %}
-                {% endif %}
-              </div>
-            </div>
-          </li>
-        {%- endfor -%}
+              {% render 'producer-carousel-card',
+                index: forloop.index0,
+                total: card_count,
+                is_first: forloop.first,
+                image: block.settings.image,
+                eyebrow: block.settings.eyebrow,
+                title: block.settings.title,
+                text: block.settings.text,
+                label: card_label,
+                link: card_link,
+                link_label: block.settings.link_label
+              %}
+            </li>
+          {%- endfor -%}
+        {% endif %}
       </ul>
       <p class="visually-hidden" data-status aria-live="polite"></p>
     </producer-carousel>
@@ -808,6 +796,27 @@ if (!customElements.get('producer-carousel')) {
     {
       "type": "paragraph",
       "content": "t:info.producer_carousel"
+    },
+    {
+      "type": "select",
+      "id": "cards_source",
+      "label": "t:settings.producer_cards_source",
+      "options": [
+        {
+          "value": "manual",
+          "label": "t:options.producer_cards_manual"
+        },
+        {
+          "value": "producer_gallery",
+          "label": "t:options.producer_cards_gallery"
+        }
+      ],
+      "default": "manual"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:info.producer_cards_gallery",
+      "visible_if": "{{ section.settings.cards_source == 'producer_gallery' }}"
     },
     {
       "type": "text",

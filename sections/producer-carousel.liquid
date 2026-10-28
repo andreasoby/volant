@@ -104,6 +104,24 @@
             assign fallback_image = fallback_images[fallback_index]
             assign image_width = 736
             assign image_height = 920
+            assign card_link = block.settings.link
+
+            if block.settings.link_source == 'producentlink'
+              assign producer_field = product.metafields.custom.producentlink
+              assign card_link = ''
+
+              if producer_field != blank
+                if producer_field.type == 'collection_reference' or producer_field.type == 'page_reference' or producer_field.type == 'product_reference' or producer_field.type == 'link'
+                  assign card_link = producer_field.value.url
+                elsif producer_field.type == 'url'
+                  assign card_link = producer_field.value
+                elsif producer_field.type == 'list.collection_reference'
+                  assign card_link = producer_field.value.first.url
+                elsif producer_field.value.url != blank
+                  assign card_link = producer_field.value.url
+                endif
+              endif
+            endif
 
             case fallback_image
               when 'producer-carousel-2.png'
@@ -200,8 +218,8 @@
                 {% endif %}
 
                 {% if block.settings.link_label != blank %}
-                  {% if block.settings.link != blank %}
-                    <a class="producer-carousel__link" href="{{ block.settings.link }}">
+                  {% if card_link != blank %}
+                    <a class="producer-carousel__link" href="{{ card_link }}">
                       {{ block.settings.link_label }}
                     </a>
                   {% else %}
@@ -865,9 +883,31 @@ if (!customElements.get('producer-carousel')) {
           "default": "Mød producenten →"
         },
         {
+          "type": "select",
+          "id": "link_source",
+          "label": "t:settings.producer_link_source",
+          "options": [
+            {
+              "value": "url",
+              "label": "t:options.producer_link_custom"
+            },
+            {
+              "value": "producentlink",
+              "label": "t:options.producer_link_metafield"
+            }
+          ],
+          "default": "url"
+        },
+        {
           "type": "url",
           "id": "link",
-          "label": "t:settings.link"
+          "label": "t:settings.link",
+          "visible_if": "{{ block.settings.link_source == 'url' }}"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:info.producer_link_metafield",
+          "visible_if": "{{ block.settings.link_source == 'producentlink' }}"
         }
       ]
     }

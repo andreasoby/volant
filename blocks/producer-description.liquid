@@ -23,7 +23,7 @@
     assign since_text = 'producer_description.sample.since' | t
     assign body_html = 'producer_description.sample.text' | t | escape | newline_to_br
   else
-    assign region_text = producer_collection.metafields.custom.region.value | strip
+    assign region_text = producer_collection.metafields.custom.producent_region_land.value | strip
     assign producer_title = producer_collection.metafields.custom.producent_titel.value | strip
     if producer_title == blank
       assign producer_title = producer_collection.title
@@ -41,7 +41,16 @@
 
     assign grape_text = producer_collection.metafields.custom.druesort | metafield_text | strip
     assign farming_text = producer_collection.metafields.custom.dyrkning | metafield_text | strip
-    assign since_text = producer_collection.metafields.custom.hos_volant_siden | metafield_text | strip
+
+    assign since_field = producer_collection.metafields.custom.hos_volant_siden
+    assign since_type = since_field.type
+    if since_type == 'number_integer' or since_type == 'number_decimal' or since_type == 'integer'
+      if since_field.value != blank
+        assign since_text = since_field.value | round | json
+      endif
+    else
+      assign since_text = since_field | metafield_text | strip
+    endif
 
     assign maps_field = producer_collection.metafields.custom.google_maps
     if maps_field.type == 'link'
@@ -292,6 +301,10 @@
   .producer-description__row dt {
     font-family: var(--font-accent--family, var(--font-body--family));
     font-weight: var(--font-accent--weight, 500);
+  }
+  
+  .producer-description__row dd {
+    color: #6B6357;
   }
 
   .producer-description__link {

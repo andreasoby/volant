@@ -346,6 +346,7 @@
                 },
                 "accelerated-checkout": {
                   "type": "accelerated-checkout",
+                  "disabled": true,
                   "static": true,
                   "settings": {},
                   "blocks": {}
@@ -430,6 +431,68 @@
         "show_on_desktop": false
       }
     },
+    "producer_carousel_iW66JT": {
+      "type": "producer-carousel",
+      "blocks": {
+        "producer_LwRDLy": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "{{ product.metafields.custom.omr_de.value }}· {{ product.metafields.custom.land.value }}",
+            "title": "{{ product.metafields.custom.vindb_nder | metafield_text }}",
+            "text": "Mikro-négoce i hjertet af Bourgogne. 600 nummererede flasker pr. cuvée – hver vin lagres mindst ti måneder på fad.",
+            "label": "BOURGOGNE",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "producer_JPKUxe": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Rioja · Spanien",
+            "title": "Victor Ausejo",
+            "text": "Gamle stokke, små parceller og et nyt blik på Rioja – vin lavet med tid og tålmodighed.",
+            "label": "RIOJA",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        },
+        "producer_YTKzb7": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Champagne · Frankrig",
+            "title": "Domaine A. Limar",
+            "text": "Et lille plot i Vallée de la Marne, plantet i 1981. Brut Nature uden dosage – seks år på bærmen.",
+            "label": "Domaine A. Limar",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        },
+        "producer_iiMMG6": {
+          "type": "producer",
+          "settings": {
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Ô Ma",
+            "text": "Saftig, citrusfrisk Aligoté fra Santenay – en hverdagsvin med karakter.",
+            "label": "BOURGOGNE",
+            "link_label": "Mød producenten →",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "producer_LwRDLy",
+        "producer_JPKUxe",
+        "producer_YTKzb7",
+        "producer_iiMMG6"
+      ],
+      "name": "t:names.producer_carousel",
+      "settings": {
+        "heading": "Mød producenten",
+        "link_label": "Mød {{ product.metafields.custom.vindb_nder | metafield_text }} →",
+        "link": "{{ product.url }}",
+        "section_width": "page-width"
+      }
+    },
     "product_recommendations_qggXJq": {
       "type": "product-recommendations",
       "blocks": {
@@ -437,11 +500,11 @@
           "type": "text",
           "name": "t:names.header",
           "settings": {
-            "text": "<h2>You may also like </h2>",
+            "text": "<h2>You may also like&nbsp;</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "h4",
+            "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "",
             "line_height": "normal",
@@ -453,7 +516,7 @@
             "background_color": "#00000026",
             "corner_radius": 0,
             "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-end": 10,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -464,7 +527,7 @@
           "name": "t:names.product_card",
           "static": true,
           "settings": {
-            "product_card_gap": 8,
+            "product_card_gap": 0,
             "background_color": "",
             "border": "none",
             "border_width": 1,
@@ -481,14 +544,14 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "portrait",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
                 "border_color": "",
                 "border_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 0,
+                "padding-block-end": 8,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -500,7 +563,7 @@
               "settings": {
                 "width": "100%",
                 "max_width": "normal",
-                "alignment": "left",
+                "alignment": "center",
                 "type_preset": "paragraph",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
@@ -525,27 +588,91 @@
                 "show_sale_price_first": true,
                 "show_installments": false,
                 "show_tax_info": false,
-                "type_preset": "h6",
+                "type_preset": "h5",
                 "width": "100%",
-                "alignment": "left",
+                "alignment": "center",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
                 "text_color": "",
-                "padding-block-start": 0,
+                "padding-block-start": 2,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "buy_buttons_7mazhn": {
+              "type": "buy-buttons",
+              "name": "t:names.product_buy_buttons",
+              "settings": {
+                "stacking": false,
+                "text_color": "",
+                "show_pickup_availability": true,
+                "gift_card_form": true,
+                "recipient_button_style": "default",
+                "recipient_button_background": "{{ settings.color_palette.background }}",
+                "recipient_button_text": "{{ settings.color_palette.foreground }}",
+                "recipient_button_border": "{{ settings.color_palette.foreground }}",
+                "selected_recipient_button_style": "default",
+                "selected_recipient_button_background": "{{ settings.color_palette.foreground }}",
+                "selected_recipient_button_text": "{{ settings.color_palette.background }}",
+                "selected_recipient_button_border": "{{ settings.color_palette.foreground }}",
+                "input_style": "default",
+                "input_background_color": "{{ settings.color_palette.background }}",
+                "input_text_color": "{{ settings.color_palette.foreground }}",
+                "input_border_color": "{{ settings.color_palette.foreground }}",
+                "border_width": 1,
+                "border_radius": 0,
+                "padding-block-start": 12,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "quantity": {
+                  "type": "quantity",
+                  "disabled": true,
+                  "static": true,
+                  "settings": {
+                    "input_style": "default",
+                    "input_background_color": "{{ settings.color_palette.background }}",
+                    "input_text_color": "{{ settings.color_palette.foreground }}",
+                    "input_border_color": "{{ settings.color_palette.foreground }}",
+                    "border_width": 1,
+                    "border_radius": 0
+                  },
+                  "blocks": {}
+                },
+                "add-to-cart": {
+                  "type": "add-to-cart",
+                  "disabled": true,
+                  "static": true,
+                  "settings": {
+                    "style_class": "button-secondary",
+                    "custom_button_background": "{{ settings.color_palette.foreground }}",
+                    "custom_button_text": "{{ settings.color_palette.background }}",
+                    "custom_button_border": "{{ settings.color_palette.background }}"
+                  },
+                  "blocks": {}
+                },
+                "accelerated-checkout": {
+                  "type": "accelerated-checkout",
+                  "static": true,
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": []
             }
           },
           "block_order": [
             "product_card_gallery_DNizbJ",
             "product_title_M7MJkb",
-            "price_gLWgA6"
+            "price_gLWgA6",
+            "buy_buttons_7mazhn"
           ]
         }
       },
@@ -577,6 +704,7 @@
     "main",
     "product_facts",
     "product_specs",
+    "producer_carousel_iW66JT",
     "product_recommendations_qggXJq"
   ]
 }

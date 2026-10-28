@@ -416,6 +416,23 @@
       "type": "Sparkling"
     }
   },
+  "producer_description": {
+    "read_more": "Read more",
+    "read_less": "Read less",
+    "regions": "Region(s)",
+    "grapes": "Grapes",
+    "farming": "Farming",
+    "since": "At Volant since",
+    "maps": "View in Google Maps",
+    "sample": {
+      "title": "00 Wines",
+      "region": "Willamette Valley · Oregon · USA | Beaune · Bourgogne · France",
+      "text": "Few wineries in the USA have built a reputation of this scale. 00 Wines was founded in 2015 by Chris and Kathryn Hermann.\n\nFrom the start they brought in consultants from Burgundy, including Dominique Lafon.",
+      "grapes": "Chardonnay · Pinot Noir",
+      "farming": "Selected sites in Willamette Valley, plus Grand Cru and Premier Cru sites in Burgundy.",
+      "since": "2025"
+    }
+  },
   "product_specs": {
     "label": "Specifications",
     "lagring": "Ageing",

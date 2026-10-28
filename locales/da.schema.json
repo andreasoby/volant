@@ -169,6 +169,7 @@
     "layered_slideshow": "Diasshow i lag",
     "cart_drawer": "Indkøbskurvskuffe",
     "disclosures": "Oplysninger",
+    "producer_description": "Producent",
     "product_facts": "Produktinfo",
     "product_specs": "Specifikationer"
   },
@@ -1135,7 +1136,8 @@
     "product_specs": "Udfyldes fra produktets metafelter i namespacet custom: lagring, lagring_note, added_so2, added_so2_note, bottle_count, alcohol, farming og bottle_size. Lagring og tilføjet SO2 viser info-mærket. Et tomt metafelt vises som en tankestreg.",
     "producer_link_metafield": "Bruger metafeldet custom.producentlink på det aktuelle produkt. På en produktside er det linket til producentens kollektion.",
     "producer_cards_gallery": "Kortene kommer fra det aktuelle produkts metafelt custom.producer_object, feltet gallery. Hvert gallerikort bruger image, kicker, title og text. Manuelle blokke vises ikke.",
-    "producer_header_link": "På en produktside bruges kollektionen fra custom.producer_object, når linket er tomt."
+    "producer_header_link": "På en produktside bruges kollektionen fra custom.producer_object, når linket er tomt.",
+    "producer_description": "Udfyldes fra den aktuelle kollektions metafelter i namespacet custom: billede (billede), region (stedlinje og rækken Region(er)), producent_titel (titel, ellers kollektionens titel), producenttekst (tekst med Læs mere), druesort (Druer), dyrkning (Dyrkning), hos_volant_siden (Hos Volant siden) og google_maps (linket Vis i Google Maps). Tomme felter skjules."
   },
   "categories": {
     "basic": "Grundlæggende",

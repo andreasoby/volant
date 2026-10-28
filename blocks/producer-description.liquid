@@ -1,0 +1,405 @@
+{%- liquid
+  assign producer_collection = closest.collection
+  assign show_sample = false
+  if producer_collection == blank
+    assign show_sample = true
+  endif
+
+  assign region_text = ''
+  assign producer_title = ''
+  assign body_html = ''
+  assign body_is_rich = false
+  assign grape_text = ''
+  assign farming_text = ''
+  assign since_text = ''
+  assign maps_url = ''
+  assign producer_image = blank
+
+  if show_sample
+    assign region_text = 'producer_description.sample.region' | t
+    assign producer_title = 'producer_description.sample.title' | t
+    assign grape_text = 'producer_description.sample.grapes' | t
+    assign farming_text = 'producer_description.sample.farming' | t
+    assign since_text = 'producer_description.sample.since' | t
+    assign body_html = 'producer_description.sample.text' | t | escape | newline_to_br
+  else
+    assign region_text = producer_collection.metafields.custom.region.value | strip
+    assign producer_title = producer_collection.metafields.custom.producent_titel.value | strip
+    if producer_title == blank
+      assign producer_title = producer_collection.title
+    endif
+
+    assign text_field = producer_collection.metafields.custom.producenttekst
+    if text_field.value != blank
+      if text_field.type == 'rich_text_field'
+        assign body_html = text_field | metafield_tag
+        assign body_is_rich = true
+      else
+        assign body_html = text_field.value | escape | newline_to_br
+      endif
+    endif
+
+    assign grape_text = producer_collection.metafields.custom.druesort | metafield_text | strip
+    assign farming_text = producer_collection.metafields.custom.dyrkning | metafield_text | strip
+    assign since_text = producer_collection.metafields.custom.hos_volant_siden | metafield_text | strip
+
+    assign maps_field = producer_collection.metafields.custom.google_maps
+    if maps_field.type == 'link'
+      assign maps_url = maps_field.value.url
+    elsif maps_field.type == 'url' or maps_field.value contains '://'
+      assign maps_url = maps_field.value
+    endif
+
+    assign producer_image = producer_collection.metafields.custom.billede.value
+    if producer_image.preview_image != blank
+      assign producer_image = producer_image.preview_image
+    endif
+  endif
+
+  assign region_html = region_text | escape | replace: ' | ', '<br>' | newline_to_br
+  assign show_region = false
+  if region_text != blank or maps_url != blank
+    assign show_region = true
+  endif
+  assign show_specs = false
+  if show_region or grape_text != blank or farming_text != blank or since_text != blank
+    assign show_specs = true
+  endif
+  assign image_alt = producer_image.alt | default: producer_title
+-%}
+
+<producer-description class="producer-description" {{ block.shopify_attributes }}>
+  {%- if producer_image != blank or show_sample -%}
+    <div class="producer-description__media">
+      {%- if producer_image != blank -%}
+        {{
+          producer_image
+          | image_url: width: 1600
+          | image_tag:
+            widths: '400, 600, 800, 1000, 1400, 1600',
+            sizes: '(min-width: 750px) 42vw, 100vw',
+            alt: image_alt,
+            class: 'producer-description__image',
+            loading: 'eager',
+            fetchpriority: 'high'
+        }}
+      {%- else -%}
+        {{ 'detailed-apparel-1' | placeholder_svg_tag: 'producer-description__image producer-description__placeholder' }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="producer-description__content">
+    {%- if region_text != blank -%}
+      <p class="producer-description__eyebrow">{{ region_html }}</p>
+    {%- endif -%}
+
+    {%- if producer_title != blank -%}
+      <h1 class="producer-description__title">{{ producer_title | escape }}</h1>
+    {%- endif -%}
+
+    {%- if body_html != blank -%}
+      <div
+        class="producer-description__body{% if body_is_rich %} is-rich{% endif %}"
+        data-body
+      >
+        {{ body_html }}
+      </div>
+      <button
+        class="producer-description__toggle"
+        type="button"
+        data-toggle
+        hidden
+        aria-expanded="false"
+        data-more="{{ 'producer_description.read_more' | t | escape }}"
+        data-less="{{ 'producer_description.read_less' | t | escape }}"
+      >
+        {{ 'producer_description.read_more' | t }}
+      </button>
+    {%- endif -%}
+
+    {%- if show_specs -%}
+      <dl class="producer-description__specs">
+        {%- if show_region -%}
+          <div class="producer-description__row">
+            <dt>{{ 'producer_description.regions' | t }}</dt>
+            <dd>{{ region_html }}</dd>
+            {%- if maps_url != blank -%}
+              <dd class="producer-description__link">
+                <a href="{{ maps_url | escape }}" target="_blank" rel="noopener noreferrer">
+                  {{ 'producer_description.maps' | t }}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </dd>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if grape_text != blank -%}
+          <div class="producer-description__row">
+            <dt>{{ 'producer_description.grapes' | t }}</dt>
+            <dd>{{ grape_text | escape }}</dd>
+          </div>
+        {%- endif -%}
+
+        {%- if farming_text != blank -%}
+          <div class="producer-description__row">
+            <dt>{{ 'producer_description.farming' | t }}</dt>
+            <dd>{{ farming_text | escape }}</dd>
+          </div>
+        {%- endif -%}
+
+        {%- if since_text != blank -%}
+          <div class="producer-description__row">
+            <dt>{{ 'producer_description.since' | t }}</dt>
+            <dd>{{ since_text | escape }}</dd>
+          </div>
+        {%- endif -%}
+      </dl>
+    {%- endif -%}
+  </div>
+</producer-description>
+
+{% stylesheet %}
+  producer-description {
+    display: block;
+    width: 100%;
+    color: #1a1a1a;
+  }
+
+  .producer-description {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    align-items: stretch;
+  }
+
+  .producer-description__media {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .producer-description__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .producer-description__placeholder {
+    background: #e7e1d6;
+  }
+
+  .producer-description__content {
+    min-width: 0;
+  }
+
+  .producer-description__eyebrow {
+    margin: 0 0 18px;
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .producer-description__title {
+    margin: 0 0 20px;
+    font-family: var(--font-h1--family, var(--font-heading--family));
+    font-size: 40px;
+    font-weight: var(--font-h1--weight, 400);
+    letter-spacing: var(--font-h1--letter-spacing);
+    line-height: var(--font-h1--line-height, 1.05);
+  }
+
+  .producer-description__body {
+    font-family: var(--font-body--family);
+    font-size: var(--font-paragraph--size, 16px);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .producer-description__body:not(.is-rich) {
+    white-space: pre-line;
+  }
+
+  .producer-description__body.is-clamped {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+  }
+
+  .producer-description__body :is(p, span) {
+    margin: 0;
+  }
+
+  .producer-description__body :is(p, span) + :is(p, span) {
+    margin-top: 1em;
+  }
+
+  .producer-description__toggle {
+    display: inline-block;
+    margin: 14px 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-family: var(--font-body--family);
+    font-size: var(--font-paragraph--size, 16px);
+    line-height: 1.5;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .producer-description__toggle:focus-visible {
+    outline: 2px solid #1a1a1a;
+    outline-offset: 3px;
+  }
+
+  .producer-description__specs {
+    margin: 32px 0 0;
+  }
+
+  .producer-description__row {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: 8px 16px;
+    align-items: start;
+    margin: 0;
+    padding: 14px 0;
+    border-top: 1px solid #1a1a1a;
+  }
+
+  .producer-description__row:last-child {
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .producer-description__row dt,
+  .producer-description__row dd {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-size: var(--font-paragraph--size, 16px);
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  .producer-description__row dt {
+    font-family: var(--font-accent--family, var(--font-body--family));
+    font-weight: var(--font-accent--weight, 500);
+  }
+
+  .producer-description__link {
+    grid-column: 2;
+  }
+
+  .producer-description__link a {
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .producer-description__link a:focus-visible {
+    outline: 2px solid #1a1a1a;
+    outline-offset: 3px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .producer-description {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: 48px;
+      align-items: start;
+    }
+
+    .producer-description__media {
+      align-self: start;
+    }
+
+    .producer-description__image {
+      height: auto;
+      aspect-ratio: 4 / 5;
+    }
+
+    .producer-description__title {
+      font-size: var(--font-h1--size, 56px);
+    }
+
+    .producer-description__row {
+      grid-template-columns: 168px minmax(0, 1fr) auto;
+      gap: 12px 24px;
+      padding: 16px 0;
+    }
+
+    .producer-description__link {
+      grid-column: auto;
+      justify-self: end;
+      white-space: nowrap;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('producer-description')) {
+    class ProducerDescription extends HTMLElement {
+      connectedCallback() {
+        this.body = this.querySelector('[data-body]');
+        this.toggle = this.querySelector('[data-toggle]');
+        if (!this.body || !this.toggle) return;
+
+        this.moreLabel = this.toggle.dataset.more;
+        this.lessLabel = this.toggle.dataset.less;
+        this.onClick = this.onClick.bind(this);
+        this.toggle.addEventListener('click', this.onClick);
+        requestAnimationFrame(() => this.measure());
+      }
+
+      disconnectedCallback() {
+        this.toggle?.removeEventListener('click', this.onClick);
+      }
+
+      measure() {
+        this.body.classList.add('is-clamped');
+        const overflows = this.body.scrollHeight > this.body.clientHeight + 1;
+        if (!overflows) {
+          this.body.classList.remove('is-clamped');
+          this.toggle.hidden = true;
+          return;
+        }
+        this.toggle.hidden = false;
+      }
+
+      onClick() {
+        const expanded = this.body.classList.toggle('is-clamped') === false;
+        this.toggle.textContent = expanded ? this.lessLabel : this.moreLabel;
+        this.toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      }
+    }
+
+    customElements.define('producer-description', ProducerDescription);
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:names.producer_description",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:info.producer_description"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.producer_description",
+      "category": "t:categories.collection"
+    }
+  ]
+}
+{% endschema %}

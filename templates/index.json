@@ -440,6 +440,7 @@
             "text": "",
             "label": "",
             "link_label": "Mød producenten →",
+            "link_source": "url",
             "link": ""
           }
         },
@@ -451,6 +452,7 @@
             "text": "Mikro-négoce i hjertet af Bourgogne. 600 nummererede flasker pr. cuvée – hver vin lagres mindst ti måneder på fad.",
             "label": "BOURGOGNE",
             "link_label": "Mød producenten →",
+            "link_source": "url",
             "link": ""
           }
         },
@@ -462,6 +464,7 @@
             "text": "Gamle stokke, små parceller og et nyt blik på Rioja – vin lavet med tid og tålmodighed.",
             "label": "RIOJA",
             "link_label": "Mød producenten →",
+            "link_source": "url",
             "link": ""
           }
         },
@@ -473,6 +476,7 @@
             "text": "Et lille plot i Vallée de la Marne, plantet i 1981. Brut Nature uden dosage – seks år på bærmen.",
             "label": "Domaine A. Limar",
             "link_label": "Mød producenten →",
+            "link_source": "url",
             "link": ""
           }
         },
@@ -484,6 +488,7 @@
             "text": "Saftig, citrusfrisk Aligoté fra Santenay – en hverdagsvin med karakter.",
             "label": "BOURGOGNE",
             "link_label": "Mød producenten →",
+            "link_source": "url",
             "link": ""
           }
         }
@@ -497,9 +502,10 @@
       ],
       "name": "t:names.producer_carousel",
       "settings": {
+        "cards_source": "manual",
         "heading": "Mød producenterne",
         "link_label": "Se alle producenter →",
-        "link": "",
+        "link": "shopify://pages/producenter",
         "section_width": "page-width"
       }
     },

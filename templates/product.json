@@ -442,6 +442,7 @@
             "text": "Mikro-négoce i hjertet af Bourgogne. 600 nummererede flasker pr. cuvée – hver vin lagres mindst ti måneder på fad.",
             "label": "BOURGOGNE",
             "link_label": "",
+            "link_source": "url",
             "link": ""
           }
         },
@@ -453,6 +454,7 @@
             "text": "Gamle stokke, små parceller og et nyt blik på Rioja – vin lavet med tid og tålmodighed.",
             "label": "RIOJA",
             "link_label": "Mød producenten →",
+            "link_source": "url",
             "link": ""
           }
         },
@@ -464,6 +466,7 @@
             "text": "Et lille plot i Vallée de la Marne, plantet i 1981. Brut Nature uden dosage – seks år på bærmen.",
             "label": "Domaine A. Limar",
             "link_label": "Mød producenten →",
+            "link_source": "url",
             "link": ""
           }
         },
@@ -475,6 +478,7 @@
             "text": "Saftig, citrusfrisk Aligoté fra Santenay – en hverdagsvin med karakter.",
             "label": "BOURGOGNE",
             "link_label": "Mød producenten →",
+            "link_source": "url",
             "link": ""
           }
         }
@@ -490,7 +494,7 @@
         "cards_source": "producer_gallery",
         "heading": "Mød producenten",
         "link_label": "Mød {{ product.metafields.custom.vindb_nder | metafield_text }} →",
-        "link": "{{ product.url }}",
+        "link": "shopify://collections/domaine-a-limar",
         "section_width": "page-width"
       }
     },

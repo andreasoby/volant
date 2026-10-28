@@ -437,6 +437,11 @@
       "since": "2025"
     }
   },
+  "producer_index": {
+    "label": "Producers",
+    "other": "Other",
+    "empty": "Add producer entries to show them here."
+  },
   "product_specs": {
     "label": "Specifications",
     "lagring": "Ageing",

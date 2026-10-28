@@ -1,0 +1,46 @@
+{% doc %}
+  Prints one sortable row for the producer index.
+  Prints nothing when the producer has no name.
+
+  Fields are separated by ~^~: lowercase country, country label, lowercase name,
+  producer name, and the collection URL. A producer with no country sorts last.
+
+  @param {object} producer - Producer metaobject entry
+  @param {string} other_label - Label used when the producer has no country
+
+  @example
+  {% render 'producer-index-row', producer: producer, other_label: 'Other' %}
+{% enddoc %}
+
+{%- liquid
+  assign producer_name = producer.name.value | strip_newlines | strip | replace: '~^~', ' ' | replace: '~|~', ' '
+  assign collection_entry = producer.collection_page.value
+  assign producer_url = collection_entry.url | default: collection_entry.first.url | strip_newlines | strip | replace: '~^~', '' | replace: '~|~', ''
+
+  assign country_entry = producer.country.value
+  assign producer_country = country_entry.name.value | default: country_entry.label.value
+  if producer_country == blank
+    assign producer_country = country_entry.first.name.value | default: country_entry.first.label.value
+  endif
+  if producer_country == blank
+    if country_entry.system.type != blank
+      assign producer_country = country_entry.system.handle
+    else
+      assign producer_country = country_entry
+    endif
+  endif
+
+  assign producer_country = producer_country | strip_newlines | strip | replace: '~^~', ' ' | replace: '~|~', ' '
+  assign country_label = producer_country
+  if country_label == blank
+    assign country_label = other_label
+    assign country_sort = '1'
+  else
+    assign country_sort = producer_country | downcase | prepend: '0'
+  endif
+  assign name_sort = producer_name | downcase
+-%}
+
+{%- if producer_name != blank -%}
+  {{- country_sort -}}~^~{{- country_label -}}~^~{{- name_sort -}}~^~{{- producer_name -}}~^~{{- producer_url -}}
+{%- endif -%}

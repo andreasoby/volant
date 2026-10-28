@@ -172,7 +172,8 @@
     "disclosures": "Oplysninger",
     "producer_description": "Producent",
     "product_facts": "Produktinfo",
-    "product_specs": "Specifikationer"
+    "product_specs": "Specifikationer",
+    "producer_index": "Producenter efter land"
   },
   "settings": {
     "alignment": "Justering",
@@ -230,6 +231,7 @@
     "video_loop": "Afspil video i løkke",
     "video_position": "Videoposition",
     "width": "Bredde",
+    "map_metaobject_type": "Metaobjekttype",
     "z_index": "Z-indeks",
     "limit_content_width": "Begræns bredde på indhold",
     "color_scheme": "Farveskema",
@@ -1141,7 +1143,8 @@
     "producer_link_metafield": "Bruger metafeldet custom.producentlink på det aktuelle produkt. På en produktside er det linket til producentens kollektion.",
     "producer_cards_gallery": "Kortene kommer fra metafeltet custom.producer_object, feltet gallery, på det aktuelle produkt eller den aktuelle kollektion. Hvert gallerikort bruger image, kicker, title og text. Manuelle blokke vises ikke.",
     "producer_header_link": "På en produktside bruges kollektionen fra custom.producer_object, når linket er tomt.",
-    "producer_description": "Udfyldes fra den aktuelle kollektions metafelter i namespacet custom: billede (billede), region (stedlinje og rækken Region(er)), producent_titel (titel, ellers kollektionens titel), producenttekst (tekst med Læs mere), druesort (Druer), dyrkning (Dyrkning), hos_volant_siden (Hos Volant siden) og google_maps (linket Vis i Google Maps). Tomme felter skjules."
+    "producer_description": "Udfyldes fra den aktuelle kollektions metafelter i namespacet custom: billede (billede), region (stedlinje og rækken Region(er)), producent_titel (titel, ellers kollektionens titel), producenttekst (tekst med Læs mere), druesort (Druer), dyrkning (Dyrkning), hos_volant_siden (Hos Volant siden) og google_maps (linket Vis i Google Maps). Tomme felter skjules.",
+    "producer_index": "Viser alle aktive producentposter, grupperet efter land. Hvert navn linker til kollektionen i feltet collection_page. Land kommer fra feltet country: navnet på det tilknyttede metaobjekt, ellers dets label, ellers almindelig tekst. Tallet ved hvert land er antallet af producenter i gruppen. Giv definitionen adgang til butiksfronten. Der vises op til 250 poster."
   },
   "categories": {
     "basic": "Grundlæggende",

@@ -418,6 +418,11 @@
       "since": "2025"
     }
   },
+  "producer_index": {
+    "label": "Producenter",
+    "other": "Andre",
+    "empty": "Tilføj producenter for at vise dem her."
+  },
   "product_specs": {
     "label": "Specifikationer",
     "lagring": "Lagring",

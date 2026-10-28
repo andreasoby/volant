@@ -178,11 +178,21 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "producer_index_list": {
+      "type": "producer-index",
+      "name": "t:names.producer_index",
+      "settings": {
+        "heading": "Alle producenter",
+        "metaobject_type": "producer",
+        "section_width": "page-width"
+      }
     }
   },
   "order": [
     "main",
     "producer_map_NVcUcn",
-    "section_cHcBFJ"
+    "section_cHcBFJ",
+    "producer_index_list"
   ]
 }

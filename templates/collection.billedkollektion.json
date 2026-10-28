@@ -102,6 +102,30 @@
     "section_pV8Agf": {
       "type": "section",
       "blocks": {
+        "image_gNCFTV": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "{{ closest.collection.metafields.custom.billede.value }}",
+            "link": "",
+            "image_ratio": "portrait",
+            "width": "custom",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "group_4cNtKi": {
           "type": "group",
           "name": "t:names.group",
@@ -114,7 +138,7 @@
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "center",
             "gap": 12,
-            "width": "fill",
+            "width": "custom",
             "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
@@ -172,48 +196,24 @@
           "block_order": [
             "text_7TQ4Yg"
           ]
-        },
-        "image_gNCFTV": {
-          "type": "image",
-          "name": "t:names.image",
-          "settings": {
-            "image": "{{ closest.collection.metafields.custom.billede.value }}",
-            "link": "",
-            "image_ratio": "portrait",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "group_4cNtKi",
-        "image_gNCFTV"
+        "image_gNCFTV",
+        "group_4cNtKi"
       ],
       "name": "t:names.custom_section",
       "settings": {
-        "content_direction": "column",
+        "content_direction": "row",
         "vertical_on_mobile": true,
         "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
+        "vertical_alignment": "flex-start",
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 12,
         "section_width": "page-width",
-        "section_height": "small",
+        "section_height": "",
         "section_height_custom": 50,
         "background_media": "none",
         "background_color": "",

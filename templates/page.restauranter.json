@@ -358,10 +358,30 @@
         "padding-block-start": 32,
         "padding-block-end": 0
       }
+    },
+    "restaurant_index_KFXDrG": {
+      "type": "restaurant-index",
+      "name": "t:names.restaurant_index",
+      "settings": {
+        "region": "kobenhavn-sjaelland",
+        "metaobject_type": "restaurant",
+        "section_width": "page-width"
+      }
+    },
+    "restaurant_index_MFyY97": {
+      "type": "restaurant-index",
+      "name": "t:names.restaurant_index",
+      "settings": {
+        "region": "jylland",
+        "metaobject_type": "restaurant",
+        "section_width": "page-width"
+      }
     }
   },
   "order": [
     "main",
-    "section_AjTrT8"
+    "section_AjTrT8",
+    "restaurant_index_KFXDrG",
+    "restaurant_index_MFyY97"
   ]
 }

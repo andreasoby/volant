@@ -358,28 +358,10 @@
         "padding-block-start": 32,
         "padding-block-end": 0
       }
-    },
-    "restaurant_kobenhavn": {
-      "type": "restaurant-index",
-      "settings": {
-        "region": "gid://shopify/Metaobject/475764556122",
-        "metaobject_type": "restaurant",
-        "section_width": "page-width"
-      }
-    },
-    "restaurant_jylland": {
-      "type": "restaurant-index",
-      "settings": {
-        "region": "gid://shopify/Metaobject/475764851034",
-        "metaobject_type": "restaurant",
-        "section_width": "page-width"
-      }
     }
   },
   "order": [
     "main",
-    "section_AjTrT8",
-    "restaurant_kobenhavn",
-    "restaurant_jylland"
+    "section_AjTrT8"
   ]
 }

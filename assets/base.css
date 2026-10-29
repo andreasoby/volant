@@ -1857,3 +1857,16 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     margin-top: calc(var(--header-height) * var(--transparent-header-offset-boolean) * -1);
   }
 }
+
+
+accordion-custom[open-by-default-on-mobile] .menu__heading {
+  @media screen and (max-width: 750px) {
+    display: none;
+  }
+}
+
+accordion-custom[open-by-default-on-desktop] .menu__heading {
+  @media screen and (min-width: 750px) {
+    display: none;
+  }
+}

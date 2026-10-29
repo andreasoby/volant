@@ -36,10 +36,35 @@
   }
 </style>
 
+{%- capture matched_region_handle -%}
+  {%- assign region_setting = section.settings.region | append: '' | strip -%}
+  {%- if section.settings.region.system.handle == blank and region_setting contains 'gid://shopify/Metaobject/' -%}
+    {%- assign region_id = region_setting | split: '/' | last | strip -%}
+    {%- for region_candidate in shop.metaobjects.restaurant_region.values -%}
+      {%- assign candidate_id = region_candidate.system.id | append: '' -%}
+      {%- if candidate_id == region_id -%}
+        {{- region_candidate.system.handle -}}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- assign matched_region_handle = matched_region_handle | strip -%}
+{%- if matched_region_handle != blank -%}
+  {%- assign selected_region = shop.metaobjects.restaurant_region[matched_region_handle] -%}
+{%- elsif section.settings.region.system.handle != blank -%}
+  {%- assign selected_region = section.settings.region -%}
+{%- else -%}
+  {%- assign region_setting = section.settings.region | append: '' | strip -%}
+  {%- if region_setting != blank and region_setting contains 'gid://shopify/Metaobject/' -%}
+    {%- assign selected_region = blank -%}
+  {%- else -%}
+    {%- assign selected_region = shop.metaobjects.restaurant_region[region_setting] -%}
+  {%- endif -%}
+{%- endif -%}
+
 {%- liquid
   assign metaobject_type = section.settings.metaobject_type | default: 'restaurant'
-  assign selected_region = section.settings.region
-  assign region_name = ''
   if selected_region != blank
     assign region_name = selected_region.name.value | default: selected_region.label.value | strip
     if region_name == blank
@@ -214,7 +239,7 @@
       "type": "metaobject",
       "id": "region",
       "label": "t:settings.restaurant_region",
-      "metaobject_type": "region"
+      "metaobject_type": "restaurant_region"
     },
     {
       "type": "text",

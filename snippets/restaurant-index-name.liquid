@@ -1,0 +1,65 @@
+{% doc %}
+  Prints one sortable restaurant name when the entry belongs to the selected region.
+  Prints nothing when the name is blank or the region does not match.
+
+  The line is the lowercase name, then the display name, separated by ~^~.
+
+  Region may be a metaobject reference, a list of references, or plain text.
+  A reference matches the selected entry by id or handle. Text matches the
+  selected entry's name, or its handle.
+
+  @param {object} restaurant - Restaurant metaobject entry
+  @param {object} region - Region metaobject selected on the section
+
+  @example
+  {% render 'restaurant-index-name', restaurant: restaurant, region: region %}
+{% enddoc %}
+
+{%- liquid
+  assign restaurant_name = restaurant.name.value | strip_newlines | strip | replace: '~^~', ' ' | replace: '~|~', ' '
+  assign selected_id = region.system.id
+  assign selected_handle = region.system.handle | downcase
+  assign selected_name = region.name.value | default: region.label.value | strip
+  if selected_name == blank
+    assign selected_name = selected_handle | replace: '-', ' ' | replace: '_', ' '
+  endif
+  assign selected_name_key = selected_name | downcase | strip
+
+  assign region_value = restaurant.region.value
+  assign matched = false
+
+  if region_value.system.id != blank
+    assign entry_handle = region_value.system.handle | downcase
+    assign entry_name = region_value.name.value | default: region_value.label.value | strip | downcase
+    if region_value.system.id == selected_id or entry_handle == selected_handle
+      assign matched = true
+    endif
+    if matched == false and entry_name != blank and entry_name == selected_name_key
+      assign matched = true
+    endif
+  elsif region_value.first.system.id != blank
+    for item in region_value
+      assign item_handle = item.system.handle | downcase
+      assign item_name = item.name.value | default: item.label.value | strip | downcase
+      if item.system.id == selected_id or item_handle == selected_handle
+        assign matched = true
+        break
+      endif
+      if item_name != blank and item_name == selected_name_key
+        assign matched = true
+        break
+      endif
+    endfor
+  else
+    assign region_text = region_value | strip | downcase
+    if region_text != blank
+      if region_text == selected_name_key or region_text == selected_handle
+        assign matched = true
+      endif
+    endif
+  endif
+-%}
+
+{%- if restaurant_name != blank and matched -%}
+  {{- restaurant_name | downcase -}}~^~{{- restaurant_name -}}
+{%- endif -%}

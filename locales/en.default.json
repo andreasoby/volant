@@ -442,6 +442,11 @@
     "other": "Other",
     "empty": "Add producer entries to show them here."
   },
+  "restaurant_index": {
+    "label": "Restaurants",
+    "empty": "Select a region to list its restaurants.",
+    "none": "No restaurants in this region yet."
+  },
   "product_specs": {
     "label": "Specifications",
     "lagring": "Ageing",

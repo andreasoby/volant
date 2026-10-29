@@ -423,6 +423,11 @@
     "other": "Andre",
     "empty": "Tilføj producenter for at vise dem her."
   },
+  "restaurant_index": {
+    "label": "Restauranter",
+    "empty": "Vælg en region for at vise restauranterne.",
+    "none": "Der er endnu ingen restauranter i denne region."
+  },
   "product_specs": {
     "label": "Specifikationer",
     "lagring": "Lagring",

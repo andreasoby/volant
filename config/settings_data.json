@@ -9,7 +9,8 @@
  */
 {
   "current": {
-    "logo_height": 36,
+    "logo": "shopify://shop_images/Volant_Logotype.svg",
+    "logo_height": 24,
     "logo_height_mobile": 28,
     "type_body_font": "ibm_plex_sans_n4",
     "type_subheading_font": "ibm_plex_sans_n4",

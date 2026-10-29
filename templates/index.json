@@ -460,13 +460,14 @@
         "producer_NnaEAU": {
           "type": "producer",
           "settings": {
-            "eyebrow": "Rioja · Spanien",
-            "title": "Victor Ausejo",
-            "text": "Gamle stokke, små parceller og et nyt blik på Rioja – vin lavet med tid og tålmodighed.",
-            "label": "RIOJA",
+            "image": "shopify://shop_images/R0009819.jpg",
+            "eyebrow": "Bourgogne · Frankrig",
+            "title": "Arnaud Chapuis",
+            "text": "Det er de færreste vinmagere, der nærmest bliver sure, når man roser deres vine, men sådan er Arnaud Chapuis. Han mener blot, at han lader naturen gå sin gang.",
+            "label": "Arnaud Chapuis",
             "link_label": "Mød producenten →",
             "link_source": "url",
-            "link": ""
+            "link": "shopify://collections/arnaud-chapuis"
           }
         },
         "producer_KKBdxa": {

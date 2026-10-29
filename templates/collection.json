@@ -137,7 +137,7 @@
             "border_color": "",
             "border_radius": 0,
             "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-end": 24,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -284,7 +284,7 @@
         "enable_infinite_scroll": true,
         "products_per_page": 24,
         "product_grid_width": "centered",
-        "full_width_on_mobile": true,
+        "full_width_on_mobile": false,
         "columns_gap_horizontal": 24,
         "columns_gap_vertical": 24,
         "padding-inline-start": 0,

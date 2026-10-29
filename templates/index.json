@@ -473,13 +473,14 @@
         "producer_KKBdxa": {
           "type": "producer",
           "settings": {
+            "image": "shopify://shop_images/R0008940.jpg",
             "eyebrow": "Champagne · Frankrig",
             "title": "Domaine A. Limar",
             "text": "Et lille plot i Vallée de la Marne, plantet i 1981. Brut Nature uden dosage – seks år på bærmen.",
             "label": "Domaine A. Limar",
             "link_label": "Mød producenten →",
             "link_source": "url",
-            "link": ""
+            "link": "shopify://collections/domaine-a-limar"
           }
         },
         "producer_Q9KNb7": {

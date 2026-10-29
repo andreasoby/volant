@@ -517,7 +517,7 @@
           "static": true,
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/ad27a29b-867d-4d90-81a7-4fd02ba65944.jpg",
+            "image": "shopify://shop_images/NovemberDegustation.jpg",
             "link": "",
             "video_loop": true,
             "video_autoplay": false,
@@ -603,7 +603,7 @@
                 "text_JLrwGR": {
                   "type": "text",
                   "settings": {
-                    "text": "<p>Tre vine, udvalgt af os, hver den 1. i måneden. Nye hjemkomster, sjældne flasker og vine til årstiden – med smagsnoter og mad forslag i. Køb én udgivelse, eller abonnér og spar op til 15%.</p>",
+                    "text": "<p>Tre vine, udvalgt af os, hver den 1. i måneden. Nye hjemkomster, sjældne flasker og årstidens vine, samlet i én udgivelse og til en besparelse.</p>",
                     "width": "fit-content",
                     "max_width": "narrow",
                     "alignment": "left",

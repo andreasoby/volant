@@ -56,7 +56,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/07D10186-32ED-4E48-8DFC-C5B8987668FA.png",
+                "image": "shopify://shop_images/R0009730.jpg",
                 "link": "",
                 "image_ratio": "portrait",
                 "width": "fill",
@@ -80,7 +80,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/IMG_0349.jpg",
+                "image": "shopify://shop_images/R0010216.jpg",
                 "link": "",
                 "image_ratio": "portrait",
                 "width": "fill",
@@ -104,7 +104,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "image": "shopify://shop_images/IMG_4971.jpg",
+                "image": "shopify://shop_images/R0009422.jpg",
                 "link": "",
                 "image_ratio": "portrait",
                 "width": "fill",

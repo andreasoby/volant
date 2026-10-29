@@ -198,7 +198,7 @@
             "height": "fit",
             "custom_height": 100,
             "background_media": "none",
-            "background_color": "#DCCFB5",
+            "background_color": "#dccfb5",
             "video_position": "cover",
             "background_image_position": "cover",
             "toggle_overlay": false,
@@ -234,7 +234,7 @@
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "text_color": "#6B6357",
+                "text_color": "#6b6357",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
@@ -359,13 +359,6 @@
         "padding-block-end": 0
       }
     },
-<<<<<<< HEAD
-    "restaurant_index": {
-      "type": "restaurant-index",
-      "settings": {
-        "metaobject_type": "restaurant",
-        "section_width": "page-width"
-=======
     "section_9gg9Jp": {
       "type": "section",
       "blocks": {
@@ -472,17 +465,22 @@
         "border_radius": 0,
         "padding-block-start": 0,
         "padding-block-end": 0
->>>>>>> aee27313e996cc0d915f648a991713e9acd73806
+      }
+    },
+    "restaurant_index_DCUFWn": {
+      "type": "restaurant-index",
+      "name": "t:names.restaurant_index",
+      "settings": {
+        "region": "",
+        "metaobject_type": "restaurant_region",
+        "section_width": "page-width"
       }
     }
   },
   "order": [
     "main",
     "section_AjTrT8",
-<<<<<<< HEAD
-    "restaurant_index"
-=======
-    "section_9gg9Jp"
->>>>>>> aee27313e996cc0d915f648a991713e9acd73806
+    "section_9gg9Jp",
+    "restaurant_index_DCUFWn"
   ]
 }

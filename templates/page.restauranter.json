@@ -81,31 +81,7 @@
     "section_AjTrT8": {
       "type": "section",
       "blocks": {
-        "image_RGTtGK": {
-          "type": "image",
-          "name": "t:names.image",
-          "settings": {
-            "image": "shopify://shop_images/1a88257dc9ac1298a6bfd280c36d7a90ae6ed6a1.png",
-            "link": "",
-            "image_ratio": "adapt",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "group_f9pMHk": {
+        "group_QfJCmH": {
           "type": "group",
           "name": "t:names.group",
           "settings": {
@@ -115,9 +91,9 @@
             "vertical_alignment": "center",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-start",
             "gap": 12,
-            "width": "custom",
+            "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
@@ -145,11 +121,37 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_LX8hnj": {
+            "text_iJrpRe": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<p>Find vores vine ude i byen</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h1",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_yCFhPa": {
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "{{ closest.page.content }}",
+                "text": "<p>Vores vine skænkes på nogle af landets mest spændende restauranter og vinbarer. Her er et udvalg af de steder, hvor du kan smage dem.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -165,7 +167,7 @@
                 "background_color": "#00000026",
                 "corner_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 13,
+                "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -173,12 +175,158 @@
             }
           },
           "block_order": [
-            "text_LX8hnj"
+            "text_iJrpRe",
+            "text_yCFhPa"
+          ]
+        },
+        "group_f9pMHk": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 4,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "background_color": "#DCCFB5",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 32,
+            "padding-block-end": 32,
+            "padding-inline-start": 32,
+            "padding-inline-end": 32
+          },
+          "blocks": {
+            "text_bQL98g": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h5>TIL FAGFOLK</h5>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "#6B6357",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_3RMaEa": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h3>Engros og vinkort</h3>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_LX8hnj": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>Står du for vinindkøbet til en restaurant, vinbar, vinbutik eller et hotel? Skriv til os, så sender vi engrossortimentet. Vi tilbyder gratis sparring om dit vinkort og kommer gerne forbi og præsenterer vinene – helt uforpligtende.</p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "text_color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 16,
+                "padding-block-end": 32,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_YN3fL6": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Ansøg om B2B-konto",
+                "link": "shopify://pages/b2b",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "custom_button_background": "{{ settings.color_palette.foreground }}",
+                "custom_button_text": "{{ settings.color_palette.background }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
+                "link_text_color": "",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_bQL98g",
+            "text_3RMaEa",
+            "text_LX8hnj",
+            "button_YN3fL6"
           ]
         }
       },
       "block_order": [
-        "image_RGTtGK",
+        "group_QfJCmH",
         "group_f9pMHk"
       ],
       "name": "t:names.custom_section",
@@ -186,7 +334,7 @@
         "content_direction": "row",
         "vertical_on_mobile": true,
         "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
+        "vertical_alignment": "flex-start",
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",

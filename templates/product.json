@@ -130,7 +130,7 @@
                   "type": "custom-liquid",
                   "name": "t:names.custom_liquid",
                   "settings": {
-                    "custom_liquid": "{% assign producent_collection = product.metafields.custom.producentlink.value %}\n\n{% if producent_collection != blank %}\n  <a href=\"{{ producent_collection.url | escape }}\" class=\"h3\" style=\"color: #6B6357; text-decoration: underline;\">\n    {{ producent_collection.title | escape }}\n  </a>\n{% endif %}"
+                    "custom_liquid": "{% assign producent_collection = product.metafields.custom.producentlink.value %}\n\n{% if producent_collection != blank %}\n  <a href=\"{{ producent_collection.url | escape }}\" class=\"h4\" style=\"color: #6B6357; text-decoration: underline;\">\n    {{ producent_collection.title | escape }}\n  </a>\n{% endif %}"
                   },
                   "blocks": {}
                 },
@@ -142,7 +142,7 @@
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
-                    "type_preset": "h1",
+                    "type_preset": "h2",
                     "font": "var(--font-body--family)",
                     "font_size": "1rem",
                     "line_height": "normal",

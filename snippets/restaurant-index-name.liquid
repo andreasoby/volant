@@ -2,7 +2,8 @@
   Prints one sortable restaurant name when the entry belongs to the selected region.
   Prints nothing when the name is blank or the region does not match.
 
-  The line is the lowercase name, then the display name, separated by ~^~.
+  The line is the lowercase name, the display name, then the image URL,
+  separated by ~^~.
 
   Region may be a metaobject reference, a list of references, or plain text.
   A reference matches the selected entry by id or handle. Text matches the
@@ -61,5 +62,12 @@
 -%}
 
 {%- if restaurant_name != blank and matched -%}
-  {{- restaurant_name | downcase -}}~^~{{- restaurant_name -}}
+  {%- liquid
+    assign restaurant_image = restaurant.image.value
+    if restaurant_image.preview_image != blank
+      assign restaurant_image = restaurant_image.preview_image
+    endif
+    assign restaurant_image_url = restaurant_image | image_url: width: 1200
+  -%}
+  {{- restaurant_name | downcase -}}~^~{{- restaurant_name -}}~^~{{- restaurant_image_url -}}
 {%- endif -%}

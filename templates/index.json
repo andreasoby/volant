@@ -486,13 +486,14 @@
         "producer_Q9KNb7": {
           "type": "producer",
           "settings": {
+            "image": "shopify://shop_images/R0009896.jpg",
             "eyebrow": "Bourgogne · Frankrig",
             "title": "Ô Ma",
-            "text": "Saftig, citrusfrisk Aligoté fra Santenay – en hverdagsvin med karakter.",
-            "label": "BOURGOGNE",
+            "text": "I 2022 blev Ô Ma stiftet i Santenay i det sydlige Côte de Beaune. Druerne kommer fra små plots i hele Bourgogne, og Tom er ekstremt selektiv: kun perfekt modne druer fra marker, der dyrkes helt uden kemikalier.",
+            "label": "Ô Ma",
             "link_label": "Mød producenten →",
             "link_source": "url",
-            "link": ""
+            "link": "shopify://collections/oma"
           }
         }
       },

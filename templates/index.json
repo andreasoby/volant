@@ -447,13 +447,14 @@
         "producer_XHanhM": {
           "type": "producer",
           "settings": {
+            "image": "shopify://shop_images/R0009350.jpg",
             "eyebrow": "Bourgogne · Frankrig",
-            "title": "Paul Gayot",
+            "title": "Thomas Pascal",
             "text": "Mikro-négoce i hjertet af Bourgogne. 600 nummererede flasker pr. cuvée – hver vin lagres mindst ti måneder på fad.",
-            "label": "BOURGOGNE",
+            "label": "Thomas Pascal",
             "link_label": "Mød producenten →",
             "link_source": "url",
-            "link": ""
+            "link": "shopify://collections/thomas-pascal"
           }
         },
         "producer_NnaEAU": {

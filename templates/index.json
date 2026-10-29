@@ -435,13 +435,14 @@
         "producer_jDfBdC": {
           "type": "producer",
           "settings": {
+            "image": "shopify://shop_images/R0009506.jpg",
             "eyebrow": "Bourgogne · Frankrig",
-            "title": "Producent",
-            "text": "",
-            "label": "",
+            "title": "Domaine Frey",
+            "text": "Få domainer i Bourgogne har en adresse som Domaine Frey: det historiske Château Corton ved foden af Corton Grand Cru. Familien Frey købte slottet og de tilhørende 7 hektar vinmarker i Côte de Beaune i 2015.",
+            "label": "Domaine Frey",
             "link_label": "Mød producenten →",
             "link_source": "url",
-            "link": ""
+            "link": "shopify://collections/domaine-caroline-frey"
           }
         },
         "producer_XHanhM": {

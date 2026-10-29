@@ -359,18 +359,20 @@
         "padding-block-end": 0
       }
     },
-    "restaurant_kobenhavn": {
+    "restaurant_index_KFXDrG": {
       "type": "restaurant-index",
+      "name": "t:names.restaurant_index",
       "settings": {
-        "region": "gid://shopify/Metaobject/475764556122",
+        "region": "kobenhavn-sjaelland",
         "metaobject_type": "restaurant",
         "section_width": "page-width"
       }
     },
-    "restaurant_jylland": {
+    "restaurant_index_MFyY97": {
       "type": "restaurant-index",
+      "name": "t:names.restaurant_index",
       "settings": {
-        "region": "gid://shopify/Metaobject/475764851034",
+        "region": "jylland",
         "metaobject_type": "restaurant",
         "section_width": "page-width"
       }
@@ -379,7 +381,7 @@
   "order": [
     "main",
     "section_AjTrT8",
-    "restaurant_kobenhavn",
-    "restaurant_jylland"
+    "restaurant_index_KFXDrG",
+    "restaurant_index_MFyY97"
   ]
 }

@@ -1,0 +1,273 @@
+{% doc %}
+  Renders the producers under one country in the Producenter mega menu.
+
+  Producers are grouped by region. The region comes from the collection metafield
+  `custom.producer_object`, field `region` (the entry label, otherwise its name).
+  Regions are alphabetical. Producers keep their menu order inside a region.
+  A producer with no region is listed after the regions, under the "other" label.
+  When nobody in the country has a region, the list stays flat.
+
+  Wide countries split across columns. A region heading repeats when a column
+  continues that region.
+
+  @param {object} parent_link - The top-level menu link.
+  @param {object} country_link - The country menu link whose children are producers.
+  @param {boolean} split_columns - When true, wrap each column and repeat the country title.
+
+  @example
+  {% render 'mega-menu-producer-groups',
+    parent_link: parent_link,
+    country_link: country_link,
+    split_columns: true
+  %}
+{% enddoc %}
+
+{%- liquid
+  assign catalog = ''
+  assign has_regions = false
+
+  for item in country_link.links
+    assign region_label = blank
+    if item.type == 'collection_link' and item.object != blank
+      assign producer_entry = item.object.metafields.custom.producer_object.value
+      if producer_entry != blank and producer_entry.region.value != blank
+        assign region_entry = producer_entry.region.value
+        assign region_label = region_entry.label.value | default: region_entry.label | default: region_entry.name.value | strip
+      endif
+    endif
+
+    assign region_label = region_label | replace: '^', '' | replace: '~', '' | replace: '|', '' | strip
+    assign tier = '1'
+    assign region_sort = ''
+    if region_label != blank
+      assign tier = '0'
+      assign region_sort = region_label | downcase
+      assign has_regions = true
+    endif
+
+    assign item_key = forloop.index0 | prepend: '000' | slice: -3, 3
+    assign row = tier | append: '^' | append: region_sort | append: '^' | append: item_key | append: '^' | append: region_label
+    assign catalog = catalog | append: row | append: '~'
+  endfor
+
+  assign rows = catalog | split: '~' | sort
+  assign chunk_limit = 9
+  if has_regions
+    assign chunk_limit = 14
+  endif
+
+  assign column_index = 1
+  assign column_slots = 0
+  assign current_region = ''
+  assign packed = ''
+
+  for row in rows
+    if row == blank
+      continue
+    endif
+
+    assign parts = row | split: '^'
+    assign tier = parts[0]
+    assign region_sort = parts[1]
+    assign show_header = false
+    if tier == '0' and region_sort != current_region
+      assign show_header = true
+    endif
+
+    assign add_slots = 1
+    if show_header
+      assign add_slots = 2
+    endif
+
+    if split_columns
+      assign projected = column_slots | plus: add_slots
+      if column_slots > 0 and projected > chunk_limit
+        assign column_index = column_index | plus: 1
+        assign column_slots = 0
+        if tier == '0'
+          assign show_header = true
+          assign add_slots = 2
+        else
+          assign show_header = false
+          assign add_slots = 1
+        endif
+      endif
+    endif
+
+    assign column_slots = column_slots | plus: add_slots
+    assign current_region = region_sort
+    assign header_flag = '0'
+    if show_header
+      assign header_flag = '1'
+    endif
+    assign col_key = column_index | prepend: '00' | slice: -2, 2
+    assign packed = packed | append: col_key | append: '^' | append: header_flag | append: '^' | append: row | append: '~'
+  endfor
+
+  assign column_count = 0
+  if packed != blank
+    assign column_count = column_index
+  endif
+  assign packed_rows = packed | split: '~'
+-%}
+
+{%- for column_number in (1..column_count) -%}
+  {%- if split_columns -%}
+    <div class="mega-menu__dir-column">
+      <p
+        class="mega-menu__group-title{% unless column_number == 1 %} mega-menu__group-title--spacer{% endunless %}"
+        {% if column_number == 1 %}
+          id="MegaLabel-{{ parent_link.handle }}-{{ country_link.handle }}"
+        {% else %}
+          aria-hidden="true"
+        {% endif %}
+      >
+        {{ country_link.title | escape }}
+      </p>
+  {%- endif -%}
+
+  {%- if has_regions -%}
+    <div class="mega-menu__regions">
+      {%- assign rendered_unlabeled = false -%}
+      {%- for packed_row in packed_rows -%}
+        {%- if packed_row == blank -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- liquid
+          assign packed_parts = packed_row | split: '^'
+          assign row_column = packed_parts[0] | plus: 0
+          assign header_flag = packed_parts[1]
+          assign tier = packed_parts[2]
+          assign region_sort = packed_parts[3]
+          assign region_label = packed_parts[5]
+          assign region_handle = region_sort | handleize
+          assign region_dom_id = 'MegaRegion-' | append: parent_link.handle | append: '-' | append: country_link.handle | append: '-' | append: column_number | append: '-' | append: region_handle
+        -%}
+        {%- if row_column != column_number -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- if tier == '0' and header_flag == '1' -%}
+          <div class="mega-menu__region-group">
+            <p class="mega-menu__region" id="{{ region_dom_id }}">{{ region_label | escape }}</p>
+            <ul
+              class="mega-menu__links list-unstyled"
+              role="list"
+              aria-labelledby="{{ region_dom_id }}"
+            >
+              {%- for sibling_row in packed_rows -%}
+                {%- if sibling_row == blank -%}
+                  {%- continue -%}
+                {%- endif -%}
+                {%- liquid
+                  assign sibling_parts = sibling_row | split: '^'
+                  assign sibling_column = sibling_parts[0] | plus: 0
+                  assign sibling_sort = sibling_parts[3]
+                  assign sibling_index = sibling_parts[4] | plus: 0
+                  assign sibling_item = nil
+                  if sibling_column == column_number and sibling_sort == region_sort
+                    for item in country_link.links
+                      if forloop.index0 == sibling_index
+                        assign sibling_item = item
+                        break
+                      endif
+                    endfor
+                  endif
+                -%}
+                {%- if sibling_item == blank -%}
+                  {%- continue -%}
+                {%- endif -%}
+                <li>
+                  <a class="mega-menu__item" href="{{ sibling_item.url }}">{{ sibling_item.title | escape }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- elsif tier == '1' and rendered_unlabeled == false -%}
+          {%- assign rendered_unlabeled = true -%}
+          {%- assign other_label = 'producer_index.other' | t -%}
+          {%- assign other_id = 'MegaRegion-'
+            | append: parent_link.handle
+            | append: '-'
+            | append: country_link.handle
+            | append: '-'
+            | append: column_number
+            | append: '-other'
+          -%}
+          <div class="mega-menu__region-group">
+            <p class="mega-menu__region" id="{{ other_id }}">{{ other_label | escape }}</p>
+            <ul
+              class="mega-menu__links list-unstyled"
+              role="list"
+              aria-labelledby="{{ other_id }}"
+            >
+            {%- for sibling_row in packed_rows -%}
+              {%- if sibling_row == blank -%}
+                {%- continue -%}
+              {%- endif -%}
+              {%- liquid
+                assign sibling_parts = sibling_row | split: '^'
+                assign sibling_column = sibling_parts[0] | plus: 0
+                assign sibling_tier = sibling_parts[2]
+                assign sibling_index = sibling_parts[4] | plus: 0
+                assign sibling_item = nil
+                if sibling_column == column_number and sibling_tier == '1'
+                  for item in country_link.links
+                    if forloop.index0 == sibling_index
+                      assign sibling_item = item
+                      break
+                    endif
+                  endfor
+                endif
+              -%}
+              {%- if sibling_item == blank -%}
+                {%- continue -%}
+              {%- endif -%}
+              <li>
+                <a class="mega-menu__item" href="{{ sibling_item.url }}">{{ sibling_item.title | escape }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <ul
+      class="mega-menu__links list-unstyled"
+      role="list"
+      {% if column_number == 1 %}
+        aria-labelledby="MegaLabel-{{ parent_link.handle }}-{{ country_link.handle }}"
+      {% endif %}
+    >
+      {%- for packed_row in packed_rows -%}
+        {%- if packed_row == blank -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- liquid
+          assign packed_parts = packed_row | split: '^'
+          assign row_column = packed_parts[0] | plus: 0
+          assign link_index = packed_parts[4] | plus: 0
+          assign current_item = nil
+          if row_column == column_number
+            for item in country_link.links
+              if forloop.index0 == link_index
+                assign current_item = item
+                break
+              endif
+            endfor
+          endif
+        -%}
+        {%- if row_column != column_number or current_item == blank -%}
+          {%- continue -%}
+        {%- endif -%}
+        <li>
+          <a class="mega-menu__item" href="{{ current_item.url }}">{{ current_item.title | escape }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  {%- if split_columns -%}
+    </div>
+  {%- endif -%}
+{%- endfor -%}

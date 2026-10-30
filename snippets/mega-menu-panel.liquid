@@ -3,6 +3,8 @@
 
   Column panels (every child has its own links) show an eyebrow, a short rule, and large links.
   Directory panels (a mix of labels and groups) show the labels, then country-style groups.
+  On Producenter, producers inside a country are grouped by the region on that
+  collection's producer metaobject.
 
   A captioned image is read from the metaobject `mega_menu_feature` whose handle matches
   this menu item. Fields: `image` (file), `caption` (multi-line text), `link` (URL).
@@ -116,42 +118,52 @@
 
           {%- if child.links.size > wide_limit -%}
             {%- liquid
-              assign column_count = child.links.size | divided_by: chunk_size
-              assign remainder = child.links.size | modulo: chunk_size
-              if remainder > 0
-                assign column_count = column_count | plus: 1
-              endif
               assign skip_until = link_index
               assign rendered_region = true
             -%}
-            {%- for column_index in (1..column_count) -%}
-              {%- assign link_offset = column_index | minus: 1 | times: chunk_size -%}
-              <div class="mega-menu__dir-column">
-                <p
-                  class="mega-menu__group-title{% unless column_index == 1 %} mega-menu__group-title--spacer{% endunless %}"
-                  {% if column_index == 1 %}
-                    id="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}"
-                  {% else %}
-                    aria-hidden="true"
-                  {% endif %}
-                >
-                  {{ child.title | escape }}
-                </p>
-                <ul
-                  class="mega-menu__links list-unstyled"
-                  role="list"
-                  {% if column_index == 1 %}
-                    aria-labelledby="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}"
-                  {% endif %}
-                >
-                  {%- for item in child.links offset: link_offset limit: chunk_size -%}
-                    <li>
-                      <a class="mega-menu__item" href="{{ item.url }}">{{ item.title | escape }}</a>
-                    </li>
-                  {%- endfor -%}
-                </ul>
-              </div>
-            {%- endfor -%}
+            {%- if parent_link.handle == 'producenter' -%}
+              {% render 'mega-menu-producer-groups',
+                parent_link: parent_link,
+                country_link: child,
+                split_columns: true
+              %}
+            {%- else -%}
+              {%- liquid
+                assign column_count = child.links.size | divided_by: chunk_size
+                assign remainder = child.links.size | modulo: chunk_size
+                if remainder > 0
+                  assign column_count = column_count | plus: 1
+                endif
+              -%}
+              {%- for column_index in (1..column_count) -%}
+                {%- assign link_offset = column_index | minus: 1 | times: chunk_size -%}
+                <div class="mega-menu__dir-column">
+                  <p
+                    class="mega-menu__group-title{% unless column_index == 1 %} mega-menu__group-title--spacer{% endunless %}"
+                    {% if column_index == 1 %}
+                      id="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}"
+                    {% else %}
+                      aria-hidden="true"
+                    {% endif %}
+                  >
+                    {{ child.title | escape }}
+                  </p>
+                  <ul
+                    class="mega-menu__links list-unstyled"
+                    role="list"
+                    {% if column_index == 1 %}
+                      aria-labelledby="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}"
+                    {% endif %}
+                  >
+                    {%- for item in child.links offset: link_offset limit: chunk_size -%}
+                      <li>
+                        <a class="mega-menu__item" href="{{ item.url }}">{{ item.title | escape }}</a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endfor -%}
+            {%- endif -%}
           {%- else -%}
             {%- liquid
               assign column_slots = child.links.size | plus: 1
@@ -199,17 +211,25 @@
                       {{ grouped.title | escape }}
                     </a>
                   {%- endif -%}
-                  <ul
-                    class="mega-menu__links list-unstyled"
-                    role="list"
-                    aria-labelledby="MegaLabel-{{ parent_link.handle }}-{{ grouped.handle }}"
-                  >
-                    {%- for item in grouped.links -%}
-                      <li>
-                        <a class="mega-menu__item" href="{{ item.url }}">{{ item.title | escape }}</a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
+                  {%- if parent_link.handle == 'producenter' -%}
+                    {% render 'mega-menu-producer-groups',
+                      parent_link: parent_link,
+                      country_link: grouped,
+                      split_columns: false
+                    %}
+                  {%- else -%}
+                    <ul
+                      class="mega-menu__links list-unstyled"
+                      role="list"
+                      aria-labelledby="MegaLabel-{{ parent_link.handle }}-{{ grouped.handle }}"
+                    >
+                      {%- for item in grouped.links -%}
+                        <li>
+                          <a class="mega-menu__item" href="{{ item.url }}">{{ item.title | escape }}</a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
                 </div>
               {%- endfor -%}
             </div>
@@ -337,8 +357,31 @@
     font-size: 20px;
   }
 
+  .mega-menu__regions {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .mega-menu__region-group {
+    margin-bottom: 1rem;
+  }
+  
+  .mega-menu__region {
+    margin: 0 0 10px;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: rgb(26 26 26 / 0.75);
+  }
+
   .mega-menu__eyebrow,
-  p.mega-menu__group-title {
+  p.mega-menu__group-title,
+  .mega-menu__region {
     cursor: default;
   }
 

@@ -464,5 +464,25 @@
       "farming": "X",
       "size": "0.75 L"
     }
+  },
+  "bundle_products": {
+    "label": "Wines in the bundle",
+    "view_wine": "View the wine",
+    "empty": "Preview. Add the wines on the product metafield custom.bundle_products.",
+    "samples": {
+      "heading": "In the November release",
+      "producer_1": "Ô Ma",
+      "title_1": "Bourgogne Aligoté",
+      "meta_1": "Bourgogne, France · Aligoté",
+      "text_1": "Salty and citrusy, with a saline finish. Perfect with oysters and the first cabbage dishes of autumn.",
+      "producer_2": "Bristot d'Aprigny",
+      "title_2": "Coteaux Bourguignons Pinot Noir",
+      "meta_2": "Bourgogne, France · Pinot Noir",
+      "text_2": "Light cherry, forest floor and fine acidity. Light enough for fish, structured enough for duck.",
+      "producer_3": "Les Bariolés",
+      "title_3": "Bariolage",
+      "meta_3": "France · skin contact",
+      "text_3": "Apricot, tea and a touch of spice. An orange wine for beginners and enthusiasts alike."
+    }
   }
 }

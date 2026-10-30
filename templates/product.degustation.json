@@ -415,6 +415,15 @@
         "padding-block-end": 0
       }
     },
+    "bundle_products": {
+      "type": "bundle-products",
+      "settings": {
+        "heading": "",
+        "section_width": "page-width",
+        "show_on_mobile": true,
+        "show_on_desktop": true
+      }
+    },
     "product_facts": {
       "type": "product-facts",
       "settings": {
@@ -707,6 +716,7 @@
   },
   "order": [
     "main",
+    "bundle_products",
     "product_facts",
     "product_specs",
     "producer_carousel_iW66JT",

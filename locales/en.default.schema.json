@@ -259,6 +259,7 @@
     "producer_description": "Filled from the current collection's metafields in the custom namespace: billede (image), region (location line and the Region row), producent_titel (title, or the collection title), producenttekst (text, with read more), druesort (grapes), dyrkning (farming), hos_volant_siden (at Volant since), and google_maps (map link on the region row). Empty fields are hidden.",
     "product_facts": "Filled from product metafields in the custom namespace: producentlink (Producer, collection link), druer2 (Grape), argang (Vintage), land (Country), omr_de (Region), and type. An optional vintage_note adds the vintage tooltip. Lists, collections, and metaobjects use their title or name. An empty metafield shows an en dash.",
     "product_specs": "Filled from product metafields in the custom namespace: lagring, lagring_note, added_so2, added_so2_note, bottle_count, alcohol, farming, and bottle_size. Ageing and added SO2 show the info mark. An empty metafield shows an en dash.",
+    "bundle_products": "Lists the wines in a bundle. Add a product metafield in the custom namespace named bundle_products, type List of products. Each card uses that wine's image, title and description, plus producentlink, omr_de, land and druer2. The heading is the text above, or custom.bundle_heading when the text is empty. The section stays hidden on the storefront until the product list is filled.",
     "mega_menu_feature": "Menus cannot store an image on an item. For the captioned image, create a metaobject definition with type mega_menu_feature and turn on storefront access. Add fields image (file), caption (multi-line text), and link (URL). The entry handle must match the menu item, for example vine.",
     "producer_index": "Lists every active producer entry, grouped by country. Each name links to the collection in collection_page. Country comes from the country field: the referenced entry's name, or its label, or plain text. The number beside each country is how many producers are in that group. Give the definition storefront access. Up to 250 entries are shown.",
     "restaurant_index": "Lists restaurant entries for the region selected above. Restaurant entries use type restaurant, with name (single-line text) and region (a restaurant_region reference, a list of them, or text that matches the selected entry's name). Region entries use type restaurant_region, with a name field. Give both definitions storefront access. Add this section once for each region. The number is how many restaurants match. Up to 250 entries are read."
@@ -438,6 +439,7 @@
     "producer_description": "Producer",
     "product_facts": "Product facts",
     "product_specs": "Specifications",
+    "bundle_products": "Bundle wines",
     "producer_index": "Producers by country",
     "restaurant_index": "Restaurants by region"
   },

@@ -1,0 +1,120 @@
+{% doc %}
+  One wine in the bundle list.
+
+  @param {object} [card_product] - Product in the bundle
+  @param {number} [sample_index] - Editor preview card, 1–3, when no products are set
+{% enddoc %}
+
+{%- liquid
+  assign card_url = ''
+  assign card_image = blank
+  assign producer_name = ''
+  assign card_title = ''
+  assign card_meta = ''
+  assign card_text = ''
+
+  if card_product != blank
+    assign card_url = card_product.url
+    assign card_title = card_product.title
+    assign card_image = card_product.featured_image
+    if card_image == blank
+      assign card_image = card_product.featured_media.preview_image
+    endif
+
+    capture producer_name
+      render 'product-fact-text', metafield: card_product.metafields.custom.producentlink
+    endcapture
+    capture region_name
+      render 'product-fact-text', metafield: card_product.metafields.custom.omr_de
+    endcapture
+    capture country_name
+      render 'product-fact-text', metafield: card_product.metafields.custom.land
+    endcapture
+    capture grape_name
+      render 'product-fact-text', metafield: card_product.metafields.custom.druer2
+    endcapture
+
+    assign producer_name = producer_name | strip
+    assign region_name = region_name | strip
+    assign country_name = country_name | strip
+    assign grape_name = grape_name | strip
+    assign card_text = card_product.description | strip_html | strip
+
+    if region_name != blank and country_name != blank
+      assign card_place = region_name | append: ', ' | append: country_name
+    elsif region_name != blank
+      assign card_place = region_name
+    else
+      assign card_place = country_name
+    endif
+
+    if card_place != blank and grape_name != blank
+      assign card_meta = card_place | append: ' · ' | append: grape_name
+    elsif grape_name != blank
+      assign card_meta = grape_name
+    else
+      assign card_meta = card_place
+    endif
+  elsif sample_index != blank
+    case sample_index
+      when 1
+        assign producer_name = 'bundle_products.samples.producer_1' | t
+        assign card_title = 'bundle_products.samples.title_1' | t
+        assign card_meta = 'bundle_products.samples.meta_1' | t
+        assign card_text = 'bundle_products.samples.text_1' | t
+      when 2
+        assign producer_name = 'bundle_products.samples.producer_2' | t
+        assign card_title = 'bundle_products.samples.title_2' | t
+        assign card_meta = 'bundle_products.samples.meta_2' | t
+        assign card_text = 'bundle_products.samples.text_2' | t
+      else
+        assign producer_name = 'bundle_products.samples.producer_3' | t
+        assign card_title = 'bundle_products.samples.title_3' | t
+        assign card_meta = 'bundle_products.samples.meta_3' | t
+        assign card_text = 'bundle_products.samples.text_3' | t
+    endcase
+  endif
+-%}
+
+{%- if card_url != blank -%}
+  <a class="bundle-products__card" href="{{ card_url }}">
+{%- else -%}
+  <div class="bundle-products__card">
+{%- endif -%}
+  <div class="bundle-products__media">
+    {%- if card_image != blank -%}
+      {{
+        card_image
+        | image_url: width: 1200
+        | image_tag:
+          widths: '400, 600, 800, 1200',
+          sizes: '(min-width: 990px) 30vw, (min-width: 750px) 45vw, 80vw',
+          alt: card_title,
+          class: 'bundle-products__image',
+          loading: 'lazy'
+      }}
+    {%- endif -%}
+  </div>
+
+  {%- if producer_name != blank -%}
+    <p class="bundle-products__producer">{{ producer_name }}</p>
+  {%- endif -%}
+
+  {%- if card_title != blank -%}
+    <p class="bundle-products__title">{{ card_title }}</p>
+  {%- endif -%}
+
+  {%- if card_meta != blank -%}
+    <p class="bundle-products__meta">{{ card_meta }}</p>
+  {%- endif -%}
+
+  {%- if card_text != blank -%}
+    <p class="bundle-products__text">{{ card_text }}</p>
+  {%- endif -%}
+
+  <span class="bundle-products__cta">{{ 'bundle_products.view_wine' | t }} →</span>
+{%- if card_url != blank -%}
+  </a>
+{%- else -%}
+  </div>
+{%- endif -%}

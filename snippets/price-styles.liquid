@@ -51,7 +51,9 @@
   }
 
   .compare-at-price {
-    color: rgb(var(--color-rgb, var(--color-foreground-rgb)) / var(--opacity-subdued-text));
+    color: #7A2124;
+    color: rgba(26, 26, 26, 0.38);
+    font-size: 0.5em;
     text-decoration-line: line-through;
     text-decoration-thickness: 1.5px;
     text-decoration-color: rgb(var(--color-rgb, var(--color-foreground-rgb)) / var(--opacity-30));
@@ -59,5 +61,23 @@
 
   .price-item__group {
     display: inline-block;
+  }
+
+  .price-container__row {
+    display: contents;
+  }
+
+  .price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: var(--text-align, start);
+    width: max-content;
+  }
+
+  .price-container > .price-container__row {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: baseline;
+    column-gap: 0.5rem;
   }
 {% endstylesheet %}

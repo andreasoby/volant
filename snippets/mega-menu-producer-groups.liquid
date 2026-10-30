@@ -6,6 +6,7 @@
   Regions are alphabetical. Producers keep their menu order inside a region.
   A producer with no region is listed after the regions, under the "other" label.
   When nobody in the country has a region, the list stays flat.
+  USA is always a flat list.
 
   Wide countries split across columns. A region heading repeats when a column
   continues that region.
@@ -25,10 +26,14 @@
 {%- liquid
   assign catalog = ''
   assign has_regions = false
+  assign skip_regions = false
+  if country_link.handle == 'usa'
+    assign skip_regions = true
+  endif
 
   for item in country_link.links
     assign region_label = blank
-    if item.type == 'collection_link' and item.object != blank
+    if skip_regions == false and item.type == 'collection_link' and item.object != blank
       assign producer_entry = item.object.metafields.custom.producer_object.value
       if producer_entry != blank and producer_entry.region.value != blank
         assign region_entry = producer_entry.region.value

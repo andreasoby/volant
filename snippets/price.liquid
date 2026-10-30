@@ -74,7 +74,13 @@
   endif
 -%}
 
-<div ref="priceContainer">
+<div
+  ref="priceContainer"
+  {% unless is_product_card %}
+    class="price-container"
+  {% endunless %}
+>
+  <div class="price-container__row">
   {% if has_volume_pricing %}
     {% comment %} Volume pricing display {% endcomment %}
     {% if show_compare_price %}
@@ -115,6 +121,7 @@
       >
     {% endif %}
   {% endif %}
+  </div>
   {%- if selected_variant.unit_price and show_unit_price %}
     {%- liquid
       if use_currency

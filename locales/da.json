@@ -445,5 +445,25 @@
       "farming": "X",
       "size": "0,75 L"
     }
+  },
+  "bundle_products": {
+    "label": "Vine i pakken",
+    "view_wine": "Se vinen",
+    "empty": "Forhåndsvisning. Tilføj vinene på produktets metafelt custom.bundle_products.",
+    "samples": {
+      "heading": "I November udgivelsen",
+      "producer_1": "Ô Ma",
+      "title_1": "Bourgogne Aligoté",
+      "meta_1": "Bourgogne, Frankrig · Aligoté",
+      "text_1": "Saltig og citrusfrisk med en salt finish. Perfekt til østers og efterårets første kålretter.",
+      "producer_2": "Bristot d'Aprigny",
+      "title_2": "Coteaux Bourguignons Pinot Noir",
+      "meta_2": "Bourgogne, Frankrig · Pinot Noir",
+      "text_2": "Lyse kirsebær, skovbund og fin syre. Let nok til fisk, nok struktur til and.",
+      "producer_3": "Les Bariolés",
+      "title_3": "Bariolage",
+      "meta_3": "Frankrig · skalkontakt",
+      "text_3": "Abrikos, te og et strejf af krydderi. En orangevin for både nybegyndere og nørder."
+    }
   }
 }

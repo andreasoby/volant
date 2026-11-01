@@ -84,16 +84,16 @@
         aria-controls="sorting-options-{{ section_id }}-{{ suffix }}"
         ref="summary"
       >
-        <span
-          class="facets__label"
-          id="sort-label-{{ section_id }}"
-        >
-          {{- 'actions.sort' | t -}}
-        </span>
-        <span
-          class="facets__status h6 desktop:hidden"
-        >
-          {{- status -}}
+        <span class="sorting-filter__button-label">
+          <span
+            class="facets__label"
+            id="sort-label-{{ section_id }}"
+          >
+            {{- 'actions.sort' | t -}}:
+          </span>
+          <span class="facets__status sorting-filter__value">
+            {{- status -}}
+          </span>
         </span>
         <span class="svg-wrapper icon-caret icon-animated">
           {{- 'icon-caret.svg' | inline_asset_content -}}

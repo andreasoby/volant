@@ -5,7 +5,7 @@
   @param {string} value - Field value
   @param {string} field_id - Unique id suffix for the note
   @param {string} [board_id] - Unique id for this board. Falls back to the section id
-  @param {string} [note] - Tooltip body. The info mark is decorative when this is blank.
+  @param {string} [note] - Tooltip body. The info mark is shown only when this has text.
   @param {string} [note_title] - Tooltip heading
 {% enddoc %}
 
@@ -36,9 +36,6 @@
       </product-fact-info>
     {%- else -%}
       <span>{{ label }}</span>
-      {%- if field_id == 'lagring' or field_id == 'added_so2' -%}
-        <span class="product-specs__info-button" aria-hidden="true">i</span>
-      {%- endif -%}
     {%- endif -%}
   </div>
   <div class="product-specs__value">{{ value }}</div>

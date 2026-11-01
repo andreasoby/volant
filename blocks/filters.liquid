@@ -112,7 +112,7 @@
       style="{% render 'spacing-style', settings: block_settings %}{% if block_settings.text_label_case == 'uppercase' %} --facet-label-transform: uppercase;{% endif %}"
     >
       {% if block_settings.enable_filtering %}
-        <h4 class="facets--filters-title">{{ 'content.filters' | t }}</h4>
+        <h4 class="facets--filters-title h5">{{ 'content.filters' | t }}</h4>
       {% endif %}
 
       <div
@@ -1033,7 +1033,7 @@
     display: block;
     height: 0;
     width: calc(100% - var(--theme-drawer-padding) * 2);
-    border-top: var(--style-border-width) solid rgb(var(--color-foreground-rgb) / var(--opacity-10-25));
+    border-top: var(--style-border-width) solid rgb(var(--color-foreground-rgb));
     margin: 0 auto;
   }
 
@@ -1131,6 +1131,7 @@
     color: var(--color-foreground);
     cursor: pointer;
     white-space: nowrap;
+    
 
     @media screen and (min-width: 750px) {
       margin-inline-end: var(--margin-2xs);
@@ -1212,6 +1213,61 @@
       margin-inline-start: var(--margin-xs);
       margin-inline-end: var(--margin-xs);
     }
+  }
+
+  /* Sort button: "Sortér: [selected option]" */
+  .facets--horizontal .sorting-filter {
+    width: max-content;
+  }
+
+  .facets--horizontal .sorting-filter .facets__summary {
+    --icon-opacity: 1;
+
+    gap: 14px;
+    justify-content: space-between;
+    align-items: center;
+    width: max-content;
+    height: auto;
+    padding: 10px 14px;
+    background-color: #eadec6;
+    border: 1px solid #111;
+    font-size: 15px;
+    line-height: normal;
+    color: #111;
+
+    &:hover {
+      color: #111;
+    }
+  }
+
+  .facets--horizontal .sorting-filter .sorting-filter__button-label {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .facets--horizontal .sorting-filter .facets__summary .facets__label {
+    margin-inline-end: 0;
+    color: #6b6357;
+    font-weight: 400;
+  }
+
+  .facets--horizontal .sorting-filter .facets__panel .facets__status.sorting-filter__value,
+  .facets--horizontal .sorting-filter .facets__panel[open] .facets__status.sorting-filter__value {
+    display: flex;
+    width: auto;
+    margin: 0;
+    color: #111;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .facets--horizontal .sorting-filter .facets__summary .icon-caret {
+    width: 14px;
+    height: 14px;
+    margin-block: 0;
+    color: #111;
   }
 
   /* Horizontal filter style */

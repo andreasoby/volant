@@ -28,11 +28,8 @@
 
 {%- liquid
   assign is_horizontal = false
-  assign is_vertical = false
   if filter_style == 'horizontal'
     assign is_horizontal = true
-  elsif filter_style == 'vertical'
-    assign is_vertical = true
   endif
   assign filter_param_name = filter.param_name | escape | replace: '.', '-'
 -%}
@@ -43,12 +40,9 @@
     {% if filter_style == 'horizontal' %}
       data-auto-close-details="desktop"
     {% endif %}
-    {% if filter_style == 'vertical' %}
-      open
-    {% endif %}
   >
     <summary class="facets__summary">
-      <span class="facets__label">{{ filter.label }}</span>
+      <span class="facets__label h5">{{ filter.label }}</span>
 
       <div class="facets__status-wrapper">
         {% if is_swatch %}
@@ -429,9 +423,6 @@
 {% render 'accordion-custom-component',
   children: accordion_children,
   class: 'facets__item',
-  open: is_vertical,
-  open_by_default_on_desktop: is_vertical,
-  open_by_default_on_mobile: is_vertical,
   disable_animation_on_desktop: is_horizontal,
   close_with_escape: is_horizontal,
   data_filter_param_name: filter_param_name
@@ -667,12 +658,6 @@
   .facets--horizontal .facets__status--swatches {
     @media screen and (min-width: 750px) {
       display: flex;
-    }
-  }
-
-  .facets--horizontal .sorting-filter .facets__status {
-    @media screen and (min-width: 750px) {
-      display: none;
     }
   }
 

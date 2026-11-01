@@ -840,7 +840,20 @@ class SortingFilterComponent extends Component {
    * @param {Event} event - The change event
    */
   updateFacetStatus(event) {
-    if (!(event.target instanceof HTMLSelectElement)) return;
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    const optionName =
+      target instanceof HTMLSelectElement
+        ? target.selectedOptions[0]?.textContent?.trim()
+        : target.dataset.optionName;
+
+    if (optionName) {
+      const selectedValue = this.querySelector('.sorting-filter__value');
+      if (selectedValue) selectedValue.textContent = optionName;
+    }
+
+    if (!(target instanceof HTMLSelectElement)) return;
 
     const details = this.querySelector('details');
     if (!details) return;
@@ -849,7 +862,7 @@ class SortingFilterComponent extends Component {
     if (!(facetStatus instanceof FacetStatusComponent)) return;
 
     facetStatus.textContent =
-      event.target.value !== details.dataset.defaultSortBy ? event.target.dataset.optionName ?? '' : '';
+      target.value !== details.dataset.defaultSortBy ? target.dataset.optionName ?? '' : '';
   }
 }
 

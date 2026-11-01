@@ -9,6 +9,9 @@
   A captioned image is read from the metaobject `mega_menu_feature` whose handle matches
   this menu item. Fields: `image` (file), `caption` (multi-line text), `link` (URL).
 
+  In Vine, hovering a link in the first column shows that collection's image beside the
+  list. A collection without its own image uses the first product image.
+
   @param {object} parent_link - The top-level menu link.
 
   @example
@@ -243,6 +246,12 @@
       {%- unless forloop.first -%}
         <span class="mega-menu__rule" aria-hidden="true"></span>
       {%- endunless -%}
+      {%- liquid
+        assign show_thumbs = false
+        if parent_link.handle == 'vine' and forloop.first
+          assign show_thumbs = true
+        endif
+      -%}
       <div class="mega-menu__column{% if forloop.first %} mega-menu__column--lead{% endif %}">
         <p class="mega-menu__eyebrow" id="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}">
           {{ child.title | escape }}
@@ -250,13 +259,50 @@
         <span class="mega-menu__mark" aria-hidden="true"></span>
         {%- if child.links != blank -%}
           <ul
-            class="mega-menu__links mega-menu__links--large list-unstyled"
+            class="mega-menu__links mega-menu__links--large list-unstyled{% if show_thumbs %} mega-menu__links--thumbs{% endif %}"
             role="list"
             aria-labelledby="MegaLabel-{{ parent_link.handle }}-{{ child.handle }}"
           >
             {%- for item in child.links -%}
+              {%- liquid
+                assign thumb_image = nil
+                if show_thumbs
+                  if item.type == 'collection_link' or item.type == 'catalog_link'
+                    if item.type == 'catalog_link'
+                      assign thumb_resource = collections.all
+                    else
+                      assign thumb_resource = item.object
+                    endif
+                    if thumb_resource != blank
+                      assign thumb_image = thumb_resource.image
+                      if thumb_image == blank
+                        assign thumb_product = thumb_resource.products.first
+                        if thumb_product != blank
+                          assign thumb_image = thumb_product.featured_image
+                        endif
+                      endif
+                    endif
+                  elsif item.type == 'product_link' and item.object != blank
+                    assign thumb_image = item.object.featured_image
+                  endif
+                endif
+              -%}
               <li>
-                <a class="mega-menu__item mega-menu__item--large" href="{{ item.url }}">{{ item.title | escape }}</a>
+                <a class="mega-menu__item mega-menu__item--large" href="{{ item.url }}">
+                  {{- item.title | escape -}}
+                  {%- if thumb_image != blank -%}
+                    {{
+                      thumb_image
+                      | image_url: width: 480
+                      | image_tag:
+                        class: 'mega-menu__thumb',
+                        widths: '240, 480',
+                        sizes: '240px',
+                        alt: '',
+                        loading: 'lazy'
+                    }}
+                  {%- endif -%}
+                </a>
               </li>
             {%- endfor -%}
           </ul>
@@ -340,6 +386,37 @@
   .mega-menu__links--large {
     gap: 14px;
     margin-top: 22px;
+  }
+
+  .mega-menu__links--thumbs {
+    position: relative;
+  }
+
+  .mega-menu__column--lead {
+    container-type: inline-size;
+  }
+
+  .mega-menu__thumb {
+    position: absolute;
+    top: 2px;
+    right: 20px;
+    width: 240px;
+    height: 300px;
+    object-fit: cover;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .mega-menu__item:hover > .mega-menu__thumb,
+  .mega-menu__item:focus-visible > .mega-menu__thumb {
+    opacity: 1;
+  }
+
+  @container (max-width: 500px) {
+    .mega-menu__thumb {
+      display: none;
+    }
   }
 
   .mega-menu__item {

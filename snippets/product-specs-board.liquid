@@ -75,6 +75,7 @@
 {%- liquid
   assign lagring_field = spec_product.metafields.custom.lagring
   assign added_so2_field = spec_product.metafields.custom.tilfojet_s02
+  assign added_so2_info_field = spec_product.metafields.custom.tilfojet_so2_info_i
   assign bottle_count_field = spec_product.metafields.custom.antal_flasker
   assign alcohol_field = spec_product.metafields.custom.alkohol
   assign farming_field = spec_product.metafields.custom.landbrug
@@ -83,6 +84,22 @@
 
 {%- capture lagring_text -%}{%- render 'product-fact-text', metafield: lagring_field -%}{%- endcapture -%}
 {%- capture added_so2_text -%}{%- render 'product-fact-text', metafield: added_so2_field -%}{%- endcapture -%}
+{%- capture added_so2_note -%}
+  {%- if added_so2_info_field.type contains 'metaobject_reference' -%}
+    {%- liquid
+      assign so2_info_entry = added_so2_info_field.value
+      assign so2_info_field = so2_info_entry.ja
+      if so2_info_field.type == 'rich_text_field'
+        assign so2_info_text = so2_info_field | metafield_text
+      else
+        assign so2_info_text = so2_info_field.value
+      endif
+    -%}
+    {{- so2_info_text | strip -}}
+  {%- else -%}
+    {%- render 'product-fact-text', metafield: added_so2_info_field -%}
+  {%- endif -%}
+{%- endcapture -%}
 {%- capture bottle_count_text -%}{%- render 'product-fact-text', metafield: bottle_count_field -%}{%- endcapture -%}
 {%- capture alcohol_text -%}{%- render 'product-fact-text', metafield: alcohol_field -%}{%- endcapture -%}
 {%- capture farming_text -%}{%- render 'product-fact-text', metafield: farming_field -%}{%- endcapture -%}
@@ -91,12 +108,12 @@
 {%- liquid
   assign lagring_text = lagring_text | strip
   assign added_so2_text = added_so2_text | strip
+  assign added_so2_note = added_so2_note | strip
   assign bottle_count_text = bottle_count_text | strip
   assign alcohol_text = alcohol_text | strip
   assign farming_text = farming_text | strip
   assign size_text = size_text | strip
   assign lagring_note = ''
-  assign added_so2_note = ''
   assign spec_empty = '–'
 
   if lagring_text == blank
@@ -119,16 +136,10 @@
   endif
 
   assign lagring_note_field = spec_product.metafields.custom.lagring_note
-  assign added_so2_note_field = spec_product.metafields.custom.added_so2_note
   if lagring_note_field.type == 'rich_text_field'
     assign lagring_note = lagring_note_field | metafield_text | strip
   else
     assign lagring_note = lagring_note_field.value | strip
-  endif
-  if added_so2_note_field.type == 'rich_text_field'
-    assign added_so2_note = added_so2_note_field | metafield_text | strip
-  else
-    assign added_so2_note = added_so2_note_field.value | strip
   endif
 
   assign lagring_label = 'product_specs.lagring' | t
@@ -295,6 +306,7 @@
   }
 
   .product-specs__grid {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     width: 100%;
@@ -347,7 +359,7 @@
   }
 
   .product-specs__info {
-    position: relative;
+    
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -385,10 +397,6 @@
     appearance: none;
   }
 
-  span.product-specs__info-button {
-    cursor: default;
-  }
-
   .product-specs__info:hover .product-specs__info-button,
   .product-specs__info:focus-within .product-specs__info-button,
   .product-specs__info.is-open .product-specs__info-button {
@@ -410,7 +418,7 @@
     display: none;
     flex-direction: column;
     gap: 8px;
-    width: 194px;
+    width: 100%;
     margin: 0;
     padding: 18px 16px;
     background: #1a1a1a;

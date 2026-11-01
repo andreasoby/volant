@@ -16,6 +16,7 @@ body {
   --hover-transition-duration: 0.25s;
   --hover-transition-timing: ease-out;
   --submenu-animation-speed: 360ms;
+  --color: #000000;
 }
 
 html {
@@ -987,7 +988,7 @@ summary {
   align-items: center;
   cursor: pointer;
   list-style: none;
-  padding-block: var(--padding-sm);
+  padding-block: var(--padding-xl);
 }
 
 summary:hover {

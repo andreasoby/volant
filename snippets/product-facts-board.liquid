@@ -137,8 +137,15 @@
     endif
   endif
 
+  assign producer_url = producer_url | strip
+  if producer_text == blank or producer_text == producer_url
+    assign producer_text = ''
+    assign producer_url = ''
+  endif
+
   if producer_text == blank
     assign producer_text = fact_empty
+    assign producer_url = ''
   endif
   if grape_text == blank
     assign grape_text = fact_empty
@@ -177,12 +184,10 @@
     <div class="product-facts__cell">
       <dt class="product-facts__label">{{ 'product_facts.producer' | t }}</dt>
       <dd class="product-facts__value">
-        {%- if producer_text != blank -%}
-          {%- if producer_url != blank -%}
-            <a class="product-facts__producer" href="{{ producer_url }}">{{ producer_text }}</a>
-          {%- else -%}
-            <span class="product-facts__producer">{{ producer_text }}</span>
-          {%- endif -%}
+        {%- if producer_url != blank and producer_text != fact_empty -%}
+          <a class="product-facts__producer" href="{{ producer_url }}">{{ producer_text }}</a>
+        {%- else -%}
+          {{ producer_text }}
         {%- endif -%}
       </dd>
     </div>
@@ -396,7 +401,7 @@
     text-transform: none;
   }
 
-  .product-facts__producer {
+  a.product-facts__producer {
     color: #111;
     font: inherit;
     text-decoration: underline;

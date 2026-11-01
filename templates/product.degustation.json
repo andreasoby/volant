@@ -965,10 +965,10 @@
           "type": "accordion",
           "name": "t:names.accordion",
           "settings": {
-            "icon": "caret",
+            "icon": "plus",
             "dividers": true,
             "divider_color": "",
-            "type_preset": "h6",
+            "type_preset": "h5",
             "background_color": "",
             "text_color": "",
             "border": "none",

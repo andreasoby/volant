@@ -931,11 +931,261 @@
         "padding-block-start": 32,
         "padding-block-end": 64
       }
+    },
+    "section_AGJxc4": {
+      "type": "section",
+      "blocks": {
+        "text_N44kQc": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h2>Spørgsmål og svar</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 32,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "accordion_X8Emkx": {
+          "type": "accordion",
+          "name": "t:names.accordion",
+          "settings": {
+            "icon": "caret",
+            "dividers": true,
+            "divider_color": "",
+            "type_preset": "h6",
+            "background_color": "",
+            "text_color": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_color": "",
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "accordion_row_C78xbU": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "Hvornår bliver mit abonnement trukket?",
+                "open_by_default": true,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_yQLGXR": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Vores mål er, at alle kunder er fuldt ud tilfredse med deres køb. Hvis det ikke er tilfældet, så giv os besked, så gør vi vores bedste for at finde en løsning sammen med dig.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_yQLGXR"
+              ]
+            },
+            "accordion_row_XQwkjU": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "Kan jeg sætte abonnementet på pause?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_YMcYKq": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Vi arbejder hurtigt på at afsende din ordre så hurtigt som muligt. Når din ordre er afsendt, modtager du en mail med yderligere oplysninger. Leveringstider varierer afhængigt af din lokation.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_YMcYKq"
+              ]
+            },
+            "accordion_row_PNRwFV": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "Kan jeg give Dégustation som gave?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_WdLDQx": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Vores produkter fremstilles både lokalt og globalt. Vi udvælger omhyggeligt vores produktionspartnere for at sikre, at vores produkter er af høj kvalitet og til en fair pris.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_WdLDQx"
+              ]
+            },
+            "accordion_row_mXxtNT": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "Kan jeg hente kassen selv?",
+                "open_by_default": false,
+                "icon": "none",
+                "width": 20
+              },
+              "blocks": {
+                "text_6YpBqB": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Vores produkter fremstilles både lokalt og globalt. Vi udvælger omhyggeligt vores produktionspartnere for at sikre, at vores produkter er af høj kvalitet og til en fair pris.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "rte",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "text_color": "",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_6YpBqB"
+              ]
+            }
+          },
+          "block_order": [
+            "accordion_row_C78xbU",
+            "accordion_row_XQwkjU",
+            "accordion_row_PNRwFV",
+            "accordion_row_mXxtNT"
+          ]
+        }
+      },
+      "block_order": [
+        "text_N44kQc",
+        "accordion_X8Emkx"
+      ],
+      "name": "t:names.custom_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 64
+      }
     }
   },
   "order": [
     "main",
     "bundle_products",
-    "section_TdXEGQ"
+    "section_TdXEGQ",
+    "section_AGJxc4"
   ]
 }

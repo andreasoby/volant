@@ -59,7 +59,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Vine fra&nbsp;{{ closest.collection.metafields.custom.producent_titel.value }}</h2>",
+            "text": "<h2>Vine fra {{ closest.collection.metafields.custom.producent_titel.value }} kommer snart</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -293,6 +293,7 @@
           ]
         }
       },
+      "disabled": true,
       "settings": {
         "layout_type": "grid",
         "product_card_size": "medium",

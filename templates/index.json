@@ -640,7 +640,7 @@
               "type": "button",
               "settings": {
                 "label": "Se Dégustation",
-                "link": "shopify://collections/all",
+                "link": "shopify://products/november-degustation",
                 "open_in_new_tab": false,
                 "style_class": "button",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",

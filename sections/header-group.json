@@ -17,6 +17,7 @@
         "announcement_countdown_Pmc97x": {
           "type": "_announcement-countdown",
           "name": "t:names.countdown",
+          "disabled": true,
           "settings": {
             "ends_at": "2026-11-01 10:00",
             "link": "",
@@ -47,7 +48,7 @@
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "NÆSTE UDGIVELSE 1. NOVEMBER",
+            "text": "NOVEMBER UDGIVELSE KAN KØBES",
             "link": "",
             "font": "var(--font-accent--family)",
             "font_size": "0.75rem",

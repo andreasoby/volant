@@ -101,6 +101,7 @@
   endif
 -%}
 
+{% if card_count > 0 %}
 <div class="section-background producer-carousel__backdrop"></div>
 
 <div
@@ -131,7 +132,6 @@
     </div>
   {% endif %}
 
-  {% if card_count > 0 %}
     <producer-carousel
       class="producer-carousel__viewport"
       data-position="{{ position_template | escape }}"
@@ -234,10 +234,14 @@
       </ul>
       <p class="visually-hidden" data-status aria-live="polite"></p>
     </producer-carousel>
-  {% endif %}
 </div>
+{% endif %}
 
 {% stylesheet %}
+  .producer-carousel-section:not(:has(.producer-carousel)) {
+    display: none;
+  }
+
   .producer-carousel-section.shopify-section .section-background,
   .producer-carousel__backdrop {
     background-color: #eadec6;

@@ -515,7 +515,17 @@
   @media screen and (max-width: 749px) {
     .product-facts.section {
       padding-top: 24px;
-      padding-bottom: 24px;
+      padding-bottom: 0;
+    }
+
+    .product-facts-section:not(:has(.product-facts--hide-mobile)) + .product-facts-section .product-facts.section,
+    .product-facts-section:not(:has(.product-facts--hide-mobile)) + .product-specs-section .product-specs.section {
+      padding-top: 0;
+    }
+
+    .product-facts-section:not(:has(.product-facts--hide-mobile)) + .product-facts-section .product-facts__summary,
+    .product-facts-section:not(:has(.product-facts--hide-mobile)) + .product-specs-section .product-specs__summary {
+      border-top: 0;
     }
   }
 

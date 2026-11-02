@@ -2,7 +2,7 @@
 
 {% capture children %}
   {% unless product == blank %}
-    {%- if product.available == false or product.compare_at_price > product.price -%}
+    {%- if product.available == false -%}
       <div
         class="product-badges product-badges--{{ settings.badge_position }}"
         style="
@@ -13,7 +13,7 @@
         <div
           class="
             product-badges__badge product-badges__badge--rectangle
-            {% if product.available == false %} color-custom-badge-sold-out{% elsif product.compare_at_price > product.price %} color-custom-badge-sale{% endif %}
+            i{% if product.available == false %} color-custom-badge-sold-out{% elsif product.compare_at_price > product.price %} color-custom-badge-sale{% endif %}
           "
         >
           {%- if product.available == false -%}

@@ -29,6 +29,21 @@
   else
     assign min_quantity = variant.quantity_rule.min | default: 1
   endif
+
+  # Cap the quantity to what the shared bottle stock allows. The max includes
+  # what is already in the cart, so add the variant's cart quantity back on.
+  assign max_quantity = variant.quantity_rule.max
+  capture bottle_max
+    render 'bottle-max-quantity', variant: variant
+  endcapture
+  assign bottle_max = bottle_max | strip
+  if bottle_max != blank
+    assign variant_cart_quantity = cart | item_count_for_variant: variant.id
+    assign bottle_max = bottle_max | plus: variant_cart_quantity
+    if max_quantity == null or bottle_max < max_quantity
+      assign max_quantity = bottle_max
+    endif
+  endif
 %}
 
 <div
@@ -75,11 +90,11 @@
       {% if line_index %}
         data-cart-line="{{ line_index | plus: 1 }}"
       {% endif %}
-      {% if variant.quantity_rule.max %}
-        max="{{ variant.quantity_rule.max }}"
+      {% if max_quantity != null %}
+        max="{{ max_quantity }}"
       {% endif %}
       step="{{ variant.quantity_rule.increment | default: 1 }}"
-      {% if can_update_quantity == false or variant.available == false %}
+      {% if can_update_quantity == false or variant.available == false or max_quantity == 0 %}
         disabled
       {% endif %}
     >

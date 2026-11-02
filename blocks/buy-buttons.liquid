@@ -22,10 +22,18 @@
       assign quantity_rule_soldout = true
     endif
 
-    if variant.available
+    capture bottle_max
+      render 'bottle-max-quantity', variant: variant
+    endcapture
+    assign bottle_max = bottle_max | strip
+    if bottle_max == '0'
+      assign bottle_soldout = true
+    endif
+
+    if variant.available and bottle_soldout != true
       assign can_add_to_cart = true
       assign add_to_cart_text = 'products.product.add_to_cart' | t
-    elsif inventory_managed and inventory_quantity <= 0 and inventory_policy == 'deny' or quantity_rule_soldout
+    elsif inventory_managed and inventory_quantity <= 0 and inventory_policy == 'deny' or quantity_rule_soldout or bottle_soldout
       assign can_add_to_cart = false
       assign add_to_cart_text = 'products.product.sold_out' | t
     else

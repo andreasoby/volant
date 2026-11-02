@@ -2,9 +2,17 @@
   Renders a strikethrough line SVG for unavailable product options.
 
   @param {object} product_option - The product option object. Renders the strikethrough when product_option.available is false.
+  @param {boolean} [available] - Overrides product_option.available.
 {% enddoc %}
 
-{% unless product_option.available %}
+{% liquid
+  assign option_available = product_option.available
+  if available != null
+    assign option_available = available
+  endif
+%}
+
+{% unless option_available %}
   <svg
     viewBox="0 0 100 46"
     preserveAspectRatio="xMidYMid slice"

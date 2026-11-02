@@ -400,6 +400,10 @@
     color: rgb(var(--color-variant-text-rgb) / var(--opacity-60));
   }
 
+  .variant-option__button-label:has(:disabled) {
+    cursor: not-allowed;
+  }
+
   .variant-option__button-label--has-swatch:hover {
     outline: var(--focus-outline-width) solid var(--color-variant-hover-border);
     outline-offset: var(--focus-outline-offset);

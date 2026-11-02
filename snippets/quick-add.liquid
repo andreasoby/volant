@@ -18,7 +18,13 @@
     assign uses_selling_plans = true
   endif
 
-  if variant.available
+  # Variants that need more bottles than are left in stock can't be added
+  capture bottle_max
+    render 'bottle-max-quantity', variant: variant
+  endcapture
+  assign bottle_max = bottle_max | strip
+
+  if variant.available and bottle_max != '0'
     assign can_add_to_cart = true
   else
     assign can_add_to_cart = false
@@ -39,7 +45,11 @@
     assign first_option = product.options_with_values | first
     assign swatch_count = first_option.values | map: 'swatch' | compact | size
     assign render_choose = true
-    if product.selected_variant.available
+    capture selected_bottle_max
+      render 'bottle-max-quantity', variant: product.selected_variant
+    endcapture
+    assign selected_bottle_max = selected_bottle_max | strip
+    if product.selected_variant.available and selected_bottle_max != '0'
       assign initial_button = 'add'
       assign render_add = true
     elsif swatch_count > 0
@@ -107,7 +117,7 @@
           name="id"
           ref="variantId"
           value="{{ variant.id }}"
-          {% if variant.available == false %}
+          {% if can_add_to_cart == false %}
             disabled
           {% endif %}
         >

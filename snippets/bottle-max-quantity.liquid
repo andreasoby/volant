@@ -1,0 +1,37 @@
+{%- doc -%}
+  Outputs how many more of a variant can be added to the cart from the shared bottle stock.
+  Each variant's inventory_quantity holds the product's bottle count, and the
+  custom.bottle_amount metafield is the number of bottles one unit uses.
+  Bottles already in the cart for the same product, across all its variants, are subtracted.
+  Outputs nothing when stock is not tracked or overselling is allowed.
+  An output of 0 means no more of the variant can be added.
+
+  @param {object} variant - The variant to check.
+
+  @example
+  {% capture bottle_max %}{% render 'bottle-max-quantity', variant: variant %}{% endcapture %}
+{%- enddoc -%}
+
+{%- liquid
+  if variant.inventory_management == 'shopify' and variant.inventory_policy == 'deny'
+    assign bottle_amount = variant.metafields.custom.bottle_amount.value | default: 1
+    if bottle_amount < 1
+      assign bottle_amount = 1
+    endif
+
+    assign bottles_in_cart = 0
+    for item in cart.items
+      if item.product_id == variant.product.id
+        assign item_bottle_amount = item.variant.metafields.custom.bottle_amount.value | default: 1
+        assign bottles_in_cart = item.quantity | times: item_bottle_amount | plus: bottles_in_cart
+      endif
+    endfor
+
+    assign bottle_max = variant.inventory_quantity | minus: bottles_in_cart | divided_by: bottle_amount
+    if bottle_max < 0
+      assign bottle_max = 0
+    endif
+
+    echo bottle_max
+  endif
+-%}

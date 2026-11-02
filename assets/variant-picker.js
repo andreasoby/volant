@@ -2,7 +2,7 @@ import { Component } from '@theme/component';
 import { morph, MORPH_OPTIONS } from '@theme/morph';
 import { OverflowList } from '@theme/overflow-list';
 import { yieldToMainThread, getViewParameterValue, ResizeNotifier } from '@theme/utilities';
-import { ProductSelectEvent } from '@shopify/events';
+import { ProductSelectEvent, StandardEvents } from '@shopify/events';
 
 /**
  * @typedef {object} VariantPickerRefs
@@ -31,6 +31,8 @@ export default class VariantPicker extends Component {
 
   #resizeObserver = new ResizeNotifier(() => this.updateVariantPickerCss());
 
+  #cartUpdateAbortController = new AbortController();
+
   connectedCallback() {
     super.connectedCallback();
     const fieldsets = /** @type {HTMLFieldSetElement[]} */ (this.refs.fieldsets || []);
@@ -47,12 +49,44 @@ export default class VariantPicker extends Component {
 
     this.addEventListener('change', this.variantChanged.bind(this));
     this.#resizeObserver.observe(this);
+
+    // Products sold from a shared bottle stock limit their variants by what's already in the cart
+    if (this.hasAttribute('data-bottle-stock')) {
+      this.#cartUpdateAbortController = new AbortController();
+      document.addEventListener(StandardEvents.cartLinesUpdate, this.#handleCartUpdate, {
+        signal: this.#cartUpdateAbortController.signal,
+      });
+    }
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.#resizeObserver.disconnect();
+    this.#cartUpdateAbortController.abort();
   }
+
+  /**
+   * Re-renders the current selection once the cart has changed, so variants that no longer
+   * fit in the remaining bottle stock are disabled and the quantity limit is updated.
+   * @param {Event & { promise?: Promise<{ detail?: { didError?: boolean } }> }} event - The cart lines update event.
+   */
+  #handleCartUpdate = (event) => {
+    Promise.resolve(event.promise)
+      .then((result) => {
+        if (result?.detail?.didError || !this.isConnected) return;
+
+        const { selectedOption } = this;
+        if (!selectedOption) return;
+
+        const { optionValueId = '', variantId = '', connectedProductUrl = '' } = selectedOption.dataset;
+        this.fetchUpdatedSection(this.buildRequestUrl(selectedOption), {
+          detail: { optionValueId, variantId, connectedProductUrl },
+        });
+      })
+      .catch((error) => {
+        if (error?.name !== 'AbortError') console.warn('[variant-picker] Event promise rejected:', error);
+      });
+  };
 
   /**
    * Handles the variant change event.

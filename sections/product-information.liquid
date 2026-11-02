@@ -32,11 +32,21 @@
     assign current_variant = product.selected_or_first_available_variant
     # Get the initial quantity based on quantity rules
     assign initial_quantity = current_variant.quantity_rule.min | default: 1
+
+    # A variant that needs more bottles than are in stock is sold out
+    assign current_variant_available = current_variant.available
+    capture bottle_max
+      render 'bottle-max-quantity', variant: current_variant
+    endcapture
+    assign bottle_max = bottle_max | strip
+    if bottle_max == '0'
+      assign current_variant_available = false
+    endif
   %}
 
   <sticky-add-to-cart
     class="sticky-add-to-cart"
-    data-variant-available="{{ current_variant.available }}"
+    data-variant-available="{{ current_variant_available }}"
     data-product-id="{{ product.id }}"
     data-current-variant-id="{{ current_variant.id }}"
     data-initial-quantity="{{ initial_quantity }}"
@@ -124,21 +134,21 @@
         class="sticky-add-to-cart__button add-to-cart-button button"
         ref="addToCartButton"
         on:click="/handleAddToCartClick"
-        {% unless current_variant.available %}
+        {% unless current_variant_available %}
           disabled
         {% endunless %}
       >
         <span
           class="add-to-cart-text"
         >
-          {% if current_variant.available %}
+          {% if current_variant_available %}
             <span class="svg-wrapper">
               {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
             </span>
           {% endif %}
           <span class="add-to-cart-text__content">
             <span>
-              {%- if current_variant.available -%}
+              {%- if current_variant_available -%}
                 {{- 'products.product.add_to_cart' | t -}}
               {%- elsif current_variant == blank -%}
                 {{- 'products.product.unavailable' | t -}}
@@ -148,7 +158,7 @@
             </span>
             <span
               ref="quantityDisplay"
-              {% if current_variant.available and initial_quantity > 1 %}
+              {% if current_variant_available and initial_quantity > 1 %}
                 style="display: inline;"
               {% else %}
                 style="display: none;"

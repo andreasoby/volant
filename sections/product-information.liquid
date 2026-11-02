@@ -39,7 +39,7 @@
       render 'bottle-max-quantity', variant: current_variant
     endcapture
     assign bottle_max = bottle_max | strip
-    if bottle_max == '0'
+    if bottle_max == '0' or product.tags contains 'Allokationsvin'
       assign current_variant_available = false
     endif
   %}

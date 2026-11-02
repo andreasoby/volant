@@ -280,7 +280,7 @@
             render 'bottle-max-quantity', variant: selected_variant
           endcapture
           assign bottle_max = bottle_max | strip
-          if bottle_max == '0'
+          if bottle_max == '0' or product_resource.tags contains 'Allokationsvin'
             echo selected_variant | json | replace_first: '"available":true', '"available":false'
           else
             echo selected_variant | json

@@ -64,6 +64,14 @@
     assign render_add = false
     assign render_choose = true
   endif
+
+  # Allocation wines can never be bought, so only a disabled Add button is shown
+  if product.tags contains 'Allokationsvin'
+    assign can_add_to_cart = false
+    assign initial_button = 'add'
+    assign render_add = true
+    assign render_choose = false
+  endif
 %}
 
 {% render 'fly-to-cart-styles' %}

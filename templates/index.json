@@ -410,7 +410,7 @@
       },
       "name": "t:names.featured_collection",
       "settings": {
-        "collection": "all",
+        "collection": "best-selling-collection",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 8,

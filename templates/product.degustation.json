@@ -556,7 +556,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<h5>Vælg din udgivelse</h5>",
+                    "text": "<h5>Vi udvælger vinene</h5>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -582,7 +582,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Køb en enkelt udgivelse, eller abonnér i 3 eller 6 måneder og spar 10–15% på hver kasse.</p>",
+                    "text": "<p>Hver måned smager vi os igennem nyheder og sjældne flasker og vælger tre vine, der passer til sæsonen.</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -695,7 +695,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<h5>Vi udvælger vinene</h5>",
+                    "text": "<h5>Udgivelsen frigives den 1.</h5>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -721,7 +721,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Hver måned smager vi os igennem nyheder og sjældne flasker og vælger tre vine, der passer til sæsonen.</p>",
+                    "text": "<p>Udgivelsen sendes den 1. i måneden — levering til nærmeste pakkeshop.</p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -982,84 +982,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "accordion_row_C78xbU": {
-              "type": "_accordion-row",
-              "settings": {
-                "heading": "Hvornår bliver mit abonnement trukket?",
-                "open_by_default": true,
-                "icon": "none",
-                "width": 20
-              },
-              "blocks": {
-                "text_yQLGXR": {
-                  "type": "text",
-                  "settings": {
-                    "text": "<p>Vores mål er, at alle kunder er fuldt ud tilfredse med deres køb. Hvis det ikke er tilfældet, så giv os besked, så gør vi vores bedste for at finde en løsning sammen med dig.</p>",
-                    "width": "100%",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "rte",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "text_color": "",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "text_yQLGXR"
-              ]
-            },
-            "accordion_row_XQwkjU": {
-              "type": "_accordion-row",
-              "settings": {
-                "heading": "Kan jeg sætte abonnementet på pause?",
-                "open_by_default": false,
-                "icon": "none",
-                "width": 20
-              },
-              "blocks": {
-                "text_YMcYKq": {
-                  "type": "text",
-                  "settings": {
-                    "text": "<p>Vi arbejder hurtigt på at afsende din ordre så hurtigt som muligt. Når din ordre er afsendt, modtager du en mail med yderligere oplysninger. Leveringstider varierer afhængigt af din lokation.</p>",
-                    "width": "100%",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "rte",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "text_color": "",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "text_YMcYKq"
-              ]
-            },
             "accordion_row_PNRwFV": {
               "type": "_accordion-row",
               "settings": {
@@ -1140,8 +1062,6 @@
             }
           },
           "block_order": [
-            "accordion_row_C78xbU",
-            "accordion_row_XQwkjU",
             "accordion_row_PNRwFV",
             "accordion_row_mXxtNT"
           ]

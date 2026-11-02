@@ -523,7 +523,7 @@
           "settings": {
             "media_type": "image",
             "image": "shopify://shop_images/Untitled_2-2.png",
-            "link": "",
+            "link": "https://www.volant-vin.dk/products/november-degustation",
             "video_loop": true,
             "video_autoplay": false,
             "image_position": "cover",
@@ -640,7 +640,7 @@
               "type": "button",
               "settings": {
                 "label": "Se Dégustation",
-                "link": "shopify://products/november-degustation",
+                "link": "https://www.volant-vin.dk/products/november-degustation",
                 "open_in_new_tab": false,
                 "style_class": "button",
                 "custom_button_background": "{{ settings.color_palette.foreground }}",

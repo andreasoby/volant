@@ -59,7 +59,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>Vine fra {{ closest.collection.metafields.custom.producent_titel.value }} kommer snart</h2>",
+            "text": "<h2>Kommer snart</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",

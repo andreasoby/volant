@@ -35,7 +35,7 @@
           "name": "t:names.announcement",
           "settings": {
             "text": "DÉGUSTATION",
-            "link": "shopify://products/november-degustation",
+            "link": "https://www.volant-vin.dk/products/november-degustation",
             "font": "var(--font-accent--family)",
             "font_size": "0.75rem",
             "weight": "",
@@ -49,7 +49,7 @@
           "type": "_announcement",
           "settings": {
             "text": "NOVEMBER UDGIVELSE KAN KØBES NU",
-            "link": "shopify://products/november-degustation",
+            "link": "https://www.volant-vin.dk/products/november-degustation",
             "font": "var(--font-accent--family)",
             "font_size": "0.75rem",
             "weight": "",

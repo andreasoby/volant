@@ -80,6 +80,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
+                "hide_on_mobile": true,
                 "image": "shopify://shop_images/R0010216.jpg",
                 "link": "shopify://collections/alle-produkter",
                 "image_ratio": "portrait",
@@ -104,6 +105,7 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
+                "hide_on_mobile": true,
                 "image": "shopify://shop_images/R0009422.jpg",
                 "link": "shopify://collections/alle-produkter",
                 "image_ratio": "portrait",

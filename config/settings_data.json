@@ -173,5 +173,10 @@
         "color3": "#DFDFDF"
       }
     }
+  },
+  "platform_customizations": {
+    "custom_css": [
+      ".announcement-bar__marquee-item .announcement-bar__link {width: 100%; max-width: none; z-index: 1; }"
+    ]
   }
 }

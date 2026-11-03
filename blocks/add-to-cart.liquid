@@ -28,6 +28,16 @@
     >
       Kontakt for at købe
     </a>
+    <style>
+      .product-form-buttons:has(.allocation-contact-button) .quantity-selector-wrapper,
+      .product-form-buttons:has(.allocation-contact-button) .quantity-label,
+      .product-form-buttons:has(.allocation-contact-button) .quantity-rules {
+        display: none;
+      }
+      .allocation-contact-button {
+        text-decoration: none;
+      }
+    </style>
   {%- else -%}
     {% render 'add-to-cart-button',
       id: id,

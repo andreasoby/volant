@@ -802,7 +802,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Volant importerer vin direkte fra vinbønderne i nogle af de bedste og mest klassiske vinområder.</p>",
+            "text": "<p>Volant importerer vin direkte fra de klassiske og nye fremadstormende vinområder.</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",

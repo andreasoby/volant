@@ -505,7 +505,7 @@
           "type": "text",
           "name": "t:names.header",
           "settings": {
-            "text": "<h2>You may also like&nbsp;</h2>",
+            "text": "<h2>Du ville også kunne lide</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",

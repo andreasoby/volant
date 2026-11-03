@@ -96,7 +96,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Vi importerer kun vin fra mennesker, vi har mødt. Hver producent i vores sortiment er fundet på rejser i marken og i kældrene – og efter mange glas ved køkkenbordet.</p>",
+            "text": "<p>Vi importerer kun vin fra mennesker, vi har mødt. Hver producent i vores sortiment er fundet på rejser i marken og i kældrene.</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -122,7 +122,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Det er ikke de største navne, vi leder efter. Det er de vinbønder, der passer deres jord med omhu, arbejder i små mængder og laver vin med personlighed. Når vi først har fundet dem, bliver vi ved – år efter år, årgang efter årgang.</p>",
+            "text": "<p>Det er ikke de største navne, vi leder efter. Det er de vinbønder, der passer deres jord med omhu, arbejder i små mængder og laver vin med personlighed. Når vi først har fundet dem, bliver vi ved dem årgang efter årgang.</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",

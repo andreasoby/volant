@@ -410,7 +410,7 @@
       },
       "name": "t:names.featured_collection",
       "settings": {
-        "collection": "all",
+        "collection": "best-selling-collection",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 8,
@@ -749,7 +749,7 @@
           "hvidvine",
           "orangevine",
           "mousserende",
-          "00-wines"
+          "rose"
         ],
         "layout_type": "grid",
         "carousel_on_mobile": false,
@@ -802,7 +802,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p>Volant importerer naturvin og klassiske vine direkte fra vinbonden — udvalgt i Bourgogne, Loire, Champagne og Rheingau.</p>",
+            "text": "<p>Volant importerer vin direkte fra de klassiske og nye fremadstormende vinområder.</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",

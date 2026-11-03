@@ -151,7 +151,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "{{ closest.page.content }}",
+                "text": "<p>{{ closest.page.content }}</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -256,7 +256,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>På hele sortimentet, også små producenter og få flasker</p>",
+                    "text": "<p>En B2B konto giver engrospriser og mulighed for at købe allokationsvin.</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -393,7 +393,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Vi hjælper med at sammensætte et kort, der passer til køkkenet</p>",
+                    "text": "<p>Vi hjælper med at sammensætte et kort, der passer til køkkenet.</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -504,7 +504,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Vi kommer forbi med vine og møder gerne jeres personale</p>",
+                    "text": "<p>Vi kommer forbi med vine og møder gerne jeres personale, så de kan få den bedste forståelse for vinene.</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",

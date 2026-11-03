@@ -1,0 +1,11 @@
+{%- doc -%}
+  Outputs true when the signed-in customer may only order the first variant of a product.
+  This applies to B2B customers, whose company locations are assigned the Virksomheder or Engros catalog.
+  Liquid can't read a catalog's name, so every B2B customer counts.
+  For these customers the variant picker is hidden and the first variant is always the one sold.
+
+  @example
+  {% capture first_variant_only %}{% render 'first-variant-only' %}{% endcapture %}
+{%- enddoc -%}
+
+{%- if customer.b2b? -%}true{%- endif -%}

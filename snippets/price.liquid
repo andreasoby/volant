@@ -13,6 +13,16 @@
   assign show_unit_price = show_unit_price | default: false
   assign show_sale_price_first = show_sale_price_first | default: false
   assign selected_variant = product_resource.selected_or_first_available_variant
+
+  # B2B customers can only order the first variant
+  capture first_variant_only
+    render 'first-variant-only'
+  endcapture
+  assign first_variant_only = first_variant_only | strip
+  if first_variant_only == 'true' and product_resource != blank
+    assign selected_variant = product_resource.variants.first
+  endif
+
   assign price = selected_variant.price
   assign compare_at_price = selected_variant.compare_at_price
 
@@ -37,7 +47,8 @@
     assign is_product_card = true
   endif
 
-  if is_product_card
+  # B2B cards show the first variant's pricing instead of the range across variants
+  if is_product_card and first_variant_only != 'true'
     assign price_min = product_resource.price_min
     assign price_max = product_resource.price_max
     assign has_volume_pricing = product_resource.quantity_price_breaks_configured? | default: false

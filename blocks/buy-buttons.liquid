@@ -7,6 +7,16 @@
   endif
 
   assign variant = closest.product.selected_or_first_available_variant
+
+  # B2B customers can only order the first variant
+  capture first_variant_only
+    render 'first-variant-only'
+  endcapture
+  assign first_variant_only = first_variant_only | strip
+  if first_variant_only == 'true' and closest.product != blank
+    assign variant = closest.product.variants.first
+  endif
+
   assign inventory_quantity = variant.inventory_quantity
   assign inventory_policy = variant.inventory_policy
 
@@ -78,7 +88,7 @@
           type="hidden"
           name="id"
           ref="variantId"
-          value="{{ product.selected_or_first_available_variant.id }}"
+          value="{{ variant.id | default: product.selected_or_first_available_variant.id }}"
         >
         {%- if block_settings.gift_card_form and product.gift_card? -%}
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section, block: block -%}

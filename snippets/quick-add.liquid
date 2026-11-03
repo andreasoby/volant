@@ -13,6 +13,15 @@
   # Logic to determine which variant to use (matching swatch selection logic from product-card)
   assign variant = product.selected_or_first_available_variant
 
+  # B2B customers can only order the first variant
+  capture first_variant_only
+    render 'first-variant-only'
+  endcapture
+  assign first_variant_only = first_variant_only | strip
+  if first_variant_only == 'true'
+    assign variant = product.variants.first
+  endif
+
   assign uses_selling_plans = false
   if product.requires_selling_plan or product.selling_plan_groups.size > 0
     assign uses_selling_plans = true
@@ -38,7 +47,7 @@
   assign render_add = false
   assign render_choose = false
 
-  if product.variants_count == 1
+  if product.variants_count == 1 or first_variant_only == 'true'
     assign initial_button = 'add'
     assign render_add = true
   elsif product.options.size == 1

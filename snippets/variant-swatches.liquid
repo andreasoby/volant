@@ -82,8 +82,15 @@
   if product_resource.selected_variant or has_option_selected
     assign allow_preselection = true
   endif
+
+  # B2B customers can only order the first variant, so they get no swatches
+  capture first_variant_only
+    render 'first-variant-only'
+  endcapture
+  assign first_variant_only = first_variant_only | strip
 %}
 
+{% unless first_variant_only == 'true' %}
 <swatches-variant-picker-component
   data-product-id="{{ product_resource.id }}"
   data-product-url="{{ product_resource.url }}"
@@ -232,3 +239,4 @@
     </script>
   </form>
 </swatches-variant-picker-component>
+{% endunless %}

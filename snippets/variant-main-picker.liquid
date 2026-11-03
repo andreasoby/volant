@@ -22,9 +22,15 @@
     assign has_custom_variant_buttons = true
   endif
   assign fieldset_index = 0
+
+  # B2B customers can only order the first variant, so they get no picker
+  capture first_variant_only
+    render 'first-variant-only'
+  endcapture
+  assign first_variant_only = first_variant_only | strip
 %}
 
-{% unless product_resource.has_only_default_variant %}
+{% unless product_resource.has_only_default_variant or first_variant_only == 'true' %}
   {% if has_custom_variant_buttons %}
     {% render 'variant-button-custom-styles', block_settings: block_settings, block_id: block.id %}
   {% endif %}

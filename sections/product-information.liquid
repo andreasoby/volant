@@ -2,6 +2,21 @@
   {{ closest.product | structured_data }}
 </script>
 
+{%- liquid
+  # B2B customers can only order the first variant. Without a picker every block on the page
+  # uses the selected variant, so make that the first one even when it's sold out.
+  capture first_variant_only
+    render 'first-variant-only'
+  endcapture
+  assign first_variant_only = first_variant_only | strip
+  assign first_variant = closest.product.variants.first
+-%}
+{%- if first_variant_only == 'true' and closest.product.id == product.id and closest.product.selected_or_first_available_variant.id != first_variant.id -%}
+  <script>
+    window.location.replace({{ first_variant.url | json }});
+  </script>
+{%- endif -%}
+
 {% capture media_gallery %}
   {%- content_for 'block',
     type: '_product-media-gallery',

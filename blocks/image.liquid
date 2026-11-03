@@ -17,7 +17,7 @@
 %}
 
 {% capture class %}
-  image-block image-block--{{ block.id }} image-block--height-{{ block_settings.height }} spacing-style size-style
+  image-block image-block--{{ block.id }} image-block--height-{{ block_settings.height }}{% if block_settings.hide_on_mobile %} image-block--hide-mobile{% endif %} spacing-style size-style
 {% endcapture %}
 
 {% capture style %}
@@ -108,6 +108,12 @@
     object-fit: cover;
     aspect-ratio: var(--ratio);
   }
+
+  @media screen and (max-width: 749px) {
+    .image-block--hide-mobile {
+      display: none;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -124,6 +130,12 @@
       "type": "url",
       "id": "link",
       "label": "t:settings.link"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Skjul på mobil",
+      "default": false
     },
     {
       "type": "header",

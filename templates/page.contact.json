@@ -498,7 +498,7 @@
                   "type": "text",
                   "name": "t:names.text",
                   "settings": {
-                    "text": "<p>Dégustation & abonnement</p>",
+                    "text": "<p>Køb af allokations vin</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",

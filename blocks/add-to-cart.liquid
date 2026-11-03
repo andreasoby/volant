@@ -19,15 +19,26 @@
   {{ block.shopify_attributes }}
   style="--add-to-cart-font-case: {{ settings.button_text_case }};"
 >
-  {% render 'add-to-cart-button',
-    id: id,
-    class: class,
-    can_add_to_cart: can_add_to_cart,
-    show_icon: can_add_to_cart,
-    product: closest.product,
-    add_to_cart_text: add_to_cart_text,
-    data_testid: 'standalone-add-to-cart'
-  %}
+  {%- if closest.product.tags contains 'Allokationsvin' -%}
+    {%- comment -%} Allocation wines: contact button instead of add to cart (same button classes as the store) {%- endcomment -%}
+    <a
+      href="{{ pages.kontakt.url | default: '/pages/kontakt' }}"
+      class="{{ class }} allocation-contact-button"
+      data-testid="allocation-contact-button"
+    >
+      Kontakt for at købe
+    </a>
+  {%- else -%}
+    {% render 'add-to-cart-button',
+      id: id,
+      class: class,
+      can_add_to_cart: can_add_to_cart,
+      show_icon: can_add_to_cart,
+      product: closest.product,
+      add_to_cart_text: add_to_cart_text,
+      data_testid: 'standalone-add-to-cart'
+    %}
+  {%- endif -%}
 </span>
 
 {% schema %}

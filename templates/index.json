@@ -58,6 +58,7 @@
               "settings": {
                 "image": "shopify://shop_images/R0009730.jpg",
                 "link": "shopify://collections/alle-produkter",
+                "hide_on_mobile": false,
                 "image_ratio": "portrait",
                 "width": "fill",
                 "custom_width": 100,
@@ -80,9 +81,9 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "hide_on_mobile": true,
                 "image": "shopify://shop_images/R0010216.jpg",
                 "link": "shopify://collections/alle-produkter",
+                "hide_on_mobile": true,
                 "image_ratio": "portrait",
                 "width": "fill",
                 "custom_width": 100,
@@ -105,9 +106,9 @@
               "type": "image",
               "name": "t:names.image",
               "settings": {
-                "hide_on_mobile": true,
                 "image": "shopify://shop_images/R0009422.jpg",
                 "link": "shopify://collections/alle-produkter",
+                "hide_on_mobile": true,
                 "image_ratio": "portrait",
                 "width": "fill",
                 "custom_width": 100,
@@ -437,7 +438,7 @@
         "producer_jDfBdC": {
           "type": "producer",
           "settings": {
-            "image": "shopify://shop_images/R0009506.jpg",
+            "image": "shopify://shop_images/R0009506_6e67cff6-6927-42c9-ad02-5837312a5de1.jpg",
             "eyebrow": "Bourgogne · Frankrig",
             "title": "Domaine Frey",
             "text": "Få domainer i Bourgogne har en adresse som Domaine Frey: det historiske Château Corton ved foden af Corton Grand Cru. Familien Frey købte slottet og de tilhørende 7 hektar vinmarker i Côte de Beaune i 2015.",

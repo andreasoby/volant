@@ -100,7 +100,7 @@
           >
             {{ 'content.cart_total' | t }}
             <span
-              ><bdi>{{ cart.total_price | money_with_currency }}</bdi></span
+              ><bdi>{% render 'money-display', amount: cart.total_price, currency: true %}</bdi></span
             >
           </caption>
 
@@ -305,14 +305,14 @@
                       {% if item.original_price != item.final_price %}
                         <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
                         <span
-                          ><bdi>{{ item.final_price | money }}</bdi></span
+                          ><bdi>{% render 'money-display', amount: item.final_price %}</bdi></span
                         >
                         <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
                         <s class="compare-at-price">
                           {% if item.variant.compare_at_price > item.original_price %}
-                            <bdi>{{ item.variant.compare_at_price | money }}</bdi>
+                            <bdi>{% render 'money-display', amount: item.variant.compare_at_price %}</bdi>
                           {% else %}
-                            <bdi>{{ item.original_price | money }}</bdi>
+                            <bdi>{% render 'money-display', amount: item.original_price %}</bdi>
                           {% endif %}
                         </s>
                       {% else %}
@@ -323,13 +323,13 @@
                         {% endif %}
 
                         <span
-                          ><bdi>{{ item.original_price | money }}</bdi></span
+                          ><bdi>{% render 'money-display', amount: item.original_price %}</bdi></span
                         >
 
                         {% if item.variant.compare_at_price > item.original_price %}
                           <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
                           <s class="compare-at-price"
-                            ><bdi>{{ item.variant.compare_at_price | money }}</bdi></s
+                            ><bdi>{% render 'money-display', amount: item.variant.compare_at_price %}</bdi></s
                           >
                         {% endif %}
                       {% endif %}
@@ -396,13 +396,12 @@
                   </div>
                 </td>
                 {%- liquid
-                  if settings.currency_code_enabled_cart_items
-                    assign price = item.final_line_price | money_with_currency
-                    assign unit_price = item.unit_price | money_with_currency
-                  else
-                    assign price = item.final_line_price | money
-                    assign unit_price = item.unit_price | money
-                  endif
+                  capture price
+                    render 'money-display', amount: item.final_line_price, currency: settings.currency_code_enabled_cart_items
+                  endcapture
+                  capture unit_price
+                    render 'money-display', amount: item.unit_price, currency: settings.currency_code_enabled_cart_items
+                  endcapture
                 -%}
                 <td
                   class="cart-items__price cart-secondary-typography"

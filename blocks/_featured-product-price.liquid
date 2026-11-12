@@ -4,11 +4,9 @@
   assign product = closest.product
   assign block_settings = block.settings
 
-  if settings.currency_code_enabled_product_cards
-    assign price_min = product.price_min | money_with_currency
-  else
-    assign price_min = product.price_min | money
-  endif
+  capture price_min
+    render 'money-display', amount: product.price_min, currency: settings.currency_code_enabled_product_cards
+  endcapture
 
   if product.price_varies
     assign price_from_text = 'content.price_from' | t: price: '__PRICE__'

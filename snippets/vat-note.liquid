@@ -1,0 +1,24 @@
+{%- doc -%}
+  Outputs a short "excluding VAT" note for ex-VAT visitors (see ex-vat-market). Outputs nothing otherwise,
+  so callers can fall back to their regular tax text when the output is blank.
+
+  @param {string} [context] - Use 'cart' for the longer cart note
+
+  @example
+  {% capture vat_note %}{% render 'vat-note' %}{% endcapture %}
+  {% capture vat_note %}{% render 'vat-note', context: 'cart' %}{% endcapture %}
+{%- enddoc -%}
+
+{%- liquid
+  capture ex_vat
+    render 'ex-vat-market'
+  endcapture
+
+  if ex_vat contains 'true'
+    if context == 'cart'
+      echo 'Priser ekskl. moms. Moms, rabatter og levering beregnes ved betaling.'
+    else
+      echo 'Ekskl. moms'
+    endif
+  endif
+-%}

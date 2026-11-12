@@ -71,18 +71,19 @@
     assign use_currency = true
   endif
 
-  # Format all prices
-  if use_currency
-    assign price = price | money_with_currency
-    assign compare_at_price = compare_at_price | money_with_currency
-    assign price_min = price_min | money_with_currency
-    assign price_max = price_max | money_with_currency
-  else
-    assign price = price | money
-    assign compare_at_price = compare_at_price | money
-    assign price_min = price_min | money
-    assign price_max = price_max | money
-  endif
+  # Format all prices (ex-VAT for B2B visitors, see money-display)
+  capture price
+    render 'money-display', amount: price, currency: use_currency
+  endcapture
+  capture compare_at_price
+    render 'money-display', amount: compare_at_price, currency: use_currency
+  endcapture
+  capture price_min
+    render 'money-display', amount: price_min, currency: use_currency
+  endcapture
+  capture price_max
+    render 'money-display', amount: price_max, currency: use_currency
+  endcapture
 -%}
 
 <div
@@ -134,13 +135,9 @@
   {% endif %}
   </div>
   {%- if selected_variant.unit_price and show_unit_price %}
-    {%- liquid
-      if use_currency
-        assign unit_price = selected_variant.unit_price | money_with_currency
-      else
-        assign unit_price = selected_variant.unit_price | money
-      endif
-    -%}
+    {%- capture unit_price -%}
+      {%- render 'money-display', amount: selected_variant.unit_price, currency: use_currency -%}
+    {%- endcapture -%}
     {% render 'unit-price', price: unit_price, measurement: selected_variant.unit_price_measurement %}
   {%- endif -%}
 </div>

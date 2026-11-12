@@ -173,11 +173,7 @@
                   <span>{{ variant.quantity_rule.min }}+</span>
                   <span>
                     <bdi>
-                      {%- if use_currency -%}
-                        {{- variant.price | money_with_currency | strip -}}
-                      {%- else -%}
-                        {{- variant.price | money | strip -}}
-                      {%- endif -%}</bdi
+                      {%- render 'money-display', amount: variant.price, currency: use_currency -%}</bdi
                     >/{{ 'content.each_abbreviation' | t -}}
                   </span>
                 </div>
@@ -194,11 +190,7 @@
                     <span>{{ price_break.minimum_quantity }}+</span>
                     <span>
                       <bdi>
-                        {%- if use_currency -%}
-                          {{- price_break.price | money_with_currency | strip -}}
-                        {%- else -%}
-                          {{- price_break.price | money | strip -}}
-                        {%- endif -%}</bdi
+                        {%- render 'money-display', amount: price_break.price, currency: use_currency -%}</bdi
                       >/{{ 'content.each_abbreviation' | t -}}
                     </span>
                   </div>
@@ -221,11 +213,7 @@
                         <span>{{ price_break.minimum_quantity }}+</span>
                         <span>
                           <bdi>
-                            {%- if use_currency -%}
-                              {{- price_break.price | money_with_currency | strip -}}
-                            {%- else -%}
-                              {{- price_break.price | money | strip -}}
-                            {%- endif -%}</bdi
+                            {%- render 'money-display', amount: price_break.price, currency: use_currency -%}</bdi
                           >/{{ 'content.each_abbreviation' | t -}}
                         </span>
                       </div>

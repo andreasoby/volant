@@ -1,0 +1,37 @@
+{%- doc -%}
+  Formats an amount for display, removing VAT for ex-VAT visitors (see ex-vat-market).
+  Display-only: never use the output for form values or calculations.
+  Outputs nothing when amount is blank; 0 is still formatted.
+
+  @param {number} amount - The amount in minor units (e.g. 19900 for 199,00 kr)
+  @param {boolean} [currency] - Use money_with_currency instead of money
+
+  @example
+  {% render 'money-display', amount: variant.price %}
+  {% render 'money-display', amount: cart.total_price, currency: true %}
+{%- enddoc -%}
+
+{%- liquid
+  if amount != nil and amount != ''
+    assign display_amount = amount
+
+    capture ex_vat
+      render 'ex-vat-market'
+    endcapture
+
+    if ex_vat contains 'true'
+      assign vat_rate = settings.ex_vat_rate
+      if vat_rate == nil
+        assign vat_rate = 25
+      endif
+      assign vat_divisor = vat_rate | divided_by: 100.0 | plus: 1
+      assign display_amount = amount | times: 1.0 | divided_by: vat_divisor | round
+    endif
+
+    if currency
+      echo display_amount | money_with_currency
+    else
+      echo display_amount | money
+    endif
+  endif
+-%}

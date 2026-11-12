@@ -16,11 +16,9 @@
 
   assign show_currency = settings.currency_code_enabled_product_pages
 
-  if show_currency
-    assign formatted_price = price_value | money_with_currency
-  else
-    assign formatted_price = price_value | money
-  endif
+  capture formatted_price
+    render 'money-display', amount: price_value, currency: show_currency
+  endcapture
 
   # callers using this in attributes strip the bdi via strip_html
   assign formatted_price = '<bdi>__PRICE__</bdi>' | replace: '__PRICE__', formatted_price

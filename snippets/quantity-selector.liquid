@@ -131,7 +131,7 @@
         assign use_currency = settings.currency_code_enabled_product_pages
       -%}
       {%- capture price_breaks_json -%}
-        [{%- for price_break in variant.quantity_price_breaks -%}{%- unless forloop.first -%},{%- endunless -%}{%- if use_currency -%}{"quantity":{{ price_break.minimum_quantity }},"price":{{ price_break.price | money_with_currency | json }}}{%- else -%}{"quantity":{{ price_break.minimum_quantity }},"price":{{ price_break.price | money | json }}}{%- endif -%}{%- endfor -%}]
+        [{%- for price_break in variant.quantity_price_breaks -%}{%- unless forloop.first -%},{%- endunless -%}{%- capture break_price -%}{%- render 'money-display', amount: price_break.price, currency: use_currency -%}{%- endcapture -%}{"quantity":{{ price_break.minimum_quantity }},"price":{{ break_price | json }}}{%- endfor -%}]
       {%- endcapture -%}
 
       {%- liquid
@@ -151,10 +151,14 @@
         endfor
       -%}
 
+      {%- capture variant_price_display -%}
+        {%- render 'money-display', amount: variant.price, currency: use_currency -%}
+      {%- endcapture -%}
+
       <price-per-item
         class="price-per-item"
         data-variant-id="{{ variant.id }}"
-        data-variant-price="{%- if use_currency -%}{{ variant.price | money_with_currency | escape }}{%- else -%}{{ variant.price | money | escape }}{%- endif -%}"
+        data-variant-price="{{ variant_price_display | escape }}"
         data-min-quantity="{{ variant.quantity_rule.min | default: 1 }}"
         data-price-breaks="{{ price_breaks_json | strip | escape }}"
         data-at-text="{{ 'content.price_at' | t | escape }}"
@@ -167,11 +171,7 @@
         >
           {{- 'content.price_at' | t -}}
           <bdi>
-            {%- if use_currency -%}
-              {{- display_price | money_with_currency -}}
-            {%- else -%}
-              {{- display_price | money -}}
-            {%- endif -%}</bdi
+            {%- render 'money-display', amount: display_price, currency: use_currency -%}</bdi
           >/
           {{- 'content.each_abbreviation' | t }}
         </span>

@@ -58,8 +58,11 @@
   %}
 
   {% if block_settings.show_tax_info %}
+    {%- capture vat_note -%}{%- render 'vat-note' -%}{%- endcapture -%}
     <div class="tax-note">
-      {%- if cart.duties_included and cart.taxes_included -%}
+      {%- if vat_note != blank -%}
+        {{ vat_note }}
+      {%- elsif cart.duties_included and cart.taxes_included -%}
         {{ 'content.duties_and_taxes_included' | t }}
       {%- elsif cart.taxes_included -%}
         {{ 'content.taxes_included' | t }}

@@ -18,7 +18,7 @@
           class="cart-totals__original-value cart-secondary-typography"
           data-testid="cart-subtotal-value"
         >
-          <bdi>{{- cart.items_subtotal_price | money -}}</bdi>
+          <bdi>{%- render 'money-display', amount: cart.items_subtotal_price -%}</bdi>
         </span>
       </span>
       <ul
@@ -33,7 +33,7 @@
               <bdi>{{ discount.title | escape }}</bdi>
             </span>
             <span class="cart-discounts__value cart-secondary-typography"
-              ><bdi>-{{ discount.total_allocated_amount | money }}</bdi>
+              ><bdi>-{% render 'money-display', amount: discount.total_allocated_amount %}</bdi>
             </span>
           </li>
         {%- endfor -%}
@@ -215,11 +215,9 @@
   {% endif %}
 
   {%- liquid
-    if settings.currency_code_enabled_cart_total
-      assign total_price = cart.total_price | money_with_currency
-    else
-      assign total_price = cart.total_price | money
-    endif
+    capture total_price
+      render 'money-display', amount: cart.total_price, currency: settings.currency_code_enabled_cart_total
+    endcapture
   -%}
 
   <div class="cart-totals__container{% if settings.show_installments %} cart-totals__container--has-installments{% endif %}">

@@ -13,6 +13,10 @@
     assign display_price = price_from_text | replace: '__PRICE__', price_min
   endif
 
+  capture vat_note
+    render 'vat-note'
+  endcapture
+
   assign has_swatches_only = false
 
   if product.options.size == 1
@@ -38,6 +42,9 @@
     <span class="price"
       ><bdi>{{ display_price }}</bdi></span
     >
+    {%- if vat_note != blank %}
+      <small class="price__vat-note">{{ vat_note | downcase }}</small>
+    {%- endif -%}
   {% else %}
     {% render 'price',
       show_unit_price: true,

@@ -61,7 +61,7 @@
     {%- capture vat_note -%}{%- render 'vat-note' -%}{%- endcapture -%}
     <div class="tax-note">
       {%- if vat_note != blank -%}
-        {{ vat_note }}
+        {%- comment -%} "ekskl. moms" is shown next to the price instead {%- endcomment -%}
       {%- elsif cart.duties_included and cart.taxes_included -%}
         {{ 'content.duties_and_taxes_included' | t }}
       {%- elsif cart.taxes_included -%}

@@ -84,6 +84,11 @@
   capture price_max
     render 'money-display', amount: price_max, currency: use_currency
   endcapture
+
+  # "ekskl. moms" after the price for ex-VAT (B2B) visitors
+  capture vat_note
+    render 'vat-note'
+  endcapture
 -%}
 
 <div
@@ -133,6 +138,9 @@
       >
     {% endif %}
   {% endif %}
+  {%- if vat_note != blank %}
+    <small class="price__vat-note">{{ vat_note | downcase }}</small>
+  {%- endif -%}
   </div>
   {%- if selected_variant.unit_price and show_unit_price %}
     {%- capture unit_price -%}

@@ -2128,8 +2128,8 @@
         "type": "text",
         "id": "ex_vat_market_handles",
         "label": "Ex-VAT market handles",
-        "info": "Comma-separated Shopify Markets handles, e.g. engros, virksomheder",
-        "default": "engros, virksomheder"
+        "info": "Comma-separated Shopify Markets handles, e.g. b2b, virksomheder",
+        "default": "b2b, virksomheder"
       },
       {
         "type": "range",

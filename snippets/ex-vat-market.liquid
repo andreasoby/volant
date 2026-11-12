@@ -3,7 +3,7 @@
   This is display-only: it never changes cart, form or checkout prices.
 
   A visitor sees ex-VAT prices when the store's prices include tax (cart.taxes_included) and either:
-  - their market handle is in the "B2B / ex-VAT prices" market handle list (default: engros, virksomheder), or
+  - their market handle is in the "B2B / ex-VAT prices" market handle list (default: b2b, virksomheder), or
   - they are a signed-in B2B customer and "Show ex-VAT prices to B2B customers" isn't turned off.
 
   The taxes_included guard prevents VAT being removed twice if a market is switched to tax-exclusive prices.
@@ -20,7 +20,7 @@
   if cart.taxes_included
     assign market_handles = settings.ex_vat_market_handles
     if market_handles == nil
-      assign market_handles = 'engros, virksomheder'
+      assign market_handles = 'b2b, virksomheder'
     endif
 
     assign current_market = localization.market.handle | downcase

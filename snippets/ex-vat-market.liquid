@@ -5,6 +5,9 @@
   A visitor sees ex-VAT prices when the store's prices include tax (cart.taxes_included) and either:
   - their market handle is in the "B2B / ex-VAT prices" market handle list (default: b2b, virksomheder), or
   - they are a signed-in B2B customer and "Show ex-VAT prices to B2B customers" isn't turned off.
+    A customer counts as B2B when Shopify flags the session as B2B (customer.b2b?) or the customer
+    is a contact on any company location. The second check covers company locations that are also in
+    a D2C market (e.g. Danmark), where Shopify can put the customer in a regular D2C session.
 
   The taxes_included guard prevents VAT being removed twice if a market is switched to tax-exclusive prices.
   Settings may be nil until the theme settings are saved, so the schema defaults are repeated here.
@@ -35,8 +38,11 @@
       endfor
     endif
 
-    if customer.b2b? and settings.ex_vat_for_b2b_customers != false
-      assign is_ex_vat = true
+    if customer and settings.ex_vat_for_b2b_customers != false
+      assign company_location_count = customer.company_available_locations_count | default: 0
+      if customer.b2b? or customer.current_company != blank or company_location_count > 0
+        assign is_ex_vat = true
+      endif
     endif
   endif
 

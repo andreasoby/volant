@@ -1,8 +1,6 @@
 {%- doc -%}
-  Formats an amount for display, removing VAT for ex-VAT visitors (see ex-vat-market).
-  Prices are assumed to include Danish VAT for these visitors, even in markets set to tax-exclusive prices,
-  because the B2B markets use the same VAT-inclusive prices as Danmark.
-  Display-only: never use the output for form values or calculations.
+  Formats an amount for display. Prices are never adjusted here: B2B catalogs hold the ex-VAT prices,
+  and the theme only adds the "ekskl. moms" note (see vat-note).
   Outputs nothing when amount is blank; 0 is still formatted.
 
   @param {number} amount - The amount in minor units (e.g. 19900 for 199,00 kr)
@@ -15,25 +13,10 @@
 
 {%- liquid
   if amount != nil and amount != ''
-    assign display_amount = amount
-
-    capture ex_vat
-      render 'ex-vat-market'
-    endcapture
-
-    if ex_vat contains 'true'
-      assign vat_rate = settings.ex_vat_rate
-      if vat_rate == nil
-        assign vat_rate = 25
-      endif
-      assign vat_divisor = vat_rate | divided_by: 100.0 | plus: 1
-      assign display_amount = amount | times: 1.0 | divided_by: vat_divisor | round
-    endif
-
     if currency
-      echo display_amount | money_with_currency
+      echo amount | money_with_currency
     else
-      echo display_amount | money
+      echo amount | money
     endif
   endif
 -%}

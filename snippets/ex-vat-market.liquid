@@ -1,16 +1,16 @@
 {%- doc -%}
-  Outputs true when the current visitor should see prices excluding VAT ("ekskl. moms").
-  This is display-only: it never changes cart, form or checkout prices.
+  Outputs true when the current visitor should see the "ekskl. moms" note (see vat-note).
+  Prices aren't changed: the B2B catalogs already hold ex-VAT prices.
 
-  A visitor is an ex-VAT visitor when either:
+  The note is only shown when the session's prices exclude tax (cart.taxes_included is false), so a
+  B2B customer in a session using the Danmark catalog doesn't see VAT-inclusive prices marked "ekskl. moms".
+  Within that, a visitor is an ex-VAT visitor when either:
   - their market handle is in the "B2B / ex-VAT prices" market handle list (default: b2b, virksomheder), or
   - they are a signed-in B2B customer and "Show ex-VAT prices to B2B customers" isn't turned off.
     A customer counts as B2B when Shopify flags the session as B2B (customer.b2b?) or the customer
     is a contact on any company location. The second check covers company locations that are also in
     a D2C market (e.g. Danmark), where Shopify can put the customer in a regular D2C session.
 
-  This doesn't check cart.taxes_included: the B2B markets are set to tax-exclusive prices but use the same
-  VAT-inclusive amounts as Danmark, so VAT is removed for display either way (see money-display).
   Settings may be nil until the theme settings are saved, so the schema defaults are repeated here.
 
   @example
@@ -45,7 +45,7 @@
     endif
   endif
 
-  if is_ex_vat
+  if is_ex_vat and cart.taxes_included == false
     echo 'true'
   endif
 -%}

@@ -2122,7 +2122,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Shows prices excluding VAT on product pages, product cards and in the cart. Checkout always shows VAT-inclusive prices. Only applies when the market's prices include tax."
+        "content": "Shows an 'ekskl. moms' note next to prices for these visitors. Prices aren't changed: set ex-VAT prices in the B2B catalogs."
       },
       {
         "type": "text",
@@ -2130,16 +2130,6 @@
         "label": "Ex-VAT market handles",
         "info": "Comma-separated Shopify Markets handles, e.g. b2b, virksomheder",
         "default": "b2b, virksomheder"
-      },
-      {
-        "type": "range",
-        "id": "ex_vat_rate",
-        "min": 0,
-        "max": 30,
-        "step": 1,
-        "unit": "%",
-        "label": "VAT rate",
-        "default": 25
       },
       {
         "type": "checkbox",

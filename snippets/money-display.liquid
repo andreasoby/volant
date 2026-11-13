@@ -1,5 +1,7 @@
 {%- doc -%}
   Formats an amount for display, removing VAT for ex-VAT visitors (see ex-vat-market).
+  Prices are assumed to include Danish VAT for these visitors, even in markets set to tax-exclusive prices,
+  because the B2B markets use the same VAT-inclusive prices as Danmark.
   Display-only: never use the output for form values or calculations.
   Outputs nothing when amount is blank; 0 is still formatted.
 

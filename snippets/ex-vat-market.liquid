@@ -1,15 +1,16 @@
 {%- doc -%}
-  Outputs true when prices should be displayed excluding VAT for the current visitor.
+  Outputs true when the current visitor should see prices excluding VAT ("ekskl. moms").
   This is display-only: it never changes cart, form or checkout prices.
 
-  A visitor sees ex-VAT prices when the store's prices include tax (cart.taxes_included) and either:
+  A visitor is an ex-VAT visitor when either:
   - their market handle is in the "B2B / ex-VAT prices" market handle list (default: b2b, virksomheder), or
   - they are a signed-in B2B customer and "Show ex-VAT prices to B2B customers" isn't turned off.
     A customer counts as B2B when Shopify flags the session as B2B (customer.b2b?) or the customer
     is a contact on any company location. The second check covers company locations that are also in
     a D2C market (e.g. Danmark), where Shopify can put the customer in a regular D2C session.
 
-  The taxes_included guard prevents VAT being removed twice if a market is switched to tax-exclusive prices.
+  This doesn't check cart.taxes_included: the B2B markets are set to tax-exclusive prices but use the same
+  VAT-inclusive amounts as Danmark, so VAT is removed for display either way (see money-display).
   Settings may be nil until the theme settings are saved, so the schema defaults are repeated here.
 
   @example
@@ -20,29 +21,27 @@
 {%- liquid
   assign is_ex_vat = false
 
-  if cart.taxes_included
-    assign market_handles = settings.ex_vat_market_handles
-    if market_handles == nil
-      assign market_handles = 'b2b, virksomheder'
-    endif
+  assign market_handles = settings.ex_vat_market_handles
+  if market_handles == nil
+    assign market_handles = 'b2b, virksomheder'
+  endif
 
-    assign current_market = localization.market.handle | downcase
-    if current_market != blank
-      assign market_list = market_handles | downcase | split: ','
-      for market_handle in market_list
-        assign market_handle = market_handle | strip
-        if market_handle != blank and market_handle == current_market
-          assign is_ex_vat = true
-          break
-        endif
-      endfor
-    endif
-
-    if customer and settings.ex_vat_for_b2b_customers != false
-      assign company_location_count = customer.company_available_locations_count | default: 0
-      if customer.b2b? or customer.current_company != blank or company_location_count > 0
+  assign current_market = localization.market.handle | downcase
+  if current_market != blank
+    assign market_list = market_handles | downcase | split: ','
+    for market_handle in market_list
+      assign market_handle = market_handle | strip
+      if market_handle != blank and market_handle == current_market
         assign is_ex_vat = true
+        break
       endif
+    endfor
+  endif
+
+  if customer and settings.ex_vat_for_b2b_customers != false
+    assign company_location_count = customer.company_available_locations_count | default: 0
+    if customer.b2b? or customer.current_company != blank or company_location_count > 0
+      assign is_ex_vat = true
     endif
   endif
 

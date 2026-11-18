@@ -1,0 +1,62 @@
+{%- doc -%}
+  One producer card for the collection grid. Renders nothing if the producer has no collection page or image.
+
+  @param {object} producer - Producer metaobject
+  @param {boolean} from_page - Whether the producer has wines on the current page
+{%- enddoc -%}
+
+{%- liquid
+  assign pgc_collection = producer.collection_page.value
+  assign pgc_image = pgc_collection.metafields.custom.billede.value
+  if pgc_image == blank
+    for pgc_gallery_card in producer.gallery.value
+      if pgc_gallery_card.image.value != blank
+        assign pgc_image = pgc_gallery_card.image.value
+        break
+      endif
+    endfor
+  endif
+  if pgc_image.preview_image != blank
+    assign pgc_image = pgc_image.preview_image
+  endif
+
+  assign pgc_name = producer.name.value | default: pgc_collection.title
+  assign pgc_region = producer.region.value.label.value
+  assign pgc_country = producer.country.value.label.value
+  assign pgc_eyebrow = pgc_region
+  if pgc_country != blank
+    if pgc_eyebrow != blank
+      assign pgc_eyebrow = pgc_eyebrow | append: ' · ' | append: pgc_country
+    else
+      assign pgc_eyebrow = pgc_country
+    endif
+  endif
+-%}
+
+{%- if pgc_collection != blank and pgc_image != blank -%}
+  <a
+    class="pgc-card"
+    href="{{ pgc_collection.url }}"
+    data-pgc-card
+    data-pgc-page="{{ from_page }}"
+    hidden
+  >
+    <span class="pgc-card__media">
+      {{
+        pgc_image
+        | image_url: width: 1600
+        | image_tag:
+          widths: '400, 600, 800, 1200, 1600',
+          sizes: '(min-width: 750px) 50vw, 100vw',
+          alt: pgc_name,
+          class: 'pgc-card__image',
+          loading: 'lazy'
+      }}
+    </span>
+    {%- if pgc_eyebrow != blank -%}
+      <span class="pgc-card__eyebrow">{{ pgc_eyebrow }}</span>
+    {%- endif -%}
+    <span class="pgc-card__title">{{ pgc_name }}</span>
+    <span class="pgc-card__link">Mød producenten →</span>
+  </a>
+{%- endif -%}

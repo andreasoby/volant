@@ -792,11 +792,69 @@
         "padding-block-start": 32,
         "padding-block-end": 64
       }
+    },
+    "producer_carousel_pWqFdy": {
+      "type": "producer-carousel",
+      "blocks": {
+        "producer_dHk8yE": {
+          "type": "producer",
+          "settings": {
+            "image": "shopify://shop_images/R0009879_3043fc82-5ede-4d35-9626-909773691530.jpg",
+            "eyebrow": "FAKTA · Ô MA",
+            "title": "Tom Williams",
+            "text": "Stiftede i 2022 mikronégociant-projektet Ô Ma i Santenay i det sydlige Côte de Beaune. Tom står selv for alt arbejdet i vineriet, og vinene laves kun i små mængder.",
+            "label": "Ô Ma",
+            "link_label": "Mød producenten →",
+            "link_source": "url",
+            "link": "shopify://collections/oma"
+          }
+        },
+        "producer_hdLzMM": {
+          "type": "producer",
+          "settings": {
+            "image": "shopify://shop_images/R0009490.jpg",
+            "eyebrow": "FAKTA · MARKEN",
+            "title": "Barolo DOCG fra 2023",
+            "text": "Alle parceller er klassificeret Barolo DOCG, men frem til 2022 blev der kun lavet Langhe Nebbiolo og Rosato. 2023 er den første Barolo-årgang.",
+            "label": "Castrum Roche",
+            "link_label": "Mød producenten →",
+            "link_source": "url",
+            "link": "shopify://collections/castrum-roche"
+          }
+        },
+        "producer_K383Tf": {
+          "type": "producer",
+          "settings": {
+            "image": "shopify://shop_images/1712241339304.jpg",
+            "eyebrow": "FAKTA · MARKEN",
+            "title": "900–1.200 meter",
+            "text": "Kalkjorden tvinger rødderne dybt ned, og højden kombineret med havet mod øst giver store temperaturudsving mellem dag og nat, som bevarer syre og friskhed.",
+            "label": "Entre Aldeas",
+            "link_label": "Mød producenten →",
+            "link_source": "url",
+            "link": "shopify://collections/bodega-entre-aldeas"
+          }
+        }
+      },
+      "block_order": [
+        "producer_dHk8yE",
+        "producer_hdLzMM",
+        "producer_K383Tf"
+      ],
+      "name": "t:names.producer_carousel",
+      "settings": {
+        "cards_source": "manual",
+        "heading": "Producenter bag udgivelsen",
+        "link_label": "",
+        "link": "",
+        "section_width": "page-width"
+      }
     }
   },
   "order": [
     "main",
     "bundle_products",
-    "section_TdXEGQ"
+    "section_TdXEGQ",
+    "producer_carousel_pWqFdy"
   ]
 }

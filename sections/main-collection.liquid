@@ -28,7 +28,15 @@
 %}
 
 {% render 'collection-wrapper-styles' %}
+   {%- liquid
+     assign pgc_handles = '|alle-produkter|all|sjaeldne-fund|naturlig|traditionel-vin|til-saerlige-anledninger|hverdags-vin|hvidvine|rodvine|orangevine|mousserende|rose|'
+     assign pgc_collection_key = '|' | append: collection.handle | append: '|'
+     assign pgc_enabled = false
 
+     if pgc_handles contains pgc_collection_key
+       assign pgc_enabled = true
+     endif
+   -%}
 <div
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
@@ -72,9 +80,17 @@
                 id: 'product-card',
                 closest.product: product,
                 product_view_context: 'collection'
-              %}
-            </li>
-          {% endfor %}
+           %}
+             </li>
+             {%- if pgc_enabled -%}
+               {%- if forloop.index == 8 and forloop.length > 8 -%}
+                 {% render 'producer-grid-row', variant: 'mobile', count: 1, products: collection.products %}
+               {%- endif -%}
+               {%- if forloop.index == 9 and forloop.length > 9 -%}
+                 {% render 'producer-grid-row', variant: 'desktop', count: 2, products: collection.products %}
+               {%- endif -%}
+             {%- endif -%}
+           {% endfor %}
         {% endcapture %}
 
         {% render 'product-grid',

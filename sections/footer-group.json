@@ -60,6 +60,7 @@
               "settings": {
                 "image": "shopify://shop_images/gas.png",
                 "link": "",
+                "hide_on_mobile": false,
                 "image_ratio": "adapt",
                 "width": "fill",
                 "custom_width": 100,

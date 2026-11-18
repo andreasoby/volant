@@ -1,0 +1,178 @@
+{%- doc -%}
+  A full-width row of producer cards inside the collection product grid.
+  Shows random producers that have wines on the current page; falls back to other producers if there are too few.
+
+  @param {string} variant - 'desktop' or 'mobile'
+  @param {number} count - Number of cards to show
+  @param {object} products - Products on the current page
+{%- enddoc -%}
+
+{%- liquid
+  assign pgc_seen = '|'
+  assign pgc_page_count = 0
+-%}
+<li class="pgc-row pgc-row--{{ variant }}">
+  <producer-grid-row class="pgc-row__inner" data-count="{{ count }}">
+    {%- for pgc_product in products -%}
+      {%- assign pgc_producer = pgc_product.metafields.custom.producer_object.value -%}
+      {%- if pgc_producer != blank -%}
+        {%- assign pgc_key = '|' | append: pgc_producer.system.handle | append: '|' -%}
+        {%- unless pgc_seen contains pgc_key -%}
+          {%- assign pgc_seen = pgc_seen | append: pgc_producer.system.handle | append: '|' -%}
+          {%- capture pgc_card -%}{% render 'producer-grid-card', producer: pgc_producer, from_page: true %}{%- endcapture -%}
+          {%- assign pgc_card = pgc_card | strip -%}
+          {%- if pgc_card != blank -%}
+            {{ pgc_card }}
+            {%- assign pgc_page_count = pgc_page_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if pgc_page_count < count -%}
+      {%- for pgc_producer in shop.metaobjects.producer.values -%}
+        {%- assign pgc_key = '|' | append: pgc_producer.system.handle | append: '|' -%}
+        {%- unless pgc_seen contains pgc_key -%}
+          {%- assign pgc_seen = pgc_seen | append: pgc_producer.system.handle | append: '|' -%}
+          {% render 'producer-grid-card', producer: pgc_producer, from_page: false %}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endif -%}
+  </producer-grid-row>
+</li>
+
+{% stylesheet %}
+  .pgc-row {
+    grid-column: 1 / -1;
+    list-style: none;
+    padding-block-end: 24px;
+  }
+
+  .pgc-row--desktop {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .pgc-row--desktop {
+      display: block;
+    }
+
+    .pgc-row--mobile {
+      display: none;
+    }
+  }
+
+  .pgc-row__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--product-grid-gap);
+  }
+
+  @media screen and (min-width: 750px) {
+    .pgc-row__inner {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .pgc-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    color: #111;
+    text-decoration: none;
+  }
+
+  .pgc-card[hidden] {
+    display: none;
+  }
+
+  .pgc-card__media {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #d7cbb4;
+    margin-block-end: 6px;
+  }
+
+  .pgc-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pgc-card__eyebrow,
+  .pgc-card__title {
+    margin: 0;
+  }
+
+  .pgc-card__eyebrow {
+    color: #6b6357;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.72px;
+    text-transform: uppercase;
+  }
+
+  .pgc-card__title {
+    color: #111;
+    font-family: 'IBM Plex Serif', var(--font-heading--family), serif;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .pgc-card__link {
+    color: #111;
+    font-family: 'IBM Plex Sans', var(--font-body--family), sans-serif;
+    font-size: 14px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .pgc-card:hover .pgc-card__link {
+    color: #6b6357;
+  }
+
+  @media screen and (max-width: 749px) {
+    .pgc-card__title {
+      font-size: 26px;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  class ProducerGridRow extends HTMLElement {
+    connectedCallback() {
+      if (this.dataset.ready) return;
+      this.dataset.ready = 'true';
+      const count = Number(this.dataset.count) || 1;
+      const cards = [...this.querySelectorAll('[data-pgc-card]')];
+      const shuffle = (list) => {
+        for (let i = list.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [list[i], list[j]] = [list[j], list[i]];
+        }
+        return list;
+      };
+      const fromPage = shuffle(cards.filter((card) => card.dataset.pgcPage === 'true'));
+      const others = shuffle(cards.filter((card) => card.dataset.pgcPage !== 'true'));
+      const picked = fromPage.slice(0, count);
+      if (picked.length < count) picked.push(...others.slice(0, count - picked.length));
+      cards.forEach((card) => {
+        if (!picked.includes(card)) card.remove();
+      });
+      picked.forEach((card) => {
+        card.hidden = false;
+        this.append(card);
+      });
+    }
+  }
+
+  if (!customElements.get('producer-grid-row')) {
+    customElements.define('producer-grid-row', ProducerGridRow);
+  }
+{% endjavascript %}

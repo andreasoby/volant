@@ -524,7 +524,7 @@
           "type": "ai_gen_block_a67f937",
           "settings": {
             "desktop_width_percent": 100,
-            "desktop_columns": "2",
+            "desktop_columns": "3",
             "mobile_columns": "2",
             "image_ratio": "3 / 4",
             "card_gap": 16,
@@ -538,7 +538,7 @@
             "card_2_collection": "sjaeldne-fund",
             "card_2_image": "shopify://shop_images/R0008934.jpg",
             "card_2_title": "",
-            "card_3_enabled": false,
+            "card_3_enabled": true,
             "card_3_collection": "nyeste-vine",
             "card_3_image": "shopify://shop_images/R0009832.jpg",
             "card_3_title": "",

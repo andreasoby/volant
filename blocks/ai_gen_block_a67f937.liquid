@@ -88,18 +88,8 @@
   <div class="ai-collection-grid-{{ ai_gen_id }}__items">
     {% for i in (1..6) %}
 {% liquid
-  assign page_collection = closest.collection | default: collection
+  assign page_collection = collection
   assign use_custom_grid = page_collection.metafields.custom.use_custom_collection_grid.value
-
-  if request.design_mode
-    echo 'Page collection: '
-    echo collection.handle
-    echo ' | Closest collection: '
-    echo closest.collection.handle
-    echo ' | Reading metafields from: '
-    echo page_collection.handle
-    echo '<br>'
-  endif
 
   if use_custom_grid == true
           assign collection_key = 'grid_card_' | append: i | append: '_collection'

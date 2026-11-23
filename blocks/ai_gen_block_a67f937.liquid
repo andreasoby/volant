@@ -87,18 +87,39 @@
 <div class="ai-collection-grid-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
   <div class="ai-collection-grid-{{ ai_gen_id }}__items">
     {% for i in (1..6) %}
-      {% liquid
-        assign enabled_key = 'card_' | append: i | append: '_enabled'
-        assign collection_key = 'card_' | append: i | append: '_collection'
-        assign image_key = 'card_' | append: i | append: '_image'
-        assign title_key = 'card_' | append: i | append: '_title'
-        assign card_enabled = block.settings[enabled_key]
-        assign card_collection = block.settings[collection_key]
-        assign card_image = block.settings[image_key]
-        assign card_title = block.settings[title_key]
+            {% liquid
+        assign page_collection = closest.collection | default: collection
+        assign use_custom_grid = page_collection.metafields.custom.use_custom_collection_grid.value
+
+        if use_custom_grid == true
+          assign collection_key = 'grid_card_' | append: i | append: '_collection'
+          assign image_key = 'grid_card_' | append: i | append: '_image'
+          assign title_key = 'grid_card_' | append: i | append: '_title'
+
+          assign card_collection = page_collection.metafields.custom[collection_key].value
+          assign card_image = page_collection.metafields.custom[image_key].value
+          assign card_title = page_collection.metafields.custom[title_key].value
+
+          assign card_enabled = false
+          if card_collection != blank
+            assign card_enabled = true
+          endif
+        else
+          assign enabled_key = 'card_' | append: i | append: '_enabled'
+          assign collection_key = 'card_' | append: i | append: '_collection'
+          assign image_key = 'card_' | append: i | append: '_image'
+          assign title_key = 'card_' | append: i | append: '_title'
+
+          assign card_enabled = block.settings[enabled_key]
+          assign card_collection = block.settings[collection_key]
+          assign card_image = block.settings[image_key]
+          assign card_title = block.settings[title_key]
+        endif
+
         if card_image == blank and card_collection != blank
           assign card_image = card_collection.image
         endif
+
         if card_title == blank and card_collection != blank
           assign card_title = card_collection.title
         endif

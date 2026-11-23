@@ -861,12 +861,84 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "blocks_eiViwR": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_a67f937_qqVgHq": {
+          "type": "ai_gen_block_a67f937",
+          "settings": {
+            "desktop_width_percent": 100,
+            "desktop_columns": "3",
+            "mobile_columns": "2",
+            "image_ratio": "3 / 4",
+            "card_gap": 16,
+            "outer_padding": 40,
+            "background_color": "#EADEC6",
+            "card_1_enabled": true,
+            "card_1_collection": "hvidvine-fra-bourgogne",
+            "card_1_image": "shopify://shop_images/R0009217.jpg",
+            "card_1_title": "",
+            "card_2_enabled": true,
+            "card_2_collection": "sjaeldne-fund",
+            "card_2_image": "shopify://shop_images/R0008934.jpg",
+            "card_2_title": "",
+            "card_3_enabled": true,
+            "card_3_collection": "nyeste-vine",
+            "card_3_image": "shopify://shop_images/R0009832.jpg",
+            "card_3_title": "",
+            "card_4_enabled": false,
+            "card_4_collection": "",
+            "card_4_title": "",
+            "card_5_enabled": false,
+            "card_5_collection": "",
+            "card_5_title": "",
+            "card_6_enabled": false,
+            "card_6_collection": "",
+            "card_6_title": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_a67f937_qqVgHq"
+      ],
+      "name": "Collection image grid",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "background_media": "none",
+        "background_color": "",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_color": "",
+        "border_radius": 0,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
     "section_fheRQe",
     "product_list_fa6P9H",
     "producer_carousel_mgnfTQ",
+    "blocks_eiViwR",
     "media_with_content_jwBJVY",
     "collection_list_kRTkWx",
     "section_Gmd7cj"

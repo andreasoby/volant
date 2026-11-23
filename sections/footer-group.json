@@ -193,7 +193,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Tilmeld dig vores nyhedsbrev for at modtage nyheder om producenter og nye vine.</p>",
+                "text": "<p>Få 10% rabat på din første ordre, og modtag nyhedsbreve med eksklusiv adgang til udsalg, nye produkter og historier fra vinbønderne bag vores vine.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "right",

@@ -1,6 +1,176 @@
+{% doc %}
+  @prompt
+    Create a multi-collection image-card grid, not a single collection card. Match this reference layout: warm cream background, three equally sized portrait image cards across on desktop, narrow even gaps, generous outer padding, and simple black left-aligned collection titles beneath the images. No borders, rounded corners, shadows, badges, or text overlays. Support up to six independently configurable cards, with three enabled initially. Each card must have its own collection picker, optional custom image picker, optional title override, and visibility control. Clicking each image or title links to that card's selected collection. Custom images affect only this grid and must never change the collections' featured images. Fall back to the collection image and title if overrides are empty. Include adjustable desktop column count, mobile column count, image aspect ratio, spacing, and background color. Make the grid responsive and use the current theme's typography. Keep all cards in one grid block so multiple collections can be configured together.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-collection-grid-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: {{ block.settings.outer_padding }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-collection-grid-{{ ai_gen_id }}__items {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.desktop_columns }}, minmax(0, 1fr));
+    gap: {{ block.settings.card_gap }}px;
+  }
+
+  .ai-collection-grid-{{ ai_gen_id }}__card {
+    min-width: 0;
+  }
+
+  .ai-collection-grid-{{ ai_gen_id }}__link {
+    display: block;
+    color: #000000;
+    text-decoration: none;
+  }
+
+  .ai-collection-grid-{{ ai_gen_id }}__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: {{ block.settings.image_ratio }};
+    overflow: hidden;
+    background: #dfdfdf;
+  }
+
+  .ai-collection-grid-{{ ai_gen_id }}__media img,
+  .ai-collection-grid-{{ ai_gen_id }}__placeholder svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-collection-grid-{{ ai_gen_id }}__placeholder {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-collection-grid-{{ ai_gen_id }}__empty-state {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    color: #333333;
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .ai-collection-grid-{{ ai_gen_id }}__title {
+    margin: 12px 0 0;
+    color: #000000;
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.35;
+    text-align: left;
+  }
+
+  .ai-collection-grid-{{ ai_gen_id }}__link:focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 4px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-collection-grid-{{ ai_gen_id }}__items {
+      grid-template-columns: repeat({{ block.settings.mobile_columns }}, minmax(0, 1fr));
+    }
+  }
+{% endstyle %}
+
+<div class="ai-collection-grid-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-collection-grid-{{ ai_gen_id }}__items">
+    {% for i in (1..6) %}
+      {% liquid
+        assign enabled_key = 'card_' | append: i | append: '_enabled'
+        assign collection_key = 'card_' | append: i | append: '_collection'
+        assign image_key = 'card_' | append: i | append: '_image'
+        assign title_key = 'card_' | append: i | append: '_title'
+        assign card_enabled = block.settings[enabled_key]
+        assign card_collection = block.settings[collection_key]
+        assign card_image = block.settings[image_key]
+        assign card_title = block.settings[title_key]
+        if card_image == blank and card_collection != blank
+          assign card_image = card_collection.image
+        endif
+        if card_title == blank and card_collection != blank
+          assign card_title = card_collection.title
+        endif
+      %}
+      {% if card_enabled and card_collection != blank %}
+        <article class="ai-collection-grid-{{ ai_gen_id }}__card">
+          <a class="ai-collection-grid-{{ ai_gen_id }}__link" href="{{ card_collection.url }}" aria-label="{{ card_title | escape }}">
+            <div class="ai-collection-grid-{{ ai_gen_id }}__media">
+              {% if card_image != blank %}
+                <img src="{{ card_image | image_url: width: 1200 }}" alt="{{ card_image.alt | default: card_title | escape }}" loading="lazy" width="{{ card_image.width }}" height="{{ card_image.height }}">
+              {% else %}
+                <div class="ai-collection-grid-{{ ai_gen_id }}__placeholder">
+                  {{ 'collection-apparel-1' | placeholder_svg_tag }}
+                </div>
+                <span class="ai-collection-grid-{{ ai_gen_id }}__empty-state">Choose a collection image or add a custom image.</span>
+              {% endif %}
+            </div>
+            {% if card_title != blank %}
+              <p class="ai-collection-grid-{{ ai_gen_id }}__title">{{ card_title | escape }}</p>
+            {% endif %}
+          </a>
+        </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Collection image grid",
+  "settings": [
+    { "type": "header", "content": "Grid layout" },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "select", "id": "desktop_columns", "label": "Desktop columns", "options": [{ "value": "2", "label": "2" }, { "value": "3", "label": "3" }, { "value": "4", "label": "4" }, { "value": "5", "label": "5" }, { "value": "6", "label": "6" }], "default": "3" },
+    { "type": "select", "id": "mobile_columns", "label": "Mobile columns", "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }], "default": "2" },
+    { "type": "select", "id": "image_ratio", "label": "Image aspect ratio", "options": [{ "value": "2 / 3", "label": "Portrait (2:3)" }, { "value": "3 / 4", "label": "Portrait (3:4)" }, { "value": "1 / 1", "label": "Square" }], "default": "2 / 3" },
+    { "type": "range", "id": "card_gap", "label": "Card spacing", "min": 4, "max": 40, "step": 2, "unit": "px", "default": 16 },
+    { "type": "range", "id": "outer_padding", "label": "Outer padding", "min": 0, "max": 80, "step": 5, "unit": "px", "default": 40 },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#EADEC6" },
+    { "type": "header", "content": "Card 1" },
+    { "type": "checkbox", "id": "card_1_enabled", "label": "Show card", "default": true },
+    { "type": "collection", "id": "card_1_collection", "label": "Collection" },
+    { "type": "image_picker", "id": "card_1_image", "label": "Custom image" },
+    { "type": "text", "id": "card_1_title", "label": "Title override" },
+    { "type": "header", "content": "Card 2" },
+    { "type": "checkbox", "id": "card_2_enabled", "label": "Show card", "default": true },
+    { "type": "collection", "id": "card_2_collection", "label": "Collection" },
+    { "type": "image_picker", "id": "card_2_image", "label": "Custom image" },
+    { "type": "text", "id": "card_2_title", "label": "Title override" },
+    { "type": "header", "content": "Card 3" },
+    { "type": "checkbox", "id": "card_3_enabled", "label": "Show card", "default": true },
+    { "type": "collection", "id": "card_3_collection", "label": "Collection" },
+    { "type": "image_picker", "id": "card_3_image", "label": "Custom image" },
+    { "type": "text", "id": "card_3_title", "label": "Title override" },
+    { "type": "header", "content": "Card 4" },
+    { "type": "checkbox", "id": "card_4_enabled", "label": "Show card", "default": false },
+    { "type": "collection", "id": "card_4_collection", "label": "Collection" },
+    { "type": "image_picker", "id": "card_4_image", "label": "Custom image" },
+    { "type": "text", "id": "card_4_title", "label": "Title override" },
+    { "type": "header", "content": "Card 5" },
+    { "type": "checkbox", "id": "card_5_enabled", "label": "Show card", "default": false },
+    { "type": "collection", "id": "card_5_collection", "label": "Collection" },
+    { "type": "image_picker", "id": "card_5_image", "label": "Custom image" },
+    { "type": "text", "id": "card_5_title", "label": "Title override" },
+    { "type": "header", "content": "Card 6" },
+    { "type": "checkbox", "id": "card_6_enabled", "label": "Show card", "default": false },
+    { "type": "collection", "id": "card_6_collection", "label": "Collection" },
+    { "type": "image_picker", "id": "card_6_image", "label": "Custom image" },
+    { "type": "text", "id": "card_6_title", "label": "Title override" }
+  ],
+  "presets": [{ "name": "Collection image grid" }],
+  "tag": null,
+  "class": "collection-image-grid"
+}
 {% endschema %}

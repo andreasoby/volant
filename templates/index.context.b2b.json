@@ -12,5 +12,12 @@
     "market": "b2b"
   },
   "parent": "index.json",
-  "sections": {}
+  "sections": {
+    "product_list_fa6P9H": {
+      "settings": {
+        "collection": "alle-produkter"
+      },
+      "blocks": {}
+    }
+  }
 }

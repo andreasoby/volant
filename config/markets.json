@@ -11,6 +11,9 @@
   "markets": {
     "b2b": {
       "parent": "@default"
+    },
+    "virksomheder": {
+      "parent": "@default"
     }
   }
 }

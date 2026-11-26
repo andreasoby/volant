@@ -799,11 +799,11 @@
         "producer_dHk8yE": {
           "type": "producer",
           "settings": {
-            "image": "shopify://shop_images/R0009879_3043fc82-5ede-4d35-9626-909773691530.jpg",
-            "eyebrow": "FAKTA · Ô MA",
-            "title": "mikronégociant i Santenay",
-            "text": "Tom Williams stiftede i 2022 mikronégociant-projektet Ô Ma i Santenay i det sydlige Côte de Beaune. Tom står selv for alt arbejdet i vineriet, og vinene laves kun i små mængder.",
-            "label": "Ô Ma",
+            "image": "shopify://shop_images/R0009062.jpg",
+            "eyebrow": "FAKTA · MARKEN",
+            "title": "Schist og vulkansk sten",
+            "text": "Markerne i Anjou byder på rød og grøn schist samt vulkansk spilit og rhyolit, bl.a. i Montbenault. Alt dyrkes biodynamisk, og flere cuvéer lagres i stentøjskrukker.",
+            "label": "Stéphane Rocher",
             "link_label": "Mød producenten →",
             "link_source": "url",
             "link": "shopify://collections/oma"

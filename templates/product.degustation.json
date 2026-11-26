@@ -800,10 +800,10 @@
           "type": "producer",
           "settings": {
             "image": "shopify://shop_images/R0009062.jpg",
-            "eyebrow": "FAKTA · MARKEN",
-            "title": "Schist og vulkansk sten",
-            "text": "Markerne i Anjou byder på rød og grøn schist samt vulkansk spilit og rhyolit, bl.a. i Montbenault. Alt dyrkes biodynamisk, og flere cuvéer lagres i stentøjskrukker.",
-            "label": "Stéphane Rocher",
+            "eyebrow": "FAKTA · Ô MA",
+            "title": "Tom Williams",
+            "text": "Stiftede i 2022 mikronégociant-projektet Ô Ma i Santenay i det sydlige Côte de Beaune. Tom står selv for alt arbejdet i vineriet, og vinene laves kun i små mængder.",
+            "label": "Ô MA",
             "link_label": "Mød producenten →",
             "link_source": "url",
             "link": "shopify://collections/oma"
